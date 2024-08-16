@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Background from "./components/background";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,10 +24,10 @@ export default function RootLayout({
           <div className="flex items-center min-h-32 m-12">{children}</div>
           <ul className="w-screen min-h-32 m-10 flex flex-col justify-center items-center text-white text-2xl z-40">
             <li>
-              <a href="/">Home</a>
+              <Link href="/">Home</Link>
             </li>
             <li>
-              <a href="/about">About</a>
+              <Link href="/about">About</Link>
             </li>
           </ul>
         </main>
