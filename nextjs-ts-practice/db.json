@@ -1,0 +1,35 @@
+{
+  "posts": [
+    { "id": 1, "title": "json-server", "author": "typicode" },
+    { "id": 2, "title": "api development", "author": "future technologies" },
+    { "id": 3, "title": "frontend frameworks", "author": "creative solutions" },
+    { "id": 4, "title": "backend integration", "author": "global systems" },
+    { "id": 5, "title": "database management", "author": "data masters" },
+    { "id": 6, "title": "version control", "author": "code keepers" },
+    {
+      "id": 7,
+      "title": "testing strategies",
+      "author": "quality assurance inc."
+    },
+    {
+      "id": 8,
+      "title": "deployment techniques",
+      "author": "deployment experts"
+    },
+    { "id": 9, "title": "devops practices", "author": "agile works" },
+    { "id": 10, "title": "agile methodologies", "author": "efficiency group" }
+  ],
+  "comments": [
+    { "id": 1, "body": "some comment", "postid": 1 },
+    { "id": 2, "body": "interesting post", "postid": 2 },
+    { "id": 3, "body": "great insights", "postid": 3 },
+    { "id": 4, "body": "need more examples", "postid": 4 },
+    { "id": 5, "body": "very helpful", "postid": 5 },
+    { "id": 6, "body": "good read", "postid": 6 },
+    { "id": 7, "body": "i disagree", "postid": 7 },
+    { "id": 8, "body": "let's discuss further", "postid": 8 },
+    { "id": 9, "body": "well explained", "postid": 9 },
+    { "id": 10, "body": "thanks for sharing", "postid": 10 }
+  ],
+  "profile": { "name": "typicode" }
+}
