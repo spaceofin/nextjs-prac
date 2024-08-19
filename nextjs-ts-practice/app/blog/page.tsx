@@ -9,11 +9,13 @@ export default async function BlogPage() {
   //     res.json()
   //   );
 
-  const response = await fetch("http://localhost:3001/posts");
+  const response = await fetch("http://localhost:3001/posts", {
+    cache: "no-store",
+  });
   const posts = await response.json();
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-32">
       <div className="mb-8 text-xl text-white">Posts</div>
       <ul>
         {posts.map((post: Post) => (
