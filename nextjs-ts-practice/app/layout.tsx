@@ -19,10 +19,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Background />
+        {/* <Background /> */}
         <main className="flex min-h-screen flex-col items-center justify-center p-24">
           <div className="flex items-center min-h-32 m-12">{children}</div>
-          <ul className="w-screen min-h-32 m-10 flex flex-col justify-center items-center text-white text-xl z-40">
+          <ul className="w-screen min-h-32 m-10 flex flex-col justify-center items-center text-xl z-40">
             <li>
               <Link href="/">Home</Link>
             </li>

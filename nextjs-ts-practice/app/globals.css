@@ -6,6 +6,8 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --background-blue-rgb: 0, 162, 232;
+  --text-color: 50, 50, 50;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -17,13 +19,14 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
+  color: rgb(var(--text-color));
   background: linear-gradient(
       to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
+      rgb(var(--background-blue-rgb)),
+      transparent
     )
     rgb(var(--background-start-rgb));
+  @apply dark:bg-blue-950 dark:text-gray-100;
 }
 
 @layer utilities {
