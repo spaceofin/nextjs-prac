@@ -1,5 +1,6 @@
-import { ErrorBoundary } from "../components/ErrorBoundary";
-import LazyComponent from "../components/LazyComponent";
+// import { ErrorBoundary } from "../components/ErrorBoundary";
+import { ErrorBoundary } from "react-error-boundary";
+// import LazyComponent from "../components/LazyComponent";
 import { Suspense } from "react";
 import ErrorThrower from "../components/ErrorThrower";
 
