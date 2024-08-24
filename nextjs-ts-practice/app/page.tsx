@@ -1,6 +1,13 @@
 import Image from "next/image";
 
-export default function Home() {
+export default function Home({
+  searchParams,
+}: {
+  searchParams: { error: boolean };
+}) {
+  if (searchParams.error) {
+    throw new Error("FAQ Page error Oops!");
+  }
   return (
     <div className="flex flex-col text-2xl gap-1">
       <span className="z-10">Hello,</span>
