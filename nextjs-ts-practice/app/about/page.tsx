@@ -2,7 +2,7 @@
 import { ErrorBoundary } from "react-error-boundary";
 // import LazyComponent from "../components/LazyComponent";
 import { Suspense } from "react";
-import ErrorThrower from "../components/ErrorThrower";
+// import ErrorThrower from "../components/ErrorThrower";
 
 export default function AboutPage() {
   return (
@@ -10,7 +10,8 @@ export default function AboutPage() {
       <Suspense fallback={<p>Loading data...</p>}>
         <ErrorBoundary fallback={<p>Oops!</p>}>
           {/* <LazyComponent /> */}
-          <ErrorThrower />
+          {/* <ErrorThrower /> */}
+          <div>Hello, This is About page.</div>
         </ErrorBoundary>
       </Suspense>
     </div>
