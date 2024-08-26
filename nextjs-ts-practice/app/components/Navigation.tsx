@@ -20,6 +20,11 @@ export default function Navigation() {
             Blog
           </Link>
         </li>
+        <li>
+          <Link href="/photos" className={styles.link}>
+            Photos
+          </Link>
+        </li>
       </ul>
     </nav>
   );
