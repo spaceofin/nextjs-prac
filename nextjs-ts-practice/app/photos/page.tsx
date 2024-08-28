@@ -12,6 +12,8 @@ export default function PhotosPage() {
           src={tree}
           alt="Picture of the tree"
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          priority={true}
+          quality={50}
         />
         <Image
           src={flowers}
@@ -22,6 +24,8 @@ export default function PhotosPage() {
           src={road}
           alt="Picture of the road"
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          quality={100}
+          placeholder="blur"
         />
       </div>
     </div>
