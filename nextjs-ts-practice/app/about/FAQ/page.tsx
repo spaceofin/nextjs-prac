@@ -1,3 +1,35 @@
+import localFont from "next/font/local";
+
+const roboto = localFont({
+  src: [
+    {
+      path: "../../../public/fonts/Roboto-Black.ttf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../../../public/fonts/Roboto-Italic.ttf",
+      weight: "400",
+      style: "italic",
+    },
+    {
+      path: "../../../public/fonts/Roboto-Bold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../../../public/fonts/Roboto-light.ttf",
+      weight: "400",
+      style: "normal",
+    },
+  ],
+});
+
+const roboto_bold = localFont({
+  src: "../../../public/fonts/Roboto-Bold.ttf",
+  display: "swap",
+});
+
 const faqs = [
   {
     question: "Why do cats always want to get into boxes?",
@@ -30,13 +62,13 @@ export default function FAQpage() {
   // if (Math.random() > 0.5) throw new Error("Error in blog slug page!");
   return (
     <div>
-      <h1 className="text-xl">FAQ</h1>
+      <h1 className={`text-xl ${roboto_bold.className}`}>FAQ</h1>
       <ul>
         {faqs.map((faq, index) => (
           <li
             key={index}
-            className="my-3 px-2 py-1 font-light bg-slate-50 bg-opacity-40
-            rounded-md">
+            className={`my-3 px-2 py-1 font-light bg-slate-50 bg-opacity-40
+            rounded-md ${roboto.className} font-light`}>
             <div>Q: {faq.question}</div>
             A: {faq.answer}
           </li>
