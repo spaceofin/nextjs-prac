@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { roboto } from "./fonts";
 import "./globals.css";
 import Navigation from "./components/navigation";
+import ClickButton from "./components/click-button";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,6 +20,7 @@ export default function RootLayout({
         <main className="flex min-h-screen flex-col items-center justify-center p-24">
           <div className="flex items-center min-h-32 m-12">{children}</div>
           <Navigation />
+          <ClickButton />
         </main>
       </body>
     </html>
