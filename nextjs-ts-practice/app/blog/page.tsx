@@ -6,15 +6,26 @@ interface Post {
   author: string;
 }
 
+export const metadata = {
+  title: "Blog",
+  openGraph: {
+    title: "Blog",
+  },
+};
+
 export default async function BlogPage() {
   //   const posts = await fetch("http://localhost:3001/posts").then((res) =>
   //     res.json()
   //   );
 
-  const response = await fetch("http://localhost:3001/posts", {
-    cache: "no-store",
-  });
-  const posts = await response.json();
+  try {
+    const response = await fetch("http://localhost:3001/posts", {
+      cache: "no-store",
+    });
+    const posts = await response.json();
+  } catch (error) {
+    console.error("error occurred:", error);
+  }
 
   return (
     <div className="flex flex-col">

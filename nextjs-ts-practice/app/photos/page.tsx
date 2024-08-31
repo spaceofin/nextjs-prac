@@ -3,6 +3,10 @@ import tree from "../../public/images/tree.png";
 import flowers from "../../public/images/flowers.png";
 import road from "../../public/images/road.png";
 
+export const metadata = {
+  title: "Photos",
+};
+
 export default function PhotosPage() {
   return (
     <div>
