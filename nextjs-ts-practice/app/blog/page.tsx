@@ -18,11 +18,13 @@ export default async function BlogPage() {
   //     res.json()
   //   );
 
+  let posts: Post[] = [];
+
   try {
     const response = await fetch("http://localhost:3001/posts", {
       cache: "no-store",
     });
-    const posts = await response.json();
+    posts = await response.json();
   } catch (error) {
     console.error("error occurred:", error);
   }
