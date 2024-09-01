@@ -25,6 +25,11 @@ export default function Navigation() {
             Photos
           </Link>
         </li>
+        <li>
+          <Link href="/memos" className={styles.link}>
+            Memos
+          </Link>
+        </li>
       </ul>
     </nav>
   );
