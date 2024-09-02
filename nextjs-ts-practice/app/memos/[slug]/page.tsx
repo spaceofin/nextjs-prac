@@ -1,11 +1,8 @@
 import { MDXRemote } from "next-mdx-remote/rsc";
-import fs from "fs";
-import path from "path";
+import { loadContent } from "@/lib/loadContent";
 
 export default function MemosPage({ params }: { params: { slug: string } }) {
-  const memoMarkdown = fs.readFileSync(
-    path.join(process.cwd(), "content", `${params.slug}.mdx`)
-  );
+  const memoMarkdown = loadContent(params.slug);
   return (
     <div className="prose">
       <MDXRemote source={memoMarkdown} />
