@@ -15,7 +15,7 @@ export async function generateMetadata({
   params,
 }: Props): Promise<Metadata | undefined> {
   try {
-    const { frontmatter } = await getContent(params.slug);
+    const { frontmatter } = await getContent("posts/" + params.slug);
     return frontmatter;
   } catch (e) {
     console.log("error:", e);
@@ -31,7 +31,7 @@ export async function generateMetadata({
 
 export default async function Page({ params }: { params: { slug: string } }) {
   try {
-    const { content } = await getContent(params.slug);
+    const { content } = await getContent("posts/" + params.slug);
     return content;
   } catch (e) {
     console.log("error:", e);
