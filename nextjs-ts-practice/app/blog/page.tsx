@@ -1,7 +1,5 @@
-import Card from "../components/card";
-import fs from "fs";
-import path from "path";
-import { getContent } from "@/lib/loadContent";
+// import Card from "../components/card";
+import { getPosts } from "@/lib/getPosts";
 import { ReactElement } from "react";
 
 // interface Post {
@@ -42,24 +40,9 @@ export default async function BlogPage() {
   //   console.error("error occurred:", error);
   // }
 
-  const files = fs.readdirSync(path.join(process.cwd(), "content/posts"));
-
-  // console.log("files:", files);
-
-  const posts = await Promise.all(
-    files.map(async (filename) => {
-      // console.log("filename:", filename);
-      const { frontmatter, content } = await getContent("posts/" + filename);
-
-      return {
-        frontmatter,
-        content,
-        slug: filename.replace(".mdx", ""),
-      };
-    })
-  );
-
   // console.log(posts);
+
+  const posts = await getPosts();
 
   return (
     <div className="flex flex-col">
