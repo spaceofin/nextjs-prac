@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { getContent } from "@/lib/loadContent";
+import { getContent as libGetContent } from "@/lib/loadContent";
+import { cache } from "react";
 
 type Props = {
   params: { slug: keyof typeof titles };
@@ -10,6 +11,10 @@ const titles = {
   "2": "second",
   "3": "third",
 };
+
+export const getContent = cache(async (postPath: string) =>
+  libGetContent(postPath)
+);
 
 export async function generateMetadata({
   params,
