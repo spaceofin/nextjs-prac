@@ -8,6 +8,13 @@ import { ReactElement } from "react";
 //   author: string;
 // }
 
+type SearchParams = {
+  sortByDate?: boolean;
+  page?: number;
+  limit?: number;
+  tags?: string | string[];
+};
+
 type Post = {
   frontmatter: {
     title: string;
@@ -24,7 +31,11 @@ export const metadata = {
   },
 };
 
-export default async function BlogPage() {
+export default async function BlogPage({
+  searchParams,
+}: {
+  searchParams: SearchParams | undefined;
+}) {
   //   const posts = await fetch("http://localhost:3001/posts").then((res) =>
   //     res.json()
   //   );
@@ -42,7 +53,19 @@ export default async function BlogPage() {
 
   // console.log(posts);
 
-  const posts = await getPosts();
+  // const tags = searchParams.tags?.split(",");
+  // console.log("searhchParams.tags:", searchParams.tags);
+
+  // const tags: string[] = searchParams?.tags || [];
+  const tags: string[] = Array.isArray(searchParams?.tags)
+    ? searchParams.tags
+    : searchParams?.tags
+    ? [searchParams.tags]
+    : [];
+
+  // console.log("tags", tags);
+
+  const posts = await getPosts({ tags });
 
   return (
     <div className="flex flex-col">
