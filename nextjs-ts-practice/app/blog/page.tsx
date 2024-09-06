@@ -19,6 +19,7 @@ type Post = {
   frontmatter: {
     title: string;
     description: string;
+    date: string;
   };
   slug: string;
   content: ReactElement;
@@ -74,9 +75,11 @@ export default async function BlogPage({
       {posts.map((post: Post) => (
         <div key={post.slug}>
           <div className="text-2xl mt-5">{post.slug}</div>
+
           <div>{post.frontmatter.title}</div>
           <div>{post.frontmatter.description}</div>
           <div className="bg-slate-200 bg-opacity-80 rounded-md p-3 my-2">
+            <div className="flex justify-end">{post.frontmatter.date}</div>
             {post.content}
           </div>
         </div>

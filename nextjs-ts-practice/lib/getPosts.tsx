@@ -10,7 +10,7 @@ type GetPostsOptions = {
 };
 
 export async function getPosts({
-  sortByDate = false,
+  sortByDate = true,
   page = 1,
   limit = 10,
   tags = [],
@@ -41,6 +41,17 @@ export async function getPosts({
     filteredPosts = filteredPosts.filter((post) =>
       tags.every((tag) => post.frontmatter.tags.includes(tag))
     );
+  }
+
+  if (sortByDate) {
+    filteredPosts.sort((a, b) => {
+      const dateA = new Date(a.frontmatter.date);
+      const dateB = new Date(b.frontmatter.date);
+
+      console.log(dateB.getTime() - dateA.getTime());
+      return dateB.getTime() - dateA.getTime();
+    });
+  } else {
   }
 
   return filteredPosts;
