@@ -3,7 +3,6 @@ import path from "path";
 import { getContent } from "@/lib/loadContent";
 
 type GetPostsOptions = {
-  sortByDate?: boolean;
   page?: number;
   limit?: number;
   tags?: string[];
@@ -11,7 +10,6 @@ type GetPostsOptions = {
 };
 
 export async function getPosts({
-  sortByDate = false,
   page = 1,
   limit = 10,
   tags = [],
@@ -45,8 +43,13 @@ export async function getPosts({
     );
   }
 
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+
+  const postsOnPage = filteredPosts.slice(startIndex, endIndex);
+
   if (order) {
-    filteredPosts.sort((a, b) => {
+    postsOnPage.sort((a, b) => {
       const dateA = new Date(a.frontmatter.date);
       const dateB = new Date(b.frontmatter.date);
 
@@ -56,5 +59,5 @@ export async function getPosts({
     });
   }
 
-  return filteredPosts;
+  return postsOnPage;
 }

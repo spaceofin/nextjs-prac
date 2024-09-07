@@ -69,9 +69,11 @@ export default async function BlogPage({
 
   // console.log("tags", tags);
 
-  const order: string = searchParams?.order || "";
+  const order = searchParams?.order;
+  const limit = searchParams?.limit;
+  const page = searchParams?.page;
 
-  const posts = await getPosts({ tags, order });
+  const posts = await getPosts({ tags, order, limit, page });
 
   return (
     <div className="flex flex-col">
@@ -79,10 +81,10 @@ export default async function BlogPage({
       <div>
         <Link
           href={`/blog?order=${
-            order === "ascending" ? "descending" : "ascending"
-          }`}>
+            order === "descending" ? "ascending" : "descending"
+          }${page ? `&page=${page}` : ""}${limit ? `&limit=${limit}` : ""}`}>
           <Button size="small">
-            {order === "ascending" ? "Sort Desc" : "Sort Asc"}
+            {order === "descending" ? "Sort Asc" : "Sort Desc"}
           </Button>
         </Link>
       </div>
