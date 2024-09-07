@@ -3,6 +3,7 @@ import { getPosts } from "@/lib/getPosts";
 import { ReactElement } from "react";
 import Button from "../components/button";
 import Link from "next/link";
+import Pagination from "../components/pagination";
 
 // interface Post {
 //   id: number;
@@ -73,7 +74,7 @@ export default async function BlogPage({
   const limit = searchParams?.limit;
   const page = searchParams?.page;
 
-  const posts = await getPosts({ tags, order, limit, page });
+  const { posts, pageCount } = await getPosts({ tags, order, limit, page });
 
   return (
     <div className="flex flex-col">
@@ -101,6 +102,9 @@ export default async function BlogPage({
           </div>
         </div>
       ))}
+      <div className="mt-10">
+        <Pagination pageCount={pageCount} />
+      </div>
     </div>
   );
 }

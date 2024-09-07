@@ -1,4 +1,6 @@
-type ButtonProps = {
+import React from "react";
+
+type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: "default";
   size?: "small" | "medium" | "large";
   className?: string;

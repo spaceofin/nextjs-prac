@@ -11,7 +11,7 @@ type GetPostsOptions = {
 
 export async function getPosts({
   page = 1,
-  limit = 10,
+  limit = 3,
   tags = [],
   order = "",
 }: GetPostsOptions = {}) {
@@ -59,5 +59,8 @@ export async function getPosts({
     });
   }
 
-  return postsOnPage;
+  return {
+    posts: postsOnPage,
+    pageCount: Math.ceil(filteredPosts.length / limit),
+  };
 }
