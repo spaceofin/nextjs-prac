@@ -1,6 +1,8 @@
 // import Card from "../components/card";
 import { getPosts } from "@/lib/getPosts";
 import { ReactElement } from "react";
+import Button from "../components/button";
+import Link from "next/link";
 
 // interface Post {
 //   id: number;
@@ -10,6 +12,7 @@ import { ReactElement } from "react";
 
 type SearchParams = {
   sortByDate?: boolean;
+  order?: "ascending" | "descending";
   page?: number;
   limit?: number;
   tags?: string | string[];
@@ -66,11 +69,23 @@ export default async function BlogPage({
 
   // console.log("tags", tags);
 
-  const posts = await getPosts({ tags });
+  const order: string = searchParams?.order || "";
+
+  const posts = await getPosts({ tags, order });
 
   return (
     <div className="flex flex-col">
-      <div className="mb-8 px-4 text-3xl text-white">🔽Posts</div>
+      <div className="mb-8 px-1 text-3xl text-white">🔽Posts</div>
+      <div>
+        <Link
+          href={`/blog?order=${
+            order === "ascending" ? "descending" : "ascending"
+          }`}>
+          <Button size="small">
+            {order === "ascending" ? "Sort Desc" : "Sort Asc"}
+          </Button>
+        </Link>
+      </div>
       <ul className="grid grid-cols-1 lg:grid-cols-2 gap-4"></ul>
       {posts.map((post: Post) => (
         <div key={post.slug}>

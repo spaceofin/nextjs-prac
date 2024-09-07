@@ -7,13 +7,15 @@ type GetPostsOptions = {
   page?: number;
   limit?: number;
   tags?: string[];
+  order?: string;
 };
 
 export async function getPosts({
-  sortByDate = true,
+  sortByDate = false,
   page = 1,
   limit = 10,
   tags = [],
+  order = "",
 }: GetPostsOptions = {}) {
   const files = fs.readdirSync(path.join(process.cwd(), "content/posts"));
 
@@ -43,15 +45,15 @@ export async function getPosts({
     );
   }
 
-  if (sortByDate) {
+  if (order) {
     filteredPosts.sort((a, b) => {
       const dateA = new Date(a.frontmatter.date);
       const dateB = new Date(b.frontmatter.date);
 
-      console.log(dateB.getTime() - dateA.getTime());
-      return dateB.getTime() - dateA.getTime();
+      const multiplier = order === "ascending" ? 1 : -1;
+
+      return (dateA.getTime() - dateB.getTime()) * multiplier;
     });
-  } else {
   }
 
   return filteredPosts;
