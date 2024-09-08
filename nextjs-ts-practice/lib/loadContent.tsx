@@ -2,6 +2,8 @@ import fs from "fs";
 import path from "path";
 import { compileMDX } from "next-mdx-remote/rsc";
 import { ReactElement } from "react";
+import Header1 from "@/app/components/header1";
+import Paragraph from "@/app/components/paragraph";
 
 type MDXContent = {
   frontmatter: {
@@ -23,6 +25,10 @@ export async function getContent(slug: string): Promise<MDXContent> {
 
   return await compileMDX({
     source,
+    components: {
+      h1: (props) => <Header1 {...props} />,
+      p: (props) => <Paragraph {...props} />,
+    },
     options: {
       parseFrontmatter: true,
     },
