@@ -96,7 +96,7 @@ export default async function BlogPage({
 
           <div>{post.frontmatter.title}</div>
           <div>{post.frontmatter.description}</div>
-          <div className="bg-slate-200 bg-opacity-80 rounded-md p-3 my-2">
+          <div className="bg-slate-200 bg-opacity-80 rounded-md p-3 pb-5 my-2">
             <div className="flex justify-end">{post.frontmatter.date}</div>
             {post.content}
           </div>
