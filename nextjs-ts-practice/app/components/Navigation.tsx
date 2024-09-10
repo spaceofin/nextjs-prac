@@ -1,5 +1,6 @@
 import Link from "next/link";
 import styles from "./navigation.module.css";
+import ToggleTheme from "./toggle-theme";
 
 export default function Navigation() {
   return (
@@ -29,6 +30,9 @@ export default function Navigation() {
           <Link href="/memos" className={styles.link}>
             Memos
           </Link>
+        </li>
+        <li className="flex justify-center pt-1 w-14">
+          <ToggleTheme />
         </li>
       </ul>
     </nav>
