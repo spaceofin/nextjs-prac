@@ -1,21 +1,15 @@
 import { useState } from "react";
-
-type Theme = "light" | "dark";
+import { useCookies } from "react-cookie";
+import { Theme } from "@/types/theme";
 
 export default function useToggleTheme(defaultTheme: Theme = "light") {
   const [theme, setTheme] = useState<Theme>(defaultTheme);
+  const [_, setCookie] = useCookies(["theme"]);
 
   const toggleTheme = () => {
     const newTheme = theme === "dark" ? "light" : "dark";
     setTheme(newTheme);
-
-    // document.documentElement.classList.remove("light", "dark");
-    // document.documentElement.classList.add(newTheme);
-
-    // document.documentElement.classList.toggle("light", theme === "dark");
-    // document.documentElement.classList.toggle("dark", theme === "light");
-
-    // document.documentElement.className = newTheme;
+    setCookie("theme", newTheme);
 
     document.documentElement.classList.replace(theme, newTheme);
   };
