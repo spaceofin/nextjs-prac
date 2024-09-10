@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { compileMDX } from "next-mdx-remote/rsc";
 import { ReactElement } from "react";
-import Header1 from "@/app/components/header1";
+import Heading1 from "@/app/components/heading";
 import Paragraph from "@/app/components/paragraph";
 
 type MDXContent = {
@@ -26,7 +26,7 @@ export async function getContent(slug: string): Promise<MDXContent> {
   return await compileMDX({
     source,
     components: {
-      h1: (props) => <Header1 {...props} />,
+      h1: (props) => <Heading1 {...props} />,
       p: (props) => <Paragraph {...props} />,
     },
     options: {
