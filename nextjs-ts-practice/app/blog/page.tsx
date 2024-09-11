@@ -1,9 +1,9 @@
 // import Card from "../components/card";
 import { getPosts } from "@/lib/getPosts";
 import { ReactElement } from "react";
-import Button from "../components/button";
+import Button from "../../components/button";
 import Link from "next/link";
-import Pagination from "../components/pagination";
+import Pagination from "../../components/pagination";
 
 // interface Post {
 //   id: number;

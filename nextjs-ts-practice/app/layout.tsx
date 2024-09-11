@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { roboto } from "./fonts";
 import "./globals.css";
-import Navigation from "./components/navigation";
-import ClickButton from "./components/click-button";
+import Navigation from "@/components/navigation";
+import ClickButton from "@/components/click-button";
 import useServerTheme from "@/hooks/use-server-theme";
 
 export const metadata: Metadata = {

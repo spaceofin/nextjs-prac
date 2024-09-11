@@ -2,8 +2,8 @@ import fs from "fs";
 import path from "path";
 import { compileMDX } from "next-mdx-remote/rsc";
 import { ReactElement } from "react";
-import Heading1 from "@/app/components/heading";
-import Paragraph from "@/app/components/paragraph";
+import Heading1 from "@/components/heading";
+import Paragraph from "@/components/paragraph";
 
 type MDXContent = {
   frontmatter: {
