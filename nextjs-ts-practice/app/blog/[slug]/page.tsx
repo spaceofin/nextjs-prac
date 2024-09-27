@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { getContent as libGetContent } from "@/lib/loadContent";
+import { getPosts } from "@/lib/getPosts";
 import { cache } from "react";
 import Link from "next/link";
+import { ReactElement } from "react";
 
-type Props = {
-  params: { slug: keyof typeof titles };
-};
+export const dynamic = "force-static";
 
 const titles = {
   "1": "first",
@@ -13,13 +13,35 @@ const titles = {
   "3": "third",
 };
 
-export const getContent = cache(async (postPath: string) =>
-  libGetContent(postPath)
+type MDXContent = {
+  frontmatter: {
+    title: string;
+    description: string;
+    date: string;
+    tags: string[];
+  };
+  content: ReactElement;
+};
+
+const getContent = cache(
+  async (postPath: string): Promise<MDXContent> => libGetContent(postPath)
 );
+
+console.log("getContent:", getContent);
+console.log("typeof getContent:", typeof getContent);
+
+export async function generateStaticParams() {
+  const { posts } = await getPosts({ limit: 1000 });
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
 
 export async function generateMetadata({
   params,
-}: Props): Promise<Metadata | undefined> {
+}: {
+  params: { slug: keyof typeof titles };
+}): Promise<Metadata | undefined> {
   try {
     const { frontmatter } = await getContent("posts/" + params.slug);
     return frontmatter;
