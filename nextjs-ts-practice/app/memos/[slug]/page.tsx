@@ -1,45 +1,16 @@
-import { MDXRemote } from "next-mdx-remote/rsc";
-import { loadContent, getContent } from "@/lib/loadContent";
-import type { Metadata, ResolvingMetadata } from "next";
+import { getContent } from "@/lib/loadContent";
 
-type Props = {
-  params: { slug: keyof typeof titles };
-};
-
-const titles = {
-  memo: "memo",
-};
-
-export async function generateMetadata({
-  params,
-}: Props): Promise<Metadata | undefined> {
-  try {
-    const { frontmatter } = await getContent(params.slug);
-    return frontmatter;
-  } catch (e) {
-    console.log("error:", e);
-  }
-}
-
-export default async function MemosPage({
+export default async function MemoDetailPage({
   params,
 }: {
   params: { slug: string };
 }) {
-  const memoMarkdown = loadContent(params.slug);
-
   let memo;
   try {
-    memo = await getContent(params.slug);
+    memo = await getContent("memos/" + params.slug);
   } catch (e) {
     console.log("error:", e);
   }
 
-  return (
-    <div className="prose">
-      {/* <MDXRemote source={memoMarkdown} />
-       */}
-      {memo?.content}
-    </div>
-  );
+  return <div className="prose">{memo?.content}</div>;
 }
