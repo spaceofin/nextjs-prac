@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { getContent } from "@/lib/loadContent";
+import { PostFrontmatter } from "@/types/mdx-types";
 
 type GetPostsOptions = {
   page?: number;
@@ -19,7 +20,9 @@ export async function getPosts({
 
   const posts = await Promise.all(
     files.map(async (filename) => {
-      const { frontmatter, content } = await getContent("posts/" + filename);
+      const { frontmatter, content } = await getContent<PostFrontmatter>(
+        "posts/" + filename
+      );
 
       return {
         frontmatter,
