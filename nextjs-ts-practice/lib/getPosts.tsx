@@ -32,19 +32,18 @@ export async function getPosts({
     })
   );
 
-  let filteredPosts = posts;
+  const allPosts = posts;
+  const allTags = Array.from(
+    new Set(allPosts.map((post) => post.frontmatter.tags).flat())
+  );
 
-  // if (tags) {
-  //   filteredPosts = filteredPosts.filter((post) =>
-  //     post.frontmatter.tags.some((tag) => tags.includes(tag))
-  //   );
-  // }
+  // console.log(allTags);
 
-  if (tags) {
-    filteredPosts = filteredPosts.filter((post) =>
-      tags.every((tag) => post.frontmatter.tags.includes(tag))
-    );
-  }
+  const filteredPosts = tags
+    ? allPosts.filter((post) =>
+        tags.every((tag) => post.frontmatter.tags.includes(tag))
+      )
+    : allPosts;
 
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
@@ -63,6 +62,7 @@ export async function getPosts({
   }
 
   return {
+    allTags: allTags,
     posts: postsOnPage,
     pageCount: Math.ceil(filteredPosts.length / limit),
   };

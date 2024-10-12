@@ -5,7 +5,7 @@ import { cache } from "react";
 import Link from "next/link";
 import { ReactElement } from "react";
 
-export const dynamic = "force-static";
+// export const dynamic = "force-static";
 
 const titles = {
   "1": "first",

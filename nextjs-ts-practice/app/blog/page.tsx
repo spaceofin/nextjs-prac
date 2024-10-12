@@ -4,6 +4,7 @@ import { ReactElement } from "react";
 import Button from "../../components/button";
 import Link from "next/link";
 import Pagination from "../../components/pagination";
+import TagList from "@/components/tag-list";
 
 // interface Post {
 //   id: number;
@@ -74,36 +75,44 @@ export default async function BlogPage({
   const limit = searchParams?.limit;
   const page = searchParams?.page;
 
-  const { posts, pageCount } = await getPosts({ tags, order, limit, page });
+  const { allTags, posts, pageCount } = await getPosts({
+    tags,
+    order,
+    limit,
+    page,
+  });
 
   return (
-    <div className="flex flex-col">
-      <div className="mb-8 px-1 text-3xl text-white">🔽Posts</div>
-      <div>
-        <Link
-          href={`/blog?order=${
-            order === "descending" ? "ascending" : "descending"
-          }${page ? `&page=${page}` : ""}${limit ? `&limit=${limit}` : ""}`}>
-          <Button size="small">
-            {order === "descending" ? "Sort Asc" : "Sort Desc"}
-          </Button>
-        </Link>
-      </div>
-      <ul className="grid grid-cols-1 lg:grid-cols-2 gap-4"></ul>
-      {posts.map((post: Post) => (
-        <div key={post.slug}>
-          <div className="text-2xl mt-5">{post.slug}</div>
-
-          <div>{post.frontmatter.title}</div>
-          <div>{post.frontmatter.description}</div>
-          <div className="bg-slate-200 bg-opacity-80 rounded-md p-3 pb-5 my-2">
-            <div className="flex justify-end">{post.frontmatter.date}</div>
-            {post.content}
-          </div>
+    <div className="relative">
+      <TagList tags={allTags} />
+      <div className="flex flex-col">
+        <div className="mb-8 px-1 text-3xl text-white">🔽Posts</div>
+        <div>
+          <Link
+            href={`/blog?order=${
+              order === "descending" ? "ascending" : "descending"
+            }${page ? `&page=${page}` : ""}${limit ? `&limit=${limit}` : ""}`}>
+            <Button size="small">
+              {order === "descending" ? "Sort Asc" : "Sort Desc"}
+            </Button>
+          </Link>
         </div>
-      ))}
-      <div className="mt-10">
-        <Pagination pageCount={pageCount} />
+        <ul className="grid grid-cols-1 lg:grid-cols-2 gap-4"></ul>
+        {posts.map((post: Post) => (
+          <div key={post.slug}>
+            <div className="text-2xl mt-5">{post.slug}</div>
+
+            <div>{post.frontmatter.title}</div>
+            <div>{post.frontmatter.description}</div>
+            <div className="bg-slate-200 bg-opacity-80 rounded-md p-3 pb-5 my-2">
+              <div className="flex justify-end">{post.frontmatter.date}</div>
+              {post.content}
+            </div>
+          </div>
+        ))}
+        <div className="mt-10">
+          <Pagination pageCount={pageCount} />
+        </div>
       </div>
     </div>
   );
