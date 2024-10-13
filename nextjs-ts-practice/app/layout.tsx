@@ -23,7 +23,9 @@ export default function RootLayout({
     <html lang="en" className={theme}>
       <body className={roboto.className}>
         <main className="flex min-h-screen flex-col items-center justify-center p-24">
-          <div className="flex items-center min-h-32 m-12">{children}</div>
+          <div className="flex justify-center items-center min-h-32 m-12 w-full">
+            {children}
+          </div>
           <Navigation />
           <ClickButton />
         </main>

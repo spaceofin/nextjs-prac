@@ -85,7 +85,7 @@ export default async function BlogPage({
   return (
     <div className="relative">
       <TagList tags={allTags} />
-      <div className="flex flex-col">
+      <div className="flex flex-col w-96 min-h-96">
         <div className="mb-8 px-1 text-3xl text-white">🔽Posts</div>
         <div>
           <Link
@@ -97,19 +97,20 @@ export default async function BlogPage({
             </Button>
           </Link>
         </div>
-        <ul className="grid grid-cols-1 lg:grid-cols-2 gap-4"></ul>
-        {posts.map((post: Post) => (
-          <div key={post.slug}>
-            <div className="text-2xl mt-5">{post.slug}</div>
+        <div className="flex flex-col flex-grow">
+          {posts.map((post: Post) => (
+            <div key={post.slug}>
+              <div className="text-2xl mt-5">{post.slug}</div>
 
-            <div>{post.frontmatter.title}</div>
-            <div>{post.frontmatter.description}</div>
-            <div className="bg-slate-200 bg-opacity-80 rounded-md p-3 pb-5 my-2">
-              <div className="flex justify-end">{post.frontmatter.date}</div>
-              {post.content}
+              <div>{post.frontmatter.title}</div>
+              <div>{post.frontmatter.description}</div>
+              <div className="bg-slate-200 bg-opacity-80 rounded-md p-3 pb-5 my-2">
+                <div className="flex justify-end">{post.frontmatter.date}</div>
+                {post.content}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
         <div className="mt-10">
           <Pagination pageCount={pageCount} />
         </div>
