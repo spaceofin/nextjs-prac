@@ -37,6 +37,11 @@ export default function Navigation() {
         <li className="flex justify-center pt-1 w-14">
           <ToggleTheme defaultTheme={theme} />
         </li>
+        <li className="flex">
+          <Link href="/guest-book" className="text-4xl pb-1">
+            📖
+          </Link>
+        </li>
       </ul>
     </nav>
   );

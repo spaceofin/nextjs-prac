@@ -31,5 +31,67 @@
     { "id": 9, "body": "well explained", "postid": 9 },
     { "id": 10, "body": "thanks for sharing", "postid": 10 }
   ],
-  "profile": { "name": "typicode" }
+  "profile": { "name": "typicode" },
+  "guestbook": [
+    {
+      "id": 1,
+      "name": "Alice",
+      "email": "alice1234@mail.com",
+      "message": "This is a great website! Love the design."
+    },
+    {
+      "id": 2,
+      "name": "Bob",
+      "email": "bob_the_builder@mail.net",
+      "message": "Had a wonderful experience here. Thank you!"
+    },
+    {
+      "id": 3,
+      "name": "Charlie",
+      "email": "charlie2024@service.com",
+      "message": "I found this site very helpful. Keep up the good work!"
+    },
+    {
+      "id": 4,
+      "name": "Diana",
+      "email": "diana.loves.code@webmail.org",
+      "message": "Amazing content! I will definitely share this with my friends."
+    },
+    {
+      "id": 5,
+      "name": "Ethan",
+      "email": "ethan_smith78@mail.com",
+      "message": "The best site I’ve visited this month!"
+    },
+    {
+      "id": 6,
+      "name": "Fiona",
+      "email": "fiona.lee89@mail.net",
+      "message": "Really enjoyed the articles. Looking forward to more."
+    },
+    {
+      "id": 7,
+      "name": "George",
+      "email": "george123@inbox.com",
+      "message": "Very informative and easy to navigate. Great job!"
+    },
+    {
+      "id": 8,
+      "name": "Hannah",
+      "email": "hannah.brown@mail.org",
+      "message": "I love the layout! So clean and modern."
+    },
+    {
+      "id": 9,
+      "name": "Ian",
+      "email": "ian_smith45@provider.com",
+      "message": "Fantastic resource! Thank you for your hard work."
+    },
+    {
+      "id": 10,
+      "name": "Julia",
+      "email": "julia_2024@domain.com",
+      "message": "I enjoyed reading the posts. Can't wait for the next update!"
+    }
+  ]
 }

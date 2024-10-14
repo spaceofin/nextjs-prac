@@ -8,7 +8,8 @@ export default function Card({
   className?: string;
 }) {
   return (
-    <div className={`p-4 px-6 bg-cyan-100 rounded bg-opacity-70 ${className}`}>
+    <div
+      className={`p-4 px-6 bg-cyan-100 rounded bg-opacity-70 dark:text-slate-800 ${className}`}>
       {children}
     </div>
   );
