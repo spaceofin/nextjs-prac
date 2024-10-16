@@ -5,7 +5,8 @@ import Input from "@/components/input";
 import Label from "@/components/label";
 import Textarea from "@/components/textarea";
 import Button from "@/components/button";
-import { FormEvent, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
 
 type Entry = {
   id: string;
@@ -22,12 +23,15 @@ async function getGuestBook(): Promise<Entry[]> {
 
 export default function GuestBookPage() {
   const [entries, setEntries] = useState<Entry[]>([]);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
   const [isSaving, setIsSaving] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<Entry>({ mode: "onTouched" });
 
   useEffect(() => {
     const fetchEntries = async () => {
@@ -37,8 +41,7 @@ export default function GuestBookPage() {
     fetchEntries();
   }, []);
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const onSubmit: SubmitHandler<Entry> = async (data) => {
     setIsSaving(true);
 
     try {
@@ -47,29 +50,19 @@ export default function GuestBookPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(data),
       });
       if (response.ok) {
         const result = await response.json();
         console.log(result);
-        setFormData({ name: "", email: "", message: "" });
         setEntries((prevEntries) => [...prevEntries, result]);
       }
     } catch {
       console.error("Failed to Post");
     } finally {
       setIsSaving(false);
+      reset();
     }
-  };
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
   };
 
   return (
@@ -83,37 +76,31 @@ export default function GuestBookPage() {
           </Card>
         ))}
       </div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid gap-2 mt-10">
           <div className="col-span-1">
             <Label>Name</Label>
             <Input
               type="string"
-              name="name"
-              onChange={handleChange}
-              value={formData.name}
-              required
+              {...register("name", { required: "Name is required" })}
             />
+            {errors.name && <p>{errors.name.message}</p>}
           </div>
           <div className="col-span-1">
             <Label>Email</Label>
             <Input
               type="string"
-              name="email"
-              onChange={handleChange}
-              value={formData.email}
-              required
+              {...register("email", { required: "Email is required" })}
             />
+            {errors.email && <p>{errors.email.message}</p>}
           </div>
           <div className="col-span-1 lg:col-span-2">
             <Label>Message</Label>
             <Textarea
               className="min-h-32 lg:min-h-20 overflow-y-auto"
-              name="message"
-              onChange={handleChange}
-              value={formData.message}
-              required
+              {...register("message", { required: "Message is required" })}
             />
+            {errors.message && <p>{errors.message.message}</p>}
           </div>
         </div>
         <div className="flex justify-end">

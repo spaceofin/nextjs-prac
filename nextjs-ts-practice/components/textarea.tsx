@@ -1,5 +1,8 @@
-export default function Textarea(
-  props: React.InputHTMLAttributes<HTMLTextAreaElement>
+import { forwardRef } from "react";
+
+export default forwardRef(function Textarea(
+  props: React.InputHTMLAttributes<HTMLTextAreaElement>,
+  ref: React.ForwardedRef<HTMLTextAreaElement>
 ) {
   const styles = {
     default:
@@ -7,10 +10,11 @@ export default function Textarea(
   };
   return (
     <textarea
+      ref={ref}
       {...props}
       className={`${
         styles[props.type as keyof typeof styles] ?? styles["default"]
       } ${props.className}`}
     />
   );
-}
+});

@@ -1,5 +1,8 @@
-export default function Input(
-  props: React.InputHTMLAttributes<HTMLInputElement>
+import { forwardRef } from "react";
+
+export default forwardRef(function Input(
+  props: React.InputHTMLAttributes<HTMLInputElement>,
+  ref: React.ForwardedRef<HTMLInputElement>
 ) {
   const styles = {
     default:
@@ -7,10 +10,11 @@ export default function Input(
   };
   return (
     <input
+      ref={ref}
       {...props}
       className={`${
         styles[props.type as keyof typeof styles] ?? styles["default"]
       } ${props.className}`}
     />
   );
-}
+});
