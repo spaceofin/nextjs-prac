@@ -7,6 +7,7 @@ import Textarea from "@/components/textarea";
 import Button from "@/components/button";
 import { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import Skeleton from "./components/skeleton";
 
 type Entry = {
   id: string;
@@ -24,6 +25,7 @@ async function getGuestBook(): Promise<Entry[]> {
 export default function GuestBookPage() {
   const [entries, setEntries] = useState<Entry[]>([]);
   const [isSaving, setIsSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const {
     register,
@@ -35,8 +37,15 @@ export default function GuestBookPage() {
 
   useEffect(() => {
     const fetchEntries = async () => {
-      const data = await getGuestBook();
-      setEntries(data);
+      setIsLoading(true);
+      try {
+        const data = await getGuestBook();
+        setEntries(data);
+      } catch (error) {
+        console.error("Error fetching entries:", error);
+      } finally {
+        setIsLoading(false);
+      }
     };
     fetchEntries();
   }, []);
@@ -64,17 +73,24 @@ export default function GuestBookPage() {
       reset();
     }
   };
+  console.log(entries);
 
   return (
     <div className="flex flex-col w-full">
       <div className="grid sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2 w-full">
-        {entries.map((entry: Entry) => (
-          <Card key={entry.id} className="min-w-72">
-            <p>{entry.name}</p>
-            <p>{entry.email}</p>
-            <p>{entry.message}</p>
-          </Card>
-        ))}
+        {isLoading ? (
+          <Skeleton />
+        ) : (
+          entries.map((entry: Entry) => (
+            <Card
+              key={entry.id}
+              className="flex flex-col justify-center min-w-72 h-36">
+              <p>{entry.name}</p>
+              <p>{entry.email}</p>
+              <p>{entry.message}</p>
+            </Card>
+          ))
+        )}
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid gap-2 mt-10">
