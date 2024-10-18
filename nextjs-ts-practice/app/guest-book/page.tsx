@@ -8,6 +8,8 @@ import Button from "@/components/button";
 import { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Skeleton from "./components/skeleton";
+import { guestBookSchema } from "./components/guest-book-schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type Entry = {
   id: string;
@@ -33,7 +35,10 @@ export default function GuestBookPage() {
     watch,
     reset,
     formState: { errors },
-  } = useForm<Entry>({ mode: "onTouched" });
+  } = useForm<Entry>({
+    mode: "onTouched",
+    resolver: zodResolver(guestBookSchema),
+  });
 
   useEffect(() => {
     const fetchEntries = async () => {
