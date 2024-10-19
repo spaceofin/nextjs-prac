@@ -167,5 +167,19 @@
       "email": "julia_2024@domain.com",
       "message": "I enjoyed reading the posts. Can't wait for the next update!"
     }
+  ],
+  "todos": [
+    {
+      "id": 1,
+      "task": "laundary",
+      "category": "household",
+      "priority": "high",
+      "dates": {
+        "startDate": "2024-10-19T09:00:00",
+        "endDate": "2024-10-19T11:00:00",
+        "dateOnly": false
+      },
+      "memo": "wash black clothes and white clothes separately"
+    }
   ]
 }

@@ -15,11 +15,6 @@ export default function Navigation() {
           </Link>
         </li>
         <li>
-          <Link href="/about" className={styles.link}>
-            About
-          </Link>
-        </li>
-        <li>
           <Link href="/blog" className={styles.link}>
             Blog
           </Link>
@@ -32,6 +27,11 @@ export default function Navigation() {
         <li>
           <Link href="/memos" className={styles.link}>
             Memos
+          </Link>
+        </li>
+        <li>
+          <Link href="/todos" className={styles.link}>
+            Todos
           </Link>
         </li>
         <li className="flex justify-center pt-1 w-14">
