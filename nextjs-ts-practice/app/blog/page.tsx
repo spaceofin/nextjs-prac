@@ -85,7 +85,7 @@ export default async function BlogPage({
   return (
     <div className="relative">
       <TagList tags={allTags} />
-      <div className="flex flex-col w-96 min-h-96">
+      <div className="flex flex-col w-96 min-h-screen">
         <div className="mb-8 px-1 text-3xl text-white">🔽Posts</div>
         <div>
           <Link

@@ -78,14 +78,11 @@ export default function GuestBookPage() {
       reset();
     }
   };
-  console.log(entries);
 
   return (
     <div className="flex flex-col w-full">
       <div className="grid sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2 w-full">
-        {isLoading ? (
-          <Skeleton />
-        ) : (
+        {!isLoading && entries.length !== 0 ? (
           entries.map((entry: Entry) => (
             <Card
               key={entry.id}
@@ -95,6 +92,8 @@ export default function GuestBookPage() {
               <p>{entry.message}</p>
             </Card>
           ))
+        ) : (
+          <Skeleton />
         )}
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
