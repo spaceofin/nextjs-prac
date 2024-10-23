@@ -24,7 +24,7 @@ export default async function Todos({
         <NewButton />
       </div>
       {todos.map((todo) => (
-        <TodoCard todo={todo} />
+        <TodoCard key={todo.id} todo={todo} />
       ))}
     </div>
   );

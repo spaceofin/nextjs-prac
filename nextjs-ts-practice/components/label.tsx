@@ -4,7 +4,7 @@ export default function Label(
   return (
     <label
       {...props}
-      className={`block text-gray-700 dark:text-gray-300 font-bold ${props.className}`}
+      className={`text-lg block mb-0.5 text-gray-700 dark:text-gray-300 font-bold ${props.className}`}
     />
   );
 }

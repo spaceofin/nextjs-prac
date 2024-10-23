@@ -3,14 +3,13 @@ import React from "react";
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: "default" | "blue" | "red";
   size?: "small" | "medium" | "large";
-  className?: string;
   children?: React.ReactNode;
 };
 
 export default function Button({
   variant = "default",
   size = "medium",
-  className = "",
+  children,
   ...props
 }: ButtonProps) {
   const variants = {
@@ -29,6 +28,8 @@ export default function Button({
       {...props}
       className={`${variants[variant as keyof typeof variants]} ${
         sizes[size as keyof typeof sizes]
-      } ${className}`}></button>
+      } ${props.className}`}>
+      {children}
+    </button>
   );
 }
