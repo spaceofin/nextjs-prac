@@ -2,12 +2,7 @@ import TodoCard from "./components/todo-card";
 import { Todo } from "./todo-type";
 import AddTodo from "./components/add-todo";
 import NewButton from "./components/new-button";
-
-export async function getTodos(): Promise<Todo[]> {
-  const response = await fetch("http://localhost:3001/todos");
-  const todos = await response.json();
-  return todos;
-}
+import { getTodos } from "./todoApi";
 
 export default async function Todos({
   searchParams,

@@ -6,6 +6,7 @@ import { Button, Input, Label, Select, Textarea } from "@/components";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { todoCategories, todoPriorities } from "../constants";
 import { Todo } from "../todo-type";
+import { createTodo } from "../todoApi";
 
 export default function AddTodo() {
   const [isOpen, setIsOpen] = useState(true);
@@ -17,12 +18,18 @@ export default function AddTodo() {
   const handleClose = () => {
     setIsOpen(false);
     setTimeout(() => {
-      router.back();
+      router.push("/todos");
     }, 300);
   };
 
   const onSubmit: SubmitHandler<Todo> = async (todo: Todo) => {
-    console.log(todo);
+    try {
+      const result = await createTodo(todo);
+      console.log(result);
+      alert("New Todo Created!");
+    } catch (error) {
+      console.error("Error creating todo:", error);
+    }
   };
 
   return (
@@ -31,7 +38,7 @@ export default function AddTodo() {
         className="w-1/2 xl:w-2/3 h-full hover:cursor-pointer"
         onClick={router.back}></div>
       <div
-        className={`bg-slate-200 w-1/2 xl:w-1/3 h-full transform transition-transform duration-300 ${
+        className={`bg-slate-200 w-1/2 xl:w-1/3 h-full transform transition-transform duration-150 ${
           isOpen ? "translate-x-0" : "translate-x-full"
         } dark:bg-slate-700`}>
         <form className="p-10" onSubmit={handleSubmit(onSubmit)}>
@@ -111,7 +118,7 @@ export default function AddTodo() {
             <Button variant="blue" className="mr-2">
               Submit
             </Button>
-            <Button onClick={handleClose} variant="red">
+            <Button type="button" onClick={handleClose} variant="red">
               Close
             </Button>
           </div>

@@ -11,7 +11,7 @@ export default forwardRef(function Select(
   ref: React.ForwardedRef<HTMLSelectElement>
 ) {
   const styles = {
-    default: "rounded-md text-xl ",
+    default: "rounded-md text-xl bg-white",
   };
   return (
     <select
