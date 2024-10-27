@@ -7,12 +7,19 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { todoCategories, todoPriorities } from "../constants";
 import { Todo } from "../todo-type";
 import { createTodo } from "../todoApi";
+import { todoSchema } from "../todo-schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function AddTodo() {
   const [isOpen, setIsOpen] = useState(true);
   const router = useRouter();
 
-  const { register, handleSubmit, watch } = useForm<Todo>();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<Todo>({ resolver: zodResolver(todoSchema) });
   const dateOnly = watch("dates.dateOnly");
 
   const handleClose = () => {
@@ -25,10 +32,9 @@ export default function AddTodo() {
   const onSubmit: SubmitHandler<Todo> = async (todo: Todo) => {
     try {
       const result = await createTodo(todo);
-      console.log(result);
-      alert("New Todo Created!");
+      console.log("created:", result);
     } catch (error) {
-      console.error("Error creating todo:", error);
+      console.error("Failed to create todo:", error);
     }
   };
 
@@ -38,7 +44,7 @@ export default function AddTodo() {
         className="w-1/2 xl:w-2/3 h-full hover:cursor-pointer"
         onClick={router.back}></div>
       <div
-        className={`bg-slate-200 w-1/2 xl:w-1/3 h-full transform transition-transform duration-150 ${
+        className={`bg-slate-200 w-1/2 xl:w-1/3 h-full transform transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "translate-x-full"
         } dark:bg-slate-700`}>
         <form className="p-10" onSubmit={handleSubmit(onSubmit)}>
@@ -50,6 +56,7 @@ export default function AddTodo() {
               <Label>Task</Label>
               <Input {...register("task")} type="text" placeholder="Task" />
             </div>
+            <p>{errors.task?.message}</p>
             <div className="flex items-center gap-2">
               <Label>Date Only</Label>
               <Input
@@ -62,6 +69,7 @@ export default function AddTodo() {
               <Label>Start Date</Label>
               <div className="flex gap-2">
                 <Input {...register("dates.startDate")} type="date" />
+
                 {!dateOnly && (
                   <Input
                     {...register("dates.startTime")}
@@ -71,11 +79,15 @@ export default function AddTodo() {
                   />
                 )}
               </div>
+              <p>{errors.dates?.startDate?.message}</p>
+              <p>{errors.dates?.startTime?.message}</p>
+              <p>{errors.dates?.dateOnly?.message}</p>
             </div>
             <div>
               <Label>End Date</Label>
               <div className="flex gap-2">
                 <Input {...register("dates.endDate")} type="date" />
+
                 {!dateOnly && (
                   <Input
                     {...register("dates.endTime")}
@@ -85,6 +97,9 @@ export default function AddTodo() {
                   />
                 )}
               </div>
+              <p>{errors.dates?.endDate?.message}</p>
+              <p>{errors.dates?.endTime?.message}</p>
+              <p>{errors.dates?.dateOnly?.message}</p>
             </div>
             <div>
               <Label>Category</Label>
@@ -96,6 +111,7 @@ export default function AddTodo() {
                   </option>
                 ))}
               </Select>
+              <p>{errors.category?.message}</p>
             </div>
             <div>
               <Label>Priority</Label>
@@ -107,11 +123,13 @@ export default function AddTodo() {
                   </option>
                 ))}
               </Select>
+              <p>{errors.priority?.message}</p>
             </div>
 
             <div>
               <Label>Memo</Label>
               <Textarea {...register("memo")} />
+              <p>{errors.memo?.message}</p>
             </div>
           </div>
           <div className="my-10">
