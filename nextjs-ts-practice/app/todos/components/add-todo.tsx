@@ -37,7 +37,6 @@ export default function AddTodo() {
       console.error("Failed to create todo:", error);
     }
   };
-
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-10 flex dark:bg-white dark:bg-opacity-50">
       <div
@@ -56,7 +55,7 @@ export default function AddTodo() {
               <Label>Task</Label>
               <Input {...register("task")} type="text" placeholder="Task" />
             </div>
-            <p>{errors.task?.message}</p>
+            <p className="dark:text-white">{errors.task?.message}</p>
             <div className="flex items-center gap-2">
               <Label>Date Only</Label>
               <Input
@@ -79,9 +78,12 @@ export default function AddTodo() {
                   />
                 )}
               </div>
-              <p>{errors.dates?.startDate?.message}</p>
-              <p>{errors.dates?.startTime?.message}</p>
-              <p>{errors.dates?.dateOnly?.message}</p>
+              <p className="dark:text-white">
+                {errors.dates?.startDate?.message}
+              </p>
+              <p className="dark:text-white">
+                {errors.dates?.startTime?.message}
+              </p>
             </div>
             <div>
               <Label>End Date</Label>
@@ -97,9 +99,12 @@ export default function AddTodo() {
                   />
                 )}
               </div>
-              <p>{errors.dates?.endDate?.message}</p>
-              <p>{errors.dates?.endTime?.message}</p>
-              <p>{errors.dates?.dateOnly?.message}</p>
+              <p className="dark:text-white">
+                {errors.dates?.endDate?.message}
+              </p>
+              <p className="dark:text-white">
+                {errors.dates?.endTime?.message}
+              </p>
             </div>
             <div>
               <Label>Category</Label>
@@ -111,7 +116,7 @@ export default function AddTodo() {
                   </option>
                 ))}
               </Select>
-              <p>{errors.category?.message}</p>
+              <p className="dark:text-white">{errors.category?.message}</p>
             </div>
             <div>
               <Label>Priority</Label>
@@ -123,14 +128,14 @@ export default function AddTodo() {
                   </option>
                 ))}
               </Select>
-              <p>{errors.priority?.message}</p>
+              <p className="dark:text-white">{errors.priority?.message}</p>
             </div>
-
             <div>
               <Label>Memo</Label>
               <Textarea {...register("memo")} />
               <p>{errors.memo?.message}</p>
             </div>
+            <p className="dark:text-white">{errors.dates?.dateOnly?.message}</p>
           </div>
           <div className="my-10">
             <Button variant="blue" className="mr-2">
