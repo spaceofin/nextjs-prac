@@ -171,15 +171,143 @@
   "todos": [
     {
       "id": 1,
-      "task": "laundary",
+      "task": "laundry",
       "category": "household",
       "priority": "high",
       "dates": {
-        "startDate": "2024-10-19T09:00:00",
-        "endDate": "2024-10-19T11:00:00",
+        "startDate": "2024-10-19",
+        "startTime": "09:00",
+        "endDate": "2024-10-19",
+        "endTime": "11:00",
         "dateOnly": false
       },
       "memo": "wash black clothes and white clothes separately"
+    },
+    {
+      "id": 2,
+      "task": "grocery shopping",
+      "category": "household",
+      "priority": "medium",
+      "dates": {
+        "startDate": "2024-10-20",
+        "startTime": "14:00",
+        "endDate": "2024-10-20",
+        "endTime": "16:00",
+        "dateOnly": false
+      },
+      "memo": "buy vegetables, milk, and eggs"
+    },
+    {
+      "id": 3,
+      "task": "submit project report",
+      "category": "work",
+      "priority": "high",
+      "dates": {
+        "startDate": "2024-10-21",
+        "startTime": "09:00",
+        "endDate": "2024-10-21",
+        "endTime": "12:00",
+        "dateOnly": false
+      },
+      "memo": "finalize and submit the Q4 project report"
+    },
+    {
+      "id": 4,
+      "task": "doctor appointment",
+      "category": "health",
+      "priority": "high",
+      "dates": {
+        "startDate": "2024-10-22",
+        "startTime": "10:00",
+        "endDate": "2024-10-22",
+        "endTime": "11:00",
+        "dateOnly": false
+      },
+      "memo": "annual health check-up"
+    },
+    {
+      "id": 5,
+      "task": "yoga class",
+      "category": "fitness",
+      "priority": "medium",
+      "dates": {
+        "startDate": "2024-10-23",
+        "startTime": "18:00",
+        "endDate": "2024-10-23",
+        "endTime": "19:00",
+        "dateOnly": false
+      },
+      "memo": "bring a yoga mat and water bottle"
+    },
+    {
+      "id": 6,
+      "task": "car maintenance",
+      "category": "maintenance",
+      "priority": "medium",
+      "dates": {
+        "startDate": "2024-10-24",
+        "startTime": "08:00",
+        "endDate": "2024-10-24",
+        "endTime": "10:00",
+        "dateOnly": false
+      },
+      "memo": "oil change and tire rotation"
+    },
+    {
+      "id": 7,
+      "task": "team meeting",
+      "category": "work",
+      "priority": "high",
+      "dates": {
+        "startDate": "2024-10-25",
+        "startTime": "15:00",
+        "endDate": "2024-10-25",
+        "endTime": "16:30",
+        "dateOnly": false
+      },
+      "memo": "discuss project milestones and deadlines"
+    },
+    {
+      "id": 8,
+      "task": "dentist appointment",
+      "category": "health",
+      "priority": "high",
+      "dates": {
+        "startDate": "2024-10-26",
+        "startTime": "11:00",
+        "endDate": "2024-10-26",
+        "endTime": "12:00",
+        "dateOnly": false
+      },
+      "memo": "regular dental check-up"
+    },
+    {
+      "id": 9,
+      "task": "pay bills",
+      "category": "finance",
+      "priority": "high",
+      "dates": {
+        "startDate": "2024-10-27",
+        "startTime": "",
+        "endDate": "2024-10-27",
+        "endTime": "",
+        "dateOnly": true
+      },
+      "memo": "pay electricity and internet bills"
+    },
+    {
+      "id": 10,
+      "task": "friend's birthday party",
+      "category": "social",
+      "priority": "low",
+      "dates": {
+        "startDate": "2024-10-28",
+        "startTime": "19:00",
+        "endDate": "2024-10-28",
+        "endTime": "23:00",
+        "dateOnly": false
+      },
+      "memo": "buy a gift and confirm attendance"
     }
   ]
 }

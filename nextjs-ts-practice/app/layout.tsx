@@ -23,7 +23,7 @@ export default function RootLayout({
     <html lang="en" className={theme}>
       <body className={roboto.className}>
         <main className="flex min-h-screen flex-col items-center justify-center p-24">
-          <div className="flex justify-center items-center min-h-screen m-12 w-full">
+          <div className="flex justify-center items-center h-screen m-12 w-full">
             {children}
           </div>
           <Navigation />

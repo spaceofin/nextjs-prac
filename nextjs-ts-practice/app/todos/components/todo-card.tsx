@@ -1,33 +1,21 @@
 import { Todo } from "../todo-type";
 
-function formatDate(dateString: string, includeTime: boolean = false): string {
-  const date = new Date(dateString);
+function convertTo12HourFormat(time: string) {
+  const [hour24, minutes] = time.split(":").map(Number);
 
-  const options: Intl.DateTimeFormatOptions = {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    ...(includeTime && {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    }),
-  };
+  const period = hour24 >= 12 ? "PM" : "AM";
+  const hour12 = (hour24 % 12 || 12).toString().padStart(2, "0");
 
-  const formattedDate = date.toLocaleString(undefined, options);
-  const result = formattedDate
-    .replace(",", "")
-    .replace(/\//g, "-")
-    .replace(/오전/g, "AM")
-    .replace(/오후/g, "PM");
-  return result;
+  return `${hour12}:${minutes.toString().padStart(2, "0")} ${period}`;
 }
 
 export default function TodoCard({ todo }: { todo: Todo }) {
-  const includeTime = !todo.dates.dateOnly;
-
-  const startDate = formatDate(todo.dates.startDate, includeTime);
-  const endDate = formatDate(todo.dates.endDate, includeTime);
+  const startTime = todo?.dates?.startTime
+    ? convertTo12HourFormat(todo.dates.startTime)
+    : "";
+  const endTime = todo?.dates?.endTime
+    ? convertTo12HourFormat(todo.dates.endTime)
+    : "";
 
   return (
     <div className="flex flex-col py-7 px-10 bg-gray-200 rounded-md box-border font-mono gap-2">
@@ -41,13 +29,15 @@ export default function TodoCard({ todo }: { todo: Todo }) {
           <span className="bg-green-400 p-1 px-2 rounded-md text-green-950 mr-2">
             START
           </span>
-          {startDate}
+          {todo.dates.startDate}
+          {" " + startTime}
         </div>
         <div>
           <span className="bg-red-400 p-1 px-2 rounded-md text-red-950 mr-2">
             END
           </span>
-          {endDate}
+          {todo.dates.endDate}
+          {" " + endTime}
         </div>
       </div>
       <div>{todo.memo}</div>
