@@ -11,7 +11,7 @@ export type TodoCategory =
 
 export type TodoPriority = "high" | "medium" | "low";
 
-export interface Todo {
+export interface InputTodo {
   id: number;
   task: string;
   category: TodoCategory;
@@ -23,5 +23,15 @@ export interface Todo {
     endTime?: string;
     dateOnly: boolean;
   };
+  memo: string;
+}
+
+export interface Todo {
+  id: number;
+  task: string;
+  category: TodoCategory;
+  priority: TodoPriority;
+  startTimeStamp: string;
+  endTimeStamp: string;
   memo: string;
 }

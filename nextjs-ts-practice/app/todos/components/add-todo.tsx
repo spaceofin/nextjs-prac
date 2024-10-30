@@ -5,12 +5,12 @@ import { useState } from "react";
 import { Button, Input, Label, Select, Textarea } from "@/components";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { todoCategories, todoPriorities } from "../constants";
-import { Todo } from "../todo-type";
+import { InputTodo } from "../todo-type";
 import { createTodo } from "../todoApi";
-import { todoSchema } from "../todo-schema";
+import { inputTodoSchema } from "../todo-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-export default function AddTodo() {
+export default function AddInputTodo() {
   const [isOpen, setIsOpen] = useState(true);
   const router = useRouter();
 
@@ -19,7 +19,7 @@ export default function AddTodo() {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<Todo>({ resolver: zodResolver(todoSchema) });
+  } = useForm<InputTodo>({ resolver: zodResolver(inputTodoSchema) });
   const dateOnly = watch("dates.dateOnly");
 
   const handleClose = () => {
@@ -29,14 +29,15 @@ export default function AddTodo() {
     }, 300);
   };
 
-  const onSubmit: SubmitHandler<Todo> = async (todo: Todo) => {
+  const onSubmit: SubmitHandler<InputTodo> = async (todo: InputTodo) => {
     try {
       const result = await createTodo(todo);
       console.log("created:", result);
     } catch (error) {
-      console.error("Failed to create todo:", error);
+      console.error("Failed to create InputTodo:", error);
     }
   };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-10 flex dark:bg-white dark:bg-opacity-50">
       <div
@@ -130,10 +131,11 @@ export default function AddTodo() {
               </Select>
               <p className="dark:text-white">{errors.priority?.message}</p>
             </div>
+
             <div>
               <Label>Memo</Label>
               <Textarea {...register("memo")} />
-              <p>{errors.memo?.message}</p>
+              <p className="dark:text-white">{errors.memo?.message}</p>
             </div>
             <p className="dark:text-white">{errors.dates?.dateOnly?.message}</p>
           </div>

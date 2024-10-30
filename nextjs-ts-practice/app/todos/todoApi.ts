@@ -1,6 +1,6 @@
 "use server";
 
-import { Todo } from "./todo-type";
+import { InputTodo, Todo } from "./todo-type";
 import { todoSchema } from "./todo-schema";
 
 export async function getTodos(): Promise<Todo[]> {
@@ -9,7 +9,17 @@ export async function getTodos(): Promise<Todo[]> {
   return todos;
 }
 
-export const createTodo = async (todo: Todo) => {
+export const createTodo = async (inputTodo: InputTodo) => {
+  const { dates, ...rest } = inputTodo;
+  const startTimeStamp = `${dates.startDate}T${
+    dates.dateOnly ? "00:00:00" : `${dates.startTime}:00`
+  }Z`;
+  const endTimeStamp = `${dates.endDate}T${
+    dates.dateOnly ? "00:00:00" : `${dates.endTime}:00`
+  }Z`;
+
+  const todo = { ...rest, startTimeStamp, endTimeStamp };
+  // console.log(todo);
   const validated = todoSchema.safeParse(todo);
 
   if (!validated.success) {

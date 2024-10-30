@@ -3,7 +3,7 @@ import { todoCategories, todoPriorities } from "./constants";
 
 const timePattern = /^(?:[01]\d|2[0-3]):[0-5]\d$/;
 
-export const todoSchema = z
+export const inputTodoSchema = z
   .object({
     task: z.string().min(1, { message: "Task is required" }),
     category: z.enum(todoCategories, {
@@ -57,5 +57,16 @@ export const todoSchema = z
       });
     }
   });
+
+// export type InputTodoType = z.infer<typeof inputTodoSchema>;
+
+export const todoSchema = z.object({
+  task: z.string().min(1, { message: "Task is required" }),
+  category: z.enum(todoCategories),
+  priority: z.enum(todoPriorities),
+  startTimeStamp: z.string().datetime(),
+  endTimeStamp: z.string().datetime(),
+  memo: z.string().optional(),
+});
 
 // export type TodoType = z.infer<typeof todoSchema>;

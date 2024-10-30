@@ -174,13 +174,8 @@
       "task": "laundry",
       "category": "household",
       "priority": "high",
-      "dates": {
-        "startDate": "2024-10-19",
-        "startTime": "09:00",
-        "endDate": "2024-10-19",
-        "endTime": "11:00",
-        "dateOnly": false
-      },
+      "startTimeStamp": "2024-10-19T09:00:00Z",
+      "endTimeStamp": "2024-10-19T11:00:00Z",
       "memo": "wash black clothes and white clothes separately"
     },
     {
@@ -188,13 +183,8 @@
       "task": "grocery shopping",
       "category": "household",
       "priority": "medium",
-      "dates": {
-        "startDate": "2024-10-20",
-        "startTime": "14:00",
-        "endDate": "2024-10-20",
-        "endTime": "16:00",
-        "dateOnly": false
-      },
+      "startTimeStamp": "2024-10-20T14:00:00Z",
+      "endTimeStamp": "2024-10-20T16:00:00Z",
       "memo": "buy vegetables, milk, and eggs"
     },
     {
@@ -202,13 +192,8 @@
       "task": "submit project report",
       "category": "work",
       "priority": "high",
-      "dates": {
-        "startDate": "2024-10-21",
-        "startTime": "09:00",
-        "endDate": "2024-10-21",
-        "endTime": "12:00",
-        "dateOnly": false
-      },
+      "startTimeStamp": "2024-10-21T09:00:00Z",
+      "endTimeStamp": "2024-10-21T12:00:00Z",
       "memo": "finalize and submit the Q4 project report"
     },
     {
@@ -216,13 +201,8 @@
       "task": "doctor appointment",
       "category": "health",
       "priority": "high",
-      "dates": {
-        "startDate": "2024-10-22",
-        "startTime": "10:00",
-        "endDate": "2024-10-22",
-        "endTime": "11:00",
-        "dateOnly": false
-      },
+      "startTimeStamp": "2024-10-22T10:00:00Z",
+      "endTimeStamp": "2024-10-22T11:00:00Z",
       "memo": "annual health check-up"
     },
     {
@@ -230,13 +210,8 @@
       "task": "yoga class",
       "category": "fitness",
       "priority": "medium",
-      "dates": {
-        "startDate": "2024-10-23",
-        "startTime": "18:00",
-        "endDate": "2024-10-23",
-        "endTime": "19:00",
-        "dateOnly": false
-      },
+      "startTimeStamp": "2024-10-23T18:00:00Z",
+      "endTimeStamp": "2024-10-23T19:00:00Z",
       "memo": "bring a yoga mat and water bottle"
     },
     {
@@ -244,13 +219,8 @@
       "task": "car maintenance",
       "category": "maintenance",
       "priority": "medium",
-      "dates": {
-        "startDate": "2024-10-24",
-        "startTime": "08:00",
-        "endDate": "2024-10-24",
-        "endTime": "10:00",
-        "dateOnly": false
-      },
+      "startTimeStamp": "2024-10-24T08:00:00Z",
+      "endTimeStamp": "2024-10-24T10:00:00Z",
       "memo": "oil change and tire rotation"
     },
     {
@@ -258,13 +228,8 @@
       "task": "team meeting",
       "category": "work",
       "priority": "high",
-      "dates": {
-        "startDate": "2024-10-25",
-        "startTime": "15:00",
-        "endDate": "2024-10-25",
-        "endTime": "16:30",
-        "dateOnly": false
-      },
+      "startTimeStamp": "2024-10-25T15:00:00Z",
+      "endTimeStamp": "2024-10-25T16:30:00Z",
       "memo": "discuss project milestones and deadlines"
     },
     {
@@ -272,13 +237,8 @@
       "task": "dentist appointment",
       "category": "health",
       "priority": "high",
-      "dates": {
-        "startDate": "2024-10-26",
-        "startTime": "11:00",
-        "endDate": "2024-10-26",
-        "endTime": "12:00",
-        "dateOnly": false
-      },
+      "startTimeStamp": "2024-10-26T11:00:00Z",
+      "endTimeStamp": "2024-10-26T12:00:00Z",
       "memo": "regular dental check-up"
     },
     {
@@ -286,13 +246,8 @@
       "task": "pay bills",
       "category": "finance",
       "priority": "high",
-      "dates": {
-        "startDate": "2024-10-27",
-        "startTime": "",
-        "endDate": "2024-10-27",
-        "endTime": "",
-        "dateOnly": true
-      },
+      "startTimeStamp": "2024-10-27T00:00:00Z",
+      "endTimeStamp": "2024-10-27T00:00:00Z",
       "memo": "pay electricity and internet bills"
     },
     {
@@ -300,13 +255,8 @@
       "task": "friend's birthday party",
       "category": "social",
       "priority": "low",
-      "dates": {
-        "startDate": "2024-10-28",
-        "startTime": "19:00",
-        "endDate": "2024-10-28",
-        "endTime": "23:00",
-        "dateOnly": false
-      },
+      "startTimeStamp": "2024-10-28T19:00:00Z",
+      "endTimeStamp": "2024-10-28T23:00:00Z",
       "memo": "buy a gift and confirm attendance"
     }
   ]
