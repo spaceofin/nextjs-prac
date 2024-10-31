@@ -29,7 +29,12 @@ export default function TodoCard({ todo }: { todo: Todo }) {
   const endDate = formatDate(todo.endTimeStamp);
 
   return (
-    <div className="flex flex-col py-7 px-10 bg-gray-200 rounded-md box-border font-mono gap-2">
+    <div
+      className="flex flex-col py-7 px-10 bg-gray-200 rounded-md box-border font-mono gap-2"
+      draggable
+      onDragStart={(e) =>
+        e.dataTransfer.setData("text/plain", todo.id.toString())
+      }>
       <h3 className="text-xl font-bold">{todo.task}</h3>
       <div className="flex gap-2">
         <span className="bg-white p-1 px-2 rounded-md ">{todo.category}</span>

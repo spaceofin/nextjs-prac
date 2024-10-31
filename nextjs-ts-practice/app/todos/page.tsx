@@ -1,7 +1,7 @@
-import TodoCard from "./components/todo-card";
 import AddTodo from "./components/add-todo";
 import NewButton from "./components/new-button";
 import { getTodos } from "./todoApi";
+import CardColumns from "./components/card-columns";
 
 export default async function Todos({
   searchParams,
@@ -17,11 +17,7 @@ export default async function Todos({
       <div className="flex justify-end mb-2 mr-1">
         <NewButton />
       </div>
-      <div className="flex flex-col gap-4 h-full overflow-y-auto my-10">
-        {todos.map((todo) => (
-          <TodoCard key={todo.id} todo={todo} />
-        ))}
-      </div>
+      <CardColumns todos={todos} />
     </div>
   );
 }
