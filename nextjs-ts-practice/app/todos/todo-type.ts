@@ -24,6 +24,7 @@ export interface InputTodo {
     dateOnly: boolean;
   };
   memo: string;
+  status: string;
 }
 
 export interface Todo {
@@ -34,4 +35,5 @@ export interface Todo {
   startTimeStamp: string;
   endTimeStamp: string;
   memo: string;
+  status: string;
 }

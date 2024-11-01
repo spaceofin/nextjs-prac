@@ -4,7 +4,9 @@ import { InputTodo, Todo } from "./todo-type";
 import { todoSchema } from "./todo-schema";
 
 export async function getTodos(): Promise<Todo[]> {
-  const response = await fetch("http://localhost:3001/todos");
+  const response = await fetch("http://localhost:3001/todos", {
+    cache: "no-store",
+  });
   const todos = await response.json();
   return todos;
 }
@@ -39,6 +41,23 @@ export const createTodo = async (inputTodo: InputTodo) => {
 
   if (!response.ok) {
     throw new Error("Failed to add todo");
+  }
+
+  const result = await response.json();
+  return result;
+};
+
+export const updateTodoStatus = async (id: number, status: string) => {
+  const response = await fetch(`http://localhost:3001/todos/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ status }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to update todo status");
   }
 
   const result = await response.json();

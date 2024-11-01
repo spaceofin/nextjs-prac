@@ -3,12 +3,17 @@
 import { Todo } from "../todo-type";
 import TodoCard from "./todo-card";
 import { useState } from "react";
+import { updateTodoStatus } from "../todoApi";
 
 export default function CardColumns({ todos }: { todos: Todo[] }) {
-  const [todoCards, setTodoCards] = useState<Todo[]>(todos);
-  const [doneCards, setDoneCards] = useState<Todo[]>();
+  const [todoCards, setTodoCards] = useState<Todo[]>(
+    todos.filter((todo) => todo.status === "todo")
+  );
+  const [doneCards, setDoneCards] = useState<Todo[]>(
+    todos.filter((todo) => todo.status === "done")
+  );
 
-  const onDrop = (e: React.DragEvent<HTMLDivElement>, divId: string) => {
+  const onDrop = async (e: React.DragEvent<HTMLDivElement>, divId: string) => {
     e.preventDefault();
     const todoId = parseInt(e.dataTransfer.getData("text/plain"), 10);
 
@@ -19,9 +24,11 @@ export default function CardColumns({ todos }: { todos: Todo[] }) {
     if (!movedTodo) return;
 
     if (divId === "div2" && todoCards.includes(movedTodo)) {
+      await updateTodoStatus(todoId, "done");
       setTodoCards((prev) => prev.filter((todo) => todo.id !== todoId));
       setDoneCards((prev) => [...(prev ?? []), movedTodo]);
     } else if (divId === "div1" && doneCards?.includes(movedTodo)) {
+      await updateTodoStatus(todoId, "todo");
       setDoneCards((prev) => prev?.filter((todo) => todo.id !== todoId));
       setTodoCards((prev) => [...(prev ?? []), movedTodo]);
     }

@@ -176,7 +176,8 @@
       "priority": "high",
       "startTimeStamp": "2024-10-19T09:00:00Z",
       "endTimeStamp": "2024-10-19T11:00:00Z",
-      "memo": "wash black clothes and white clothes separately"
+      "memo": "wash black clothes and white clothes separately",
+      "status": "todo"
     },
     {
       "id": 2,
@@ -185,7 +186,8 @@
       "priority": "medium",
       "startTimeStamp": "2024-10-20T14:00:00Z",
       "endTimeStamp": "2024-10-20T16:00:00Z",
-      "memo": "buy vegetables, milk, and eggs"
+      "memo": "buy vegetables, milk, and eggs",
+      "status": "todo"
     },
     {
       "id": 3,
@@ -194,7 +196,8 @@
       "priority": "high",
       "startTimeStamp": "2024-10-21T09:00:00Z",
       "endTimeStamp": "2024-10-21T12:00:00Z",
-      "memo": "finalize and submit the Q4 project report"
+      "memo": "finalize and submit the Q4 project report",
+      "status": "todo"
     },
     {
       "id": 4,
@@ -203,7 +206,8 @@
       "priority": "high",
       "startTimeStamp": "2024-10-22T10:00:00Z",
       "endTimeStamp": "2024-10-22T11:00:00Z",
-      "memo": "annual health check-up"
+      "memo": "annual health check-up",
+      "status": "todo"
     },
     {
       "id": 5,
@@ -212,7 +216,8 @@
       "priority": "medium",
       "startTimeStamp": "2024-10-23T18:00:00Z",
       "endTimeStamp": "2024-10-23T19:00:00Z",
-      "memo": "bring a yoga mat and water bottle"
+      "memo": "bring a yoga mat and water bottle",
+      "status": "todo"
     },
     {
       "id": 6,
@@ -221,7 +226,8 @@
       "priority": "medium",
       "startTimeStamp": "2024-10-24T08:00:00Z",
       "endTimeStamp": "2024-10-24T10:00:00Z",
-      "memo": "oil change and tire rotation"
+      "memo": "oil change and tire rotation",
+      "status": "todo"
     },
     {
       "id": 7,
@@ -230,7 +236,8 @@
       "priority": "high",
       "startTimeStamp": "2024-10-25T15:00:00Z",
       "endTimeStamp": "2024-10-25T16:30:00Z",
-      "memo": "discuss project milestones and deadlines"
+      "memo": "discuss project milestones and deadlines",
+      "status": "todo"
     },
     {
       "id": 8,
@@ -239,7 +246,8 @@
       "priority": "high",
       "startTimeStamp": "2024-10-26T11:00:00Z",
       "endTimeStamp": "2024-10-26T12:00:00Z",
-      "memo": "regular dental check-up"
+      "memo": "regular dental check-up",
+      "status": "todo"
     },
     {
       "id": 9,
@@ -248,7 +256,8 @@
       "priority": "high",
       "startTimeStamp": "2024-10-27T00:00:00Z",
       "endTimeStamp": "2024-10-27T00:00:00Z",
-      "memo": "pay electricity and internet bills"
+      "memo": "pay electricity and internet bills",
+      "status": "todo"
     },
     {
       "id": 10,
@@ -257,7 +266,8 @@
       "priority": "low",
       "startTimeStamp": "2024-10-28T19:00:00Z",
       "endTimeStamp": "2024-10-28T23:00:00Z",
-      "memo": "buy a gift and confirm attendance"
+      "memo": "buy a gift and confirm attendance",
+      "status": "todo"
     }
   ]
 }
