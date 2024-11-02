@@ -1,5 +1,4 @@
 import { Todo } from "../todo-type";
-
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
 
@@ -32,9 +31,14 @@ export default function TodoCard({ todo }: { todo: Todo }) {
     <div
       className="flex flex-col py-7 px-10 bg-gray-200 rounded-md box-border font-mono gap-2"
       draggable
-      onDragStart={(e) =>
-        e.dataTransfer.setData("text/plain", todo.id.toString())
-      }>
+      onDragStart={(e) => {
+        e.currentTarget.classList.add("bg-gray-300");
+        e.dataTransfer.setData("text/plain", todo.id.toString());
+      }}
+      onDragEnd={(e) => {
+        e.currentTarget.classList.remove("bg-gray-300");
+        e.currentTarget.classList.add("bg-gray-200");
+      }}>
       <h3 className="text-xl font-bold">{todo.task}</h3>
       <div className="flex gap-2">
         <span className="bg-white p-1 px-2 rounded-md ">{todo.category}</span>
