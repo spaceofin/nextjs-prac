@@ -11,6 +11,19 @@ export async function getTodos(): Promise<Todo[]> {
   return todos;
 }
 
+export async function getTodoById(id: number): Promise<Todo> {
+  const response = await fetch(`http://localhost:3001/todos/${id}`, {
+    method: "GET",
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch todo with id ${id}`);
+  }
+
+  const todo = await response.json();
+  return todo;
+}
+
 export const createTodo = async (inputTodo: InputTodo) => {
   const { dates, ...rest } = inputTodo;
   const startTimeStamp = `${dates.startDate}T${

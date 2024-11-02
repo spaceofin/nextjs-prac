@@ -5,22 +5,66 @@ import { useState } from "react";
 import { Button, Input, Label, Select, Textarea } from "@/components";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { todoCategories, todoPriorities } from "../constants";
-import { InputTodo } from "../todo-type";
-import { createTodo } from "../todoApi";
+import { InputTodo, Todo } from "../todo-type";
+import { createTodo, getTodoById } from "../todoApi";
 import { inputTodoSchema } from "../todo-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 
-export default function AddInputTodo() {
+export default function AddInputTodo({
+  todoIdToUpdate,
+}: {
+  todoIdToUpdate?: number;
+}) {
   const [isOpen, setIsOpen] = useState(true);
   const router = useRouter();
 
   const {
     register,
     handleSubmit,
+    setValue,
     watch,
     formState: { errors },
   } = useForm<InputTodo>({ resolver: zodResolver(inputTodoSchema) });
   const dateOnly = watch("dates.dateOnly");
+
+  let todoToUpdate: Todo | null = null;
+
+  useEffect(() => {
+    console.log("updatetodo:", todoIdToUpdate);
+    const fetchTodoById = async () => {
+      if (todoIdToUpdate) {
+        todoToUpdate = await getTodoById(todoIdToUpdate);
+        // console.log(todoToUpdate);
+        const {
+          task,
+          category,
+          priority,
+          startTimeStamp,
+          endTimeStamp,
+          memo,
+          status,
+        } = todoToUpdate;
+        const [startDate, startTime] = startTimeStamp.slice(0, -4).split("T");
+        const [endDate, endTime] = endTimeStamp.slice(0, -4).split("T");
+
+        const dateOnly =
+          startTime === "00:00" && endTime === "00:00" ? true : false;
+
+        setValue("task", task);
+        setValue("category", category);
+        setValue("priority", priority);
+        setValue("dates.startDate", startDate);
+        setValue("dates.startTime", startTime);
+        setValue("dates.endDate", endDate);
+        setValue("dates.endTime", endTime);
+        setValue("memo", memo);
+        // setValue("status", status);
+        setValue("dates.dateOnly", dateOnly);
+      }
+    };
+    fetchTodoById();
+  }, []);
 
   const handleClose = () => {
     setIsOpen(false);
@@ -31,10 +75,14 @@ export default function AddInputTodo() {
 
   const onSubmit: SubmitHandler<InputTodo> = async (todo: InputTodo) => {
     try {
-      const result = await createTodo(todo);
-      console.log("created:", result);
+      if (todoToUpdate) {
+        //
+      } else {
+        const result = await createTodo(todo);
+        console.log("created:", result);
+      }
     } catch (error) {
-      console.error("Failed to create InputTodo:", error);
+      console.error("Failed to process InputTodo:", error);
     }
   };
 

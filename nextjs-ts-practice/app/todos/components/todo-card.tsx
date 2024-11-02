@@ -1,4 +1,7 @@
 import { Todo } from "../todo-type";
+import { Button } from "@/components";
+import { useRouter } from "next/navigation";
+
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
 
@@ -26,6 +29,11 @@ function formatDate(dateString: string): string {
 export default function TodoCard({ todo }: { todo: Todo }) {
   const startDate = formatDate(todo.startTimeStamp);
   const endDate = formatDate(todo.endTimeStamp);
+  const router = useRouter();
+
+  const handleEditClick = () => {
+    router.push(`/todos?edit=${todo.id}`);
+  };
 
   return (
     <div
@@ -39,7 +47,12 @@ export default function TodoCard({ todo }: { todo: Todo }) {
         e.currentTarget.classList.remove("bg-gray-300");
         e.currentTarget.classList.add("bg-gray-200");
       }}>
-      <h3 className="text-xl font-bold">{todo.task}</h3>
+      <div className="flex justify-between">
+        <h3 className="text-xl font-bold">{todo.task}</h3>
+        <Button size="small" onClick={handleEditClick}>
+          edit
+        </Button>
+      </div>
       <div className="flex gap-2">
         <span className="bg-white p-1 px-2 rounded-md ">{todo.category}</span>
         <span className="bg-white p-1 px-2 rounded-md ">{todo.priority}</span>
