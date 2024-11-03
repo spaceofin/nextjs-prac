@@ -11,7 +11,7 @@ export async function getTodos(): Promise<Todo[]> {
   return todos;
 }
 
-export async function getTodoById(id: number): Promise<Todo> {
+export async function getTodoById(id: string): Promise<Todo> {
   const response = await fetch(`http://localhost:3001/todos/${id}`, {
     method: "GET",
   });
@@ -54,6 +54,23 @@ export const createTodo = async (inputTodo: InputTodo) => {
 
   if (!response.ok) {
     throw new Error("Failed to add todo");
+  }
+
+  const result = await response.json();
+  return result;
+};
+
+export const updateTodo = async (id: string, updatedFields: Partial<Todo>) => {
+  const response = await fetch(`http://localhost:3001/todos/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(updatedFields),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to update todo");
   }
 
   const result = await response.json();

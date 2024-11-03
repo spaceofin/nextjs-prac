@@ -6,15 +6,15 @@ import { Button, Input, Label, Select, Textarea } from "@/components";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { todoCategories, todoPriorities } from "../constants";
 import { InputTodo, Todo } from "../todo-type";
-import { createTodo, getTodoById } from "../todoApi";
+import { createTodo, getTodoById, updateTodo } from "../todoApi";
 import { inputTodoSchema } from "../todo-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export default function AddInputTodo({
   todoIdToUpdate,
 }: {
-  todoIdToUpdate?: number;
+  todoIdToUpdate?: string;
 }) {
   const [isOpen, setIsOpen] = useState(true);
   const router = useRouter();
@@ -29,15 +29,18 @@ export default function AddInputTodo({
   const dateOnly = watch("dates.dateOnly");
 
   let todoToUpdate: Todo | null = null;
+  // let savedValues: InputTodo | null = null;
+  const savedValuesRef = useRef<InputTodo | null>(null);
 
   useEffect(() => {
+    // console.log("updatetodo:", todoIdToUpdate);
     const fetchTodoById = async () => {
       if (todoIdToUpdate) {
         todoToUpdate = await getTodoById(todoIdToUpdate);
+        // console.log(todoToUpdate);
         const { startTimeStamp, endTimeStamp } = todoToUpdate;
         const [startDate, startTime] = startTimeStamp.slice(0, -4).split("T");
         const [endDate, endTime] = endTimeStamp.slice(0, -4).split("T");
-
         const dateOnly =
           startTime === "00:00" && endTime === "00:00" ? true : false;
 
@@ -51,6 +54,8 @@ export default function AddInputTodo({
             dateOnly: dateOnly,
           },
         });
+        savedValuesRef.current = watch();
+        // console.log("savedValues:", savedValuesRef.current);
       }
     };
     fetchTodoById();
@@ -65,7 +70,29 @@ export default function AddInputTodo({
 
   const onSubmit: SubmitHandler<InputTodo> = async (todo: InputTodo) => {
     try {
-      if (todoToUpdate) {
+      if (todoIdToUpdate) {
+        const currentValues = watch();
+        const savedValues = savedValuesRef.current;
+        // const updatedFields: Partial<InputTodo> = {};
+        const updatedFields: { [key: string]: any } = {};
+
+        // console.log("savedValues:", savedValues);
+        // console.log("currentValues:", currentValues);
+
+        for (const key in savedValues) {
+          const k = key as keyof InputTodo;
+          if (k === "dates") {
+            // Code to be implemented
+          } else if (savedValues[k] !== currentValues[k]) {
+            updatedFields[k] = currentValues[k];
+          }
+        }
+
+        console.log("updatedFields:", updatedFields);
+
+        const result = await updateTodo(todoIdToUpdate, updatedFields);
+        console.log("updated:", result);
+        handleClose();
         //
       } else {
         const result = await createTodo(todo);

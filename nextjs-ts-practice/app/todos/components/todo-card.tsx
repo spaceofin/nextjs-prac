@@ -17,7 +17,7 @@ function formatDate(dateString: string): string {
 
   const formattedDate = date.toLocaleString("ko-KR", options);
 
-  console.log(formattedDate);
+  // console.log(formattedDate);
   const result = formattedDate
     .replace(/\. /g, "-")
     .replace(/-(?=\s*오전|-?오후)/g, " ")

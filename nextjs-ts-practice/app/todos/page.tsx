@@ -11,7 +11,7 @@ export default async function Todos({
   const todos = await getTodos();
   const isAddTodoOpen = searchParams.new === "true";
   const editParam = !isNaN(Number(searchParams.edit))
-    ? Number(searchParams.edit)
+    ? searchParams.edit
     : undefined;
 
   return (
