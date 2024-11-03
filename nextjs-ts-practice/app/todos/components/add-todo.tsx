@@ -22,8 +22,8 @@ export default function AddInputTodo({
   const {
     register,
     handleSubmit,
-    setValue,
     watch,
+    reset,
     formState: { errors },
   } = useForm<InputTodo>({ resolver: zodResolver(inputTodoSchema) });
   const dateOnly = watch("dates.dateOnly");
@@ -31,36 +31,26 @@ export default function AddInputTodo({
   let todoToUpdate: Todo | null = null;
 
   useEffect(() => {
-    console.log("updatetodo:", todoIdToUpdate);
     const fetchTodoById = async () => {
       if (todoIdToUpdate) {
         todoToUpdate = await getTodoById(todoIdToUpdate);
-        // console.log(todoToUpdate);
-        const {
-          task,
-          category,
-          priority,
-          startTimeStamp,
-          endTimeStamp,
-          memo,
-          status,
-        } = todoToUpdate;
+        const { startTimeStamp, endTimeStamp } = todoToUpdate;
         const [startDate, startTime] = startTimeStamp.slice(0, -4).split("T");
         const [endDate, endTime] = endTimeStamp.slice(0, -4).split("T");
 
         const dateOnly =
           startTime === "00:00" && endTime === "00:00" ? true : false;
 
-        setValue("task", task);
-        setValue("category", category);
-        setValue("priority", priority);
-        setValue("dates.startDate", startDate);
-        setValue("dates.startTime", startTime);
-        setValue("dates.endDate", endDate);
-        setValue("dates.endTime", endTime);
-        setValue("memo", memo);
-        // setValue("status", status);
-        setValue("dates.dateOnly", dateOnly);
+        reset({
+          ...todoToUpdate,
+          dates: {
+            startDate: startDate,
+            startTime: startTime,
+            endDate: endDate,
+            endTime: endTime,
+            dateOnly: dateOnly,
+          },
+        });
       }
     };
     fetchTodoById();
