@@ -54,8 +54,7 @@ export default function AddInputTodo({
             dateOnly: dateOnly,
           },
         });
-        savedValuesRef.current = watch();
-        // console.log("savedValues:", savedValuesRef.current);
+        savedValuesRef.current = JSON.parse(JSON.stringify(watch()));
       }
     };
     fetchTodoById();
@@ -82,12 +81,25 @@ export default function AddInputTodo({
         for (const key in savedValues) {
           const k = key as keyof InputTodo;
           if (k === "dates") {
-            // Code to be implemented
+            const savedDates = savedValues.dates;
+            const currentDates = currentValues.dates;
+            // console.log("savedDates:", savedDates);
+            // console.log("currentDates:", currentDates);
+
+            for (const dateKey in savedDates) {
+              const dk = dateKey as keyof typeof savedDates;
+              if (savedDates[dk] !== currentDates[dk]) {
+                if (!updatedFields.dates) {
+                  updatedFields.dates = {};
+                }
+                updatedFields.dates = { ...currentDates };
+                break;
+              }
+            }
           } else if (savedValues[k] !== currentValues[k]) {
             updatedFields[k] = currentValues[k];
           }
         }
-
         console.log("updatedFields:", updatedFields);
 
         const result = await updateTodo(todoIdToUpdate, updatedFields);

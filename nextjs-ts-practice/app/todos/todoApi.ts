@@ -60,13 +60,33 @@ export const createTodo = async (inputTodo: InputTodo) => {
   return result;
 };
 
-export const updateTodo = async (id: string, updatedFields: Partial<Todo>) => {
+export const updateTodo = async (
+  id: string,
+  updatedFields: Partial<InputTodo>
+) => {
+  let payload: Partial<Todo>;
+
+  if (updatedFields.hasOwnProperty("dates") && updatedFields.dates) {
+    const dates = updatedFields.dates;
+    const startTimeStamp = `${dates.startDate}T${
+      dates.dateOnly ? "00:00:00" : `${dates.startTime}:00`
+    }Z`;
+    const endTimeStamp = `${dates.endDate}T${
+      dates.dateOnly ? "00:00:00" : `${dates.endTime}:00`
+    }Z`;
+
+    delete updatedFields.dates;
+    payload = { ...updatedFields, startTimeStamp, endTimeStamp };
+  } else {
+    payload = { ...updatedFields };
+  }
+
   const response = await fetch(`http://localhost:3001/todos/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(updatedFields),
+    body: JSON.stringify(payload),
   });
 
   if (!response.ok) {
