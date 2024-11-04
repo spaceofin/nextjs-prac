@@ -1,4 +1,4 @@
-import AddTodo from "./components/add-todo";
+import AddTodo from "./components/add-input-todo";
 import NewButton from "./components/new-button";
 import { getTodos } from "./todoApi";
 import CardColumns from "./components/card-columns";
