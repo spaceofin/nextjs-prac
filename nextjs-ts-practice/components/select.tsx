@@ -2,7 +2,7 @@ import React from "react";
 import { forwardRef } from "react";
 
 type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
-  style?: "default";
+  style?: "default" | "filled";
   children?: React.ReactNode;
 };
 
@@ -12,6 +12,7 @@ export default forwardRef(function Select(
 ) {
   const styles = {
     default: "rounded-md text-xl bg-white",
+    filled: "rounded-md text-xl bg-sky-600 bg-opacity-90 text-white py-2 px-4",
   };
   return (
     <select
