@@ -2,9 +2,24 @@
 
 import { InputTodo, Todo } from "./todo-type";
 import { todoSchema } from "./todo-schema";
+import { TodoCategory, TodoPriority } from "./todo-type";
 
-export async function getTodos(): Promise<Todo[]> {
-  const response = await fetch("http://localhost:3001/todos", {
+export async function getTodos({
+  category,
+  priority,
+}: {
+  category?: TodoCategory;
+  priority?: TodoPriority;
+}): Promise<Todo[]> {
+  const baseUrl = "http://localhost:3001/todos";
+  const params = new URLSearchParams();
+
+  if (category) params.append("category", category);
+  if (priority) params.append("priority", priority);
+
+  const url = `${baseUrl}?${params.toString()}`;
+
+  const response = await fetch(url, {
     cache: "no-store",
   });
   const todos = await response.json();

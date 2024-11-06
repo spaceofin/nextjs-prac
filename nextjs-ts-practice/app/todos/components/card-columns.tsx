@@ -2,30 +2,31 @@
 
 import { Todo } from "../todo-type";
 import TodoCard from "./todo-card";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { updateTodoStatus } from "../todoApi";
 
 export default function CardColumns({ todos }: { todos: Todo[] }) {
-  const [todoCards, setTodoCards] = useState<Todo[]>(
-    todos.filter((todo) => todo.status === "todo")
-  );
-  const [doneCards, setDoneCards] = useState<Todo[]>(
-    todos.filter((todo) => todo.status === "done")
-  );
+  const [todoCards, setTodoCards] = useState<Todo[]>();
+  const [doneCards, setDoneCards] = useState<Todo[]>();
+
+  useEffect(() => {
+    setTodoCards(todos.filter((todo) => todo.status === "todo"));
+    setDoneCards(todos.filter((todo) => todo.status === "done"));
+  }, [todos]);
 
   const onDrop = async (e: React.DragEvent<HTMLDivElement>, divId: string) => {
     e.preventDefault();
     const todoId = parseInt(e.dataTransfer.getData("text/plain"), 10);
 
     const movedTodo =
-      todoCards.find((todo) => todo.id === todoId) ||
+      todoCards?.find((todo) => todo.id === todoId) ||
       doneCards?.find((todo) => todo.id === todoId);
 
     if (!movedTodo) return;
 
-    if (divId === "div2" && todoCards.includes(movedTodo)) {
+    if (divId === "div2" && todoCards?.includes(movedTodo)) {
       await updateTodoStatus(todoId, "done");
-      setTodoCards((prev) => prev.filter((todo) => todo.id !== todoId));
+      setTodoCards((prev) => prev?.filter((todo) => todo.id !== todoId));
       setDoneCards((prev) => [...(prev ?? []), movedTodo]);
     } else if (divId === "div1" && doneCards?.includes(movedTodo)) {
       await updateTodoStatus(todoId, "todo");
@@ -48,7 +49,7 @@ export default function CardColumns({ todos }: { todos: Todo[] }) {
           id="div1"
           onDrop={(e) => onDrop(e, "div1")}
           onDragOver={onDragOver}>
-          {todoCards.map((todo) => (
+          {todoCards?.map((todo) => (
             <TodoCard key={todo.id} todo={todo} />
           ))}
         </div>

@@ -3,6 +3,7 @@
 import { Select } from "@/components";
 import { TodoCategory, TodoPriority } from "../todo-type";
 import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const categories: TodoCategory[] = [
   "household",
@@ -18,6 +19,8 @@ const categories: TodoCategory[] = [
 
 const priorities: TodoPriority[] = ["high", "medium", "low"];
 
+const params = new URLSearchParams();
+
 export default function TodoFilter() {
   const [selectedCategory, setSelectedCategory] = useState<TodoCategory | "">(
     ""
@@ -25,12 +28,18 @@ export default function TodoFilter() {
   const [selectedPriority, setSelectedPriority] = useState<TodoPriority | "">(
     ""
   );
+  const router = useRouter();
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = event.target;
 
     if (name === "category") setSelectedCategory(value as TodoCategory);
     else if (name === "priority") setSelectedPriority(value as TodoPriority);
+
+    if (value === "") params.delete(name);
+    else params.set(name, value);
+
+    router.push(`?${params.toString()}`);
   };
 
   return (

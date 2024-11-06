@@ -49,7 +49,7 @@ export default function TodoCard({ todo }: { todo: Todo }) {
       }}>
       <div className="flex justify-between">
         <h3 className="text-xl font-bold">{todo.task}</h3>
-        <Button size="small" onClick={handleEditClick}>
+        <Button variant="gray" size="small" onClick={handleEditClick}>
           edit
         </Button>
       </div>
