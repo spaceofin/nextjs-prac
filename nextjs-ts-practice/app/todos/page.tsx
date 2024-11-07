@@ -1,9 +1,8 @@
 import AddTodo from "./components/add-input-todo";
 import NewButton from "./components/new-button";
-import { getTodos } from "./todoApi";
-import CardColumns from "./components/card-columns";
 import TodoFilter from "./components/todo-filter";
 import { TodoCategory, TodoPriority } from "./todo-type";
+import CardColumnsWrapper from "./components/card-columns-wrapper";
 
 type SearchParams = {
   new?: string;
@@ -12,15 +11,13 @@ type SearchParams = {
   priority?: TodoPriority;
 };
 
-export default async function Todos({
+export default function Todos({
   searchParams,
 }: {
   searchParams: SearchParams;
 }) {
   const category = searchParams?.category;
   const priority = searchParams?.priority;
-
-  const todos = await getTodos({ category, priority });
   const isAddTodoOpen = searchParams.new === "true";
   const editParam = !isNaN(Number(searchParams.edit))
     ? searchParams.edit
@@ -34,7 +31,7 @@ export default async function Todos({
         <TodoFilter />
         <NewButton />
       </div>
-      <CardColumns todos={todos} />
+      <CardColumnsWrapper category={category} priority={priority} />
     </div>
   );
 }
