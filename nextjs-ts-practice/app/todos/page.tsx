@@ -2,7 +2,7 @@ import AddTodo from "./components/add-input-todo";
 import NewButton from "./components/new-button";
 import TodoFilter from "./components/todo-filter";
 import { TodoCategory, TodoPriority } from "./todo-type";
-import CardColumnsWrapper from "./components/card-columns-wrapper";
+import CardColumns from "./components/card-columns";
 
 type SearchParams = {
   new?: string;
@@ -31,7 +31,7 @@ export default function Todos({
         <TodoFilter />
         <NewButton />
       </div>
-      <CardColumnsWrapper category={category} priority={priority} />
+      <CardColumns category={category} priority={priority} />
     </div>
   );
 }
