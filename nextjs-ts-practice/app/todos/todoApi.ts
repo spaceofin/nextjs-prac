@@ -76,7 +76,7 @@ export const createTodo = async (inputTodo: InputTodo) => {
 };
 
 export const updateTodo = async (
-  id: string,
+  id: number,
   updatedFields: Partial<InputTodo>
 ) => {
   let payload: Partial<Todo>;

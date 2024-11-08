@@ -5,16 +5,16 @@ import { useState } from "react";
 import { Button, Input, Label, Select, Textarea } from "@/components";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { todoCategories, todoPriorities } from "../constants";
-import { InputTodo, Todo } from "../todo-type";
-import { createTodo, getTodoById, updateTodo } from "../todoApi";
+import { InputTodo } from "../todo-type";
+import { createTodo, updateTodo } from "../todoApi";
 import { inputTodoSchema } from "../todo-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useRef } from "react";
 
 export default function AddInputTodo({
-  todoIdToUpdate,
+  todoToUpdate,
 }: {
-  todoIdToUpdate?: string;
+  todoToUpdate?: InputTodo;
 }) {
   const [isOpen, setIsOpen] = useState(true);
   const router = useRouter();
@@ -23,41 +23,16 @@ export default function AddInputTodo({
     register,
     handleSubmit,
     watch,
-    reset,
     formState: { errors },
-  } = useForm<InputTodo>({ resolver: zodResolver(inputTodoSchema) });
+  } = useForm<InputTodo>({
+    resolver: zodResolver(inputTodoSchema),
+    defaultValues: todoToUpdate,
+  });
   const dateOnly = watch("dates.dateOnly");
-
-  let todoToUpdate: Todo | null = null;
-  // let savedValues: InputTodo | null = null;
   const savedValuesRef = useRef<InputTodo | null>(null);
 
   useEffect(() => {
-    // console.log("updatetodo:", todoIdToUpdate);
-    const fetchTodoById = async () => {
-      if (todoIdToUpdate) {
-        todoToUpdate = await getTodoById(todoIdToUpdate);
-        // console.log(todoToUpdate);
-        const { startTimeStamp, endTimeStamp } = todoToUpdate;
-        const [startDate, startTime] = startTimeStamp.slice(0, -4).split("T");
-        const [endDate, endTime] = endTimeStamp.slice(0, -4).split("T");
-        const dateOnly =
-          startTime === "00:00" && endTime === "00:00" ? true : false;
-
-        reset({
-          ...todoToUpdate,
-          dates: {
-            startDate: startDate,
-            startTime: startTime,
-            endDate: endDate,
-            endTime: endTime,
-            dateOnly: dateOnly,
-          },
-        });
-        savedValuesRef.current = JSON.parse(JSON.stringify(watch()));
-      }
-    };
-    fetchTodoById();
+    savedValuesRef.current = JSON.parse(JSON.stringify(watch()));
   }, []);
 
   const handleClose = () => {
@@ -69,7 +44,7 @@ export default function AddInputTodo({
 
   const onSubmit: SubmitHandler<InputTodo> = async (todo: InputTodo) => {
     try {
-      if (todoIdToUpdate) {
+      if (todoToUpdate) {
         const currentValues = watch();
         const savedValues = savedValuesRef.current;
         // const updatedFields: Partial<InputTodo> = {};
@@ -102,7 +77,7 @@ export default function AddInputTodo({
         }
         console.log("updatedFields:", updatedFields);
 
-        const result = await updateTodo(todoIdToUpdate, updatedFields);
+        const result = await updateTodo(todoToUpdate.id, updatedFields);
         console.log("updated:", result);
         handleClose();
         //
