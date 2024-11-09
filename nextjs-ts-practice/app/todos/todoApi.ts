@@ -27,8 +27,9 @@ export async function getTodos({
 }
 
 export async function getTodoById(id: string): Promise<Todo> {
-  const response = await fetch(`http://localhost:3001/todos/${id}`, {
-    method: "GET",
+  const url = `http://localhost:3001/todos/${id}`;
+  const response = await fetch(url, {
+    cache: "no-store",
   });
 
   if (!response.ok) {
