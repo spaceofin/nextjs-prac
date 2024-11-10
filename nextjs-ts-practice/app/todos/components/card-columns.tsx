@@ -2,26 +2,42 @@
 
 import { Todo } from "../todo-type";
 import TodoCard from "./todo-card";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { updateTodoStatus } from "../todoApi";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { TodoCategory, TodoPriority } from "../todo-type";
 import { getTodos } from "../todoApi";
+import { useSearchParams } from "next/navigation";
 
 export default function CardColumns({
-  category,
-  priority,
+  initialTodos,
 }: {
-  category?: TodoCategory;
-  priority?: TodoPriority;
+  initialTodos: Todo[];
 }) {
   const [isLoading, setIsLoading] = useState(false);
-  const [todoCards, setTodoCards] = useState<Todo[]>();
-  const [doneCards, setDoneCards] = useState<Todo[]>();
+  const [todoCards, setTodoCards] = useState<Todo[]>(
+    initialTodos.filter((todo) => todo.status === "todo")
+  );
+  const [doneCards, setDoneCards] = useState<Todo[]>(
+    initialTodos.filter((todo) => todo.status === "done")
+  );
+  const isFirstRender = useRef(true);
+
+  const searchParams = useSearchParams();
+  const category = searchParams.get("category") as TodoCategory;
+  const priority = searchParams.get("priority") as TodoPriority;
+  const hasNoParams = searchParams.toString() === "";
 
   useEffect(() => {
-    setIsLoading(true);
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
+    if (!category && !priority && !hasNoParams) return;
+
     const fetchTodos = async () => {
+      setIsLoading(true);
       try {
         const filteredTodos = await getTodos({ category, priority });
         setTodoCards(filteredTodos.filter((todo) => todo.status === "todo"));
@@ -33,7 +49,7 @@ export default function CardColumns({
       }
     };
     fetchTodos();
-  }, [category, priority]);
+  }, [category, priority, hasNoParams]);
 
   const onDrop = async (e: React.DragEvent<HTMLDivElement>, divId: string) => {
     e.preventDefault();
