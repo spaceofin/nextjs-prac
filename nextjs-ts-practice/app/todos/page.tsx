@@ -5,6 +5,7 @@ import { TodoCategory, TodoPriority } from "./todo-type";
 import CardColumns from "./components/card-columns";
 import EditInputTodo from "./components/edit-input-todo";
 import { getTodos } from "./todoApi";
+import SWRConfigContext from "./context/SWRConfigContext";
 
 type SearchParams = {
   new?: string;
@@ -26,14 +27,16 @@ export default async function Todos({
   const initialTodos = await getTodos({});
 
   return (
-    <div className="flex flex-col px-10 py-14 border-2 border-white bg-cyan-100 rounded bg-opacity-70 dark:text-slate-800 w-full min-w-[64rem] h-full">
-      {isAddTodoOpen && <AddInputTodo />}
-      {editId && <EditInputTodo id={editId} />}
-      <div className="flex justify-between mb-2 mr-1">
-        <TodoFilter />
-        <NewButton />
+    <SWRConfigContext>
+      <div className="flex flex-col px-10 py-14 border-2 border-white bg-cyan-100 rounded bg-opacity-70 dark:text-slate-800 w-full min-w-[64rem] h-full">
+        {isAddTodoOpen && <AddInputTodo />}
+        {editId && <EditInputTodo id={editId} />}
+        <div className="flex justify-between mb-2 mr-1">
+          <TodoFilter />
+          <NewButton />
+        </div>
+        <CardColumns initialTodos={initialTodos} />
       </div>
-      <CardColumns initialTodos={initialTodos} />
-    </div>
+    </SWRConfigContext>
   );
 }
