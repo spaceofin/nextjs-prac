@@ -3,7 +3,7 @@
 import { Select } from "@/components";
 import { TodoCategory, TodoPriority } from "../todo-type";
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const categories: TodoCategory[] = [
   "household",

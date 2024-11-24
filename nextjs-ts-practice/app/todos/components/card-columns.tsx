@@ -2,54 +2,41 @@
 
 import { Todo } from "../todo-type";
 import TodoCard from "./todo-card";
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { updateTodoStatus } from "../todoApi";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { TodoCategory, TodoPriority } from "../todo-type";
-import { getTodos } from "../todoApi";
 import { useSearchParams } from "next/navigation";
+import useSWR from "swr";
 
-export default function CardColumns({
-  initialTodos,
-}: {
-  initialTodos: Todo[];
-}) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [todoCards, setTodoCards] = useState<Todo[]>(
-    initialTodos.filter((todo) => todo.status === "todo")
-  );
-  const [doneCards, setDoneCards] = useState<Todo[]>(
-    initialTodos.filter((todo) => todo.status === "done")
-  );
-  const isFirstRender = useRef(true);
-
+export default function CardColumns() {
   const searchParams = useSearchParams();
   const category = searchParams.get("category") as TodoCategory;
   const priority = searchParams.get("priority") as TodoPriority;
-  const hasNoParams = searchParams.toString() === "";
 
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
+  const baseUrl = "http://localhost:3001/todos";
+  const params = new URLSearchParams();
 
-    if (!category && !priority && !hasNoParams) return;
+  if (category) params.append("category", category);
+  if (priority) params.append("priority", priority);
 
-    const fetchTodos = async () => {
-      setIsLoading(true);
-      try {
-        const filteredTodos = await getTodos({ category, priority });
-        setTodoCards(filteredTodos.filter((todo) => todo.status === "todo"));
-        setDoneCards(filteredTodos.filter((todo) => todo.status === "done"));
-      } catch (error) {
-        console.log("Error fetching todos");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchTodos();
-  }, [category, priority, hasNoParams]);
+  const url = params.toString() ? `${baseUrl}?${params.toString()}` : baseUrl;
+
+  const { data, isLoading, error } = useSWR(url, {
+    revalidateOnMount: false,
+    revalidateOnFocus: false,
+    onSuccess: (data) => {
+      setTodoCards(data.filter((todo: Todo) => todo.status === "todo"));
+      setDoneCards(data.filter((todo: Todo) => todo.status === "done"));
+    },
+  });
+
+  const [todoCards, setTodoCards] = useState<Todo[] | null>(
+    data?.filter((todo: Todo) => todo.status === "todo")
+  );
+  const [doneCards, setDoneCards] = useState<Todo[] | null>(
+    data?.filter((todo: Todo) => todo.status === "done")
+  );
 
   const onDrop = async (e: React.DragEvent<HTMLDivElement>, divId: string) => {
     e.preventDefault();
@@ -63,11 +50,11 @@ export default function CardColumns({
 
     if (divId === "div2" && todoCards?.includes(movedTodo)) {
       await updateTodoStatus(todoId, "done");
-      setTodoCards((prev) => prev?.filter((todo) => todo.id !== todoId));
+      setTodoCards((prev) => prev?.filter((todo) => todo.id !== todoId) || []);
       setDoneCards((prev) => [...(prev ?? []), movedTodo]);
     } else if (divId === "div1" && doneCards?.includes(movedTodo)) {
       await updateTodoStatus(todoId, "todo");
-      setDoneCards((prev) => prev?.filter((todo) => todo.id !== todoId));
+      setDoneCards((prev) => prev?.filter((todo) => todo.id !== todoId) || []);
       setTodoCards((prev) => [...(prev ?? []), movedTodo]);
     }
   };
