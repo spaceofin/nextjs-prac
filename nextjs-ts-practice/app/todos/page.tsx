@@ -27,8 +27,7 @@ export default async function Todos({
   const initialTodos = await getTodos({});
 
   return (
-    <SWRConfigContext
-      fallback={{ "http://localhost:3001/todos": initialTodos }}>
+    <SWRConfigContext fallback={{ "/todos": initialTodos }}>
       <div className="flex flex-col px-10 py-14 border-2 border-white bg-cyan-100 rounded bg-opacity-70 dark:text-slate-800 w-full min-w-[64rem] h-full">
         {isAddTodoOpen && <AddInputTodo />}
         {editId && <EditInputTodo id={editId} />}

@@ -7,11 +7,14 @@ interface SWRProps {
   [key: string]: any;
 }
 
+const BASE_URL = "http://localhost:3001";
+
 export default function SWRConfigContext({ children, ...props }: SWRProps) {
   return (
     <SWRConfig
       value={{
-        fetcher: (url: string) => fetch(url).then((res) => res.json()),
+        fetcher: (url: string) =>
+          fetch(`${BASE_URL}${url}`).then((res) => res.json()),
         ...props,
       }}>
       {children}

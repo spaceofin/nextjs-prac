@@ -14,13 +14,12 @@ export default function CardColumns() {
   const category = searchParams.get("category") as TodoCategory;
   const priority = searchParams.get("priority") as TodoPriority;
 
-  const baseUrl = "http://localhost:3001/todos";
   const params = new URLSearchParams();
 
   if (category) params.append("category", category);
   if (priority) params.append("priority", priority);
 
-  const url = params.toString() ? `${baseUrl}?${params.toString()}` : baseUrl;
+  const url = params.toString() ? `/todos?${params.toString()}` : "/todos";
 
   const { data, isLoading, error } = useSWR(url, {
     revalidateOnMount: false,
