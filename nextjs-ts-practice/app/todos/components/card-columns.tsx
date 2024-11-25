@@ -2,7 +2,7 @@
 
 import { Todo } from "../todo-type";
 import TodoCard from "./todo-card";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { updateTodoStatus } from "../todoApi";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { TodoCategory, TodoPriority } from "../todo-type";
@@ -24,11 +24,13 @@ export default function CardColumns() {
   const { data, isLoading, error } = useSWR(url, {
     revalidateOnMount: false,
     revalidateOnFocus: false,
-    onSuccess: (data) => {
-      setTodoCards(data.filter((todo: Todo) => todo.status === "todo"));
-      setDoneCards(data.filter((todo: Todo) => todo.status === "done"));
-    },
+    revalidateIfStale: false,
   });
+
+  useEffect(() => {
+    setTodoCards(data?.filter((todo: Todo) => todo.status === "todo") || []);
+    setDoneCards(data?.filter((todo: Todo) => todo.status === "done") || []);
+  }, [data]);
 
   const [todoCards, setTodoCards] = useState<Todo[] | null>(
     data?.filter((todo: Todo) => todo.status === "todo")
