@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { getContent } from "@/lib/loadContent";
+import { getContent } from "@/lib/load-content";
 import { PostFrontmatter } from "@/types/mdx-types";
 
 type GetPostsOptions = {

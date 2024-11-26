@@ -1,4 +1,4 @@
-import { getContent } from "@/lib/loadContent";
+import { getContent } from "@/lib/load-content";
 
 export default async function MemoDetailPage({
   params,

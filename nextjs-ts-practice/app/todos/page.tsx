@@ -4,7 +4,7 @@ import TodoFilter from "./components/todo-filter";
 import { TodoCategory, TodoPriority } from "./todo-type";
 import CardColumns from "./components/card-columns";
 import EditInputTodo from "./components/edit-input-todo";
-import { getTodos } from "./todoApi";
+import { getTodos } from "./todo-api";
 import SWRConfigContext from "./context/SWRConfigContext";
 
 type SearchParams = {

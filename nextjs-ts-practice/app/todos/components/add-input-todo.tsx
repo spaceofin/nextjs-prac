@@ -6,7 +6,7 @@ import { Button, Input, Label, Select, Textarea } from "@/components";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { todoCategories, todoPriorities } from "../constants";
 import { InputTodo } from "../todo-type";
-import { createTodo, updateTodo } from "../todoApi";
+import { createTodo, updateTodo } from "../todo-api";
 import { inputTodoSchema } from "../todo-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useRef } from "react";

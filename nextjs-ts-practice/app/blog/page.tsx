@@ -1,5 +1,5 @@
 // import Card from "../components/card";
-import { getPosts } from "@/lib/getPosts";
+import { getPosts } from "@/lib/get-posts";
 import { ReactElement } from "react";
 import Button from "../../components/button";
 import Link from "next/link";

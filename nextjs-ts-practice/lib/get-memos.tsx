@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { getContent } from "@/lib/loadContent";
+import { getContent } from "@/lib/load-content";
 import { MDXMemo, MemoFrontmatter } from "@/types/mdx-types";
 
 export async function getMemos() {

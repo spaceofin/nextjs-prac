@@ -1,4 +1,4 @@
-import { getMemos } from "@/lib/getMemos";
+import { getMemos } from "@/lib/get-memos";
 import Link from "next/link";
 import { MDXMemo } from "@/types/mdx-types";
 

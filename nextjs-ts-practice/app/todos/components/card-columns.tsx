@@ -3,7 +3,7 @@
 import { Todo } from "../todo-type";
 import TodoCard from "./todo-card";
 import { useState, useEffect } from "react";
-import { updateTodoStatus } from "../todoApi";
+import { updateTodoStatus } from "../todo-api";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { TodoCategory, TodoPriority } from "../todo-type";
 import { useSearchParams } from "next/navigation";

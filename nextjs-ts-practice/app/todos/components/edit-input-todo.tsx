@@ -1,4 +1,4 @@
-import { getTodoById } from "../todoApi";
+import { getTodoById } from "../todo-api";
 import AddInputTodo from "./add-input-todo";
 
 export default async function EditInputTodo({ id }: { id: string }) {

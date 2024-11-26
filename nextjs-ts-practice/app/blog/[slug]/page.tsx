@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { getContent as libGetContent } from "@/lib/loadContent";
-import { getPosts } from "@/lib/getPosts";
+import { getContent as libGetContent } from "@/lib/load-content";
+import { getPosts } from "@/lib/get-posts";
 import { cache } from "react";
 import Link from "next/link";
 import { ReactElement } from "react";
