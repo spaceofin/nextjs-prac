@@ -9,12 +9,23 @@ const memos = [
 
 export default function Home() {
   return (
-    <div className="flex flex-col my-10 gap-1">
-      {memos.map((memo) => (
-        <Link href={`/memos/${memo.id}`}>
-          <MemoCard key={memo.id} memo={memo} />
-        </Link>
-      ))}
+    <div>
+      <div className="flex flex-col my-10 gap-1">
+        <div className="flex w-full justify-start">
+          <Link
+            className="bg-slate-200 text-lg px-6 py-1 rounded-md"
+            href="/memos/new">
+            New
+          </Link>
+        </div>
+        <div>
+          {memos.map((memo) => (
+            <Link href={`/memos/${memo.id}`}>
+              <MemoCard key={memo.id} memo={memo} />
+            </Link>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
