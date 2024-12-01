@@ -44,3 +44,12 @@ export async function createMemo(
   revalidatePath("/");
   redirect("/");
 }
+
+export async function deleteMemo(id: number) {
+  await db.memo.delete({
+    where: { id },
+  });
+
+  revalidatePath("/");
+  redirect("/");
+}

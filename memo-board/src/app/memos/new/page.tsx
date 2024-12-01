@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { createMemo } from "@/app/service/memosServies";
+import Link from "next/link";
 
 const initialState = {
   message: "",
@@ -11,9 +12,14 @@ export default function MemoCreatePage() {
   const [state, formAction] = useActionState(createMemo, initialState);
 
   return (
-    <div className="mx-14">
+    <div className="mx-14 pt-10">
+      <div className="flex w-full justify-end">
+        <Link className="bg-slate-200 text-lg px-6 py-1 rounded-md" href="/">
+          Back
+        </Link>
+      </div>
       <form action={formAction}>
-        <h3 className="text-2xl mt-10 mb-6">Add a New Memo</h3>
+        <h3 className="text-2xl mt-1 mb-6">Add a New Memo</h3>
         <div className="flex flex-col gap-4">
           <div>
             <label className="w-12 text-lg" htmlFor="title">
