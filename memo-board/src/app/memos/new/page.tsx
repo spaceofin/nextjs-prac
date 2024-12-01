@@ -1,11 +1,14 @@
 "use client";
 
 import { useActionState } from "react";
+import { createMemo } from "@/app/service/memosServies";
+
+const initialState = {
+  message: "",
+};
 
 export default function MemoCreatePage() {
-  const [state, formAction] = useActionState(() => {
-    console.log("form sumitted");
-  }, null);
+  const [state, formAction] = useActionState(createMemo, initialState);
 
   return (
     <div className="mx-14">
@@ -13,7 +16,9 @@ export default function MemoCreatePage() {
         <h3 className="text-2xl mt-10 mb-6">Add a New Memo</h3>
         <div className="flex flex-col gap-4">
           <div>
-            <label className="w-12 text-lg">TITLE</label>
+            <label className="w-12 text-lg" htmlFor="title">
+              TITLE
+            </label>
             <input
               id="title"
               name="title"
@@ -21,13 +26,20 @@ export default function MemoCreatePage() {
             />
           </div>
           <div>
-            <label className="w-12 text-lg">CONTENT</label>
+            <label className="w-12 text-lg" htmlFor="content">
+              CONTENT
+            </label>
             <textarea
               id="content"
               name="content"
               className="border rounded p-2 w-full"
             />
           </div>
+          {state.message ? (
+            <div className="my-2 p-2 bg-red-200 border rounded border-red-400">
+              {state.message}
+            </div>
+          ) : null}
           <button type="submit" className="rounded p-2 text-xl bg-orange-200">
             Create
           </button>
