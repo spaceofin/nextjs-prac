@@ -53,3 +53,13 @@ export async function deleteMemo(id: number) {
   revalidatePath("/");
   redirect("/");
 }
+
+export async function editMemo(id: number, title: string, content: string) {
+  await db.memo.update({
+    where: { id },
+    data: { title, content },
+  });
+
+  revalidatePath("/");
+  redirect("/");
+}
