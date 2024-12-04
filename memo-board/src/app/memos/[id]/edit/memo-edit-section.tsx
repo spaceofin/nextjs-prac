@@ -2,14 +2,9 @@
 
 import { editMemo } from "@/app/service/memosServies";
 import { useState } from "react";
+import type { Memo } from "@prisma/client";
 
-type memoProps = {
-  id: number;
-  title: string;
-  content: string;
-};
-
-export default function MemoEditSection({ memo }: { memo: memoProps }) {
+export default function MemoEditSection({ memo }: { memo: Memo }) {
   const [title, setTitle] = useState(memo.title);
   const [content, setContent] = useState(memo.content);
 

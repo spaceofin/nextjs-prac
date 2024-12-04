@@ -16,7 +16,7 @@ export default async function Home() {
           </Link>
         </div>
         {memos.map((memo) => (
-          <Link href={`/memos/${memo.id}`}>
+          <Link key={memo.id} href={`/memos/${memo.id}`}>
             <MemoCard key={memo.id} memo={memo} />
           </Link>
         ))}

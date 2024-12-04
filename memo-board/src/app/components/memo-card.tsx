@@ -2,12 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { deleteMemo } from "../service/memosServies";
-
-type Memo = {
-  id: number;
-  title: string;
-  content: string;
-};
+import type { Memo } from "@prisma/client";
 
 export default function MemoCard({ memo }: { memo: Memo }) {
   const router = useRouter();
