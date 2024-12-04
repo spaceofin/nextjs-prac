@@ -5,7 +5,7 @@ import { createMemo } from "@/app/service/memosServies";
 import Link from "next/link";
 
 const initialState = {
-  message: "",
+  errors: {},
 };
 
 export default function MemoCreatePage() {
@@ -41,9 +41,11 @@ export default function MemoCreatePage() {
               className="border rounded p-2 w-full"
             />
           </div>
-          {state.message ? (
+          {state.errors ? (
             <div className="my-2 p-2 bg-red-200 border rounded border-red-400">
-              {state.message}
+              <p>{state.errors.title}</p>
+              <p>{state.errors.content}</p>
+              <p>{state.errors.db}</p>
             </div>
           ) : null}
           <button type="submit" className="rounded p-2 text-xl bg-orange-200">

@@ -3,40 +3,58 @@
 import { db } from "../db";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { z } from "zod";
+
+const createMemoSchema = z.object({
+  title: z
+    .string()
+    .min(1, { message: "Title must contain at least 1 character(s)" })
+    .max(50, { message: "Title must contain at most 50 character(s)" }),
+  content: z
+    .string()
+    .max(1000, { message: "Title must contain at most 1000 character(s)" })
+    .optional(),
+});
+
+interface CreateMemoFormState {
+  errors?: {
+    title?: string[];
+    content?: string[];
+    db?: string[];
+  };
+}
 
 export async function createMemo(
-  state: { message: string },
+  state: CreateMemoFormState,
   formData: FormData
-) {
+): Promise<CreateMemoFormState> {
+  const result = createMemoSchema.safeParse({
+    title: formData.get("title"),
+    content: formData.get("content"),
+  });
+
+  if (!result.success) {
+    console.log("error");
+    return {
+      errors: result.error.flatten().fieldErrors,
+    };
+  }
+
   try {
-    const title = formData.get("title");
-    const content = formData.get("content");
-
-    if (typeof title !== "string" || title.length > 50) {
-      return {
-        message: "Title must be 50 characters or fewer.",
-      };
-    }
-    if (typeof content !== "string" || content.length > 1000) {
-      return {
-        message: "Content must be 1000 characters or fewer.",
-      };
-    }
-
     await db.memo.create({
       data: {
-        title,
-        content,
+        title: result.data.title,
+        content: result.data.content || "",
       },
     });
   } catch (error: unknown) {
     if (error instanceof Error) {
       return {
-        message: error.message,
+        errors: { db: [error.message] },
       };
     } else {
       return {
-        message: "Something went wrong...",
+        errors: { db: ["Something went wrong..."] },
       };
     }
   }
