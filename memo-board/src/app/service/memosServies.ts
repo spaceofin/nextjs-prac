@@ -78,6 +78,8 @@ export async function editMemo(id: number, title: string, content: string) {
     data: { title, content },
   });
 
+  revalidatePath(`/memos/${id}`);
+  revalidatePath(`/memos/${id}/edit`);
   revalidatePath("/");
   redirect("/");
 }

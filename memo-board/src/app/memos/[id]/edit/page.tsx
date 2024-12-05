@@ -2,6 +2,14 @@ import { db } from "@/app/db";
 import { notFound } from "next/navigation";
 import MemoEditSection from "./memo-edit-section";
 
+export async function generateStaticParams() {
+  const memos = await db.memo.findMany();
+
+  return memos.map((memo) => {
+    return { id: memo.id.toString() };
+  });
+}
+
 export default async function MemoEdit({
   params,
 }: {

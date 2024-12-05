@@ -3,6 +3,14 @@ import { deleteMemo } from "@/app/service/memosServies";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+export async function generateStaticParams() {
+  const memos = await db.memo.findMany();
+
+  return memos.map((memo) => {
+    return { id: memo.id.toString() };
+  });
+}
+
 export default async function MemoDetail({
   params,
 }: {
