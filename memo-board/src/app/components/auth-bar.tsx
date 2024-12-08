@@ -21,7 +21,14 @@ export default function AuthBar() {
   } else if (session.data?.user) {
     authContent = (
       <>
-        <div className="flex justify-end pr-4 gap-2 mb-0">
+        <div className="flex justify-end pr-4 gap-4 mb-0">
+          <div className="flex justify-center items-center gap-1">
+            <img
+              className="rounded-full w-10 h-10"
+              src={session.data.user.image || ""}
+            />
+            <p className="text-lg font-bold">{session.data.user.name}</p>
+          </div>
           <button
             className="flex justify-center items-center w-24 h-10 border-2 border-lime-500 bg-lime-100 rounded-md"
             onClick={() => signOut()}>
