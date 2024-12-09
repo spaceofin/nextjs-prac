@@ -41,7 +41,7 @@ export default function MemoCreatePage() {
               className="border rounded p-2 w-full"
             />
           </div>
-          {state.errors ? (
+          {state.errors && Object.keys(state.errors).length !== 0 ? (
             <div className="my-2 p-2 bg-red-200 border rounded border-red-400">
               <p>{state.errors.title}</p>
               <p>{state.errors.content}</p>
