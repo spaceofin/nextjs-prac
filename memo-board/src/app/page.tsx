@@ -4,11 +4,21 @@ import { db } from "./db";
 import AuthBar from "./components/auth-bar";
 import { auth } from "@/app/auth";
 import NewButton from "./components/new-button";
+import {
+  fetchPrivateMemosByUserId,
+  fetchPublicMemosByUserId,
+} from "./service/memosServies";
 
 export default async function Home() {
-  const memos = await db.memo.findMany();
+  // const memos = await db.memo.findMany();
+  // const memos = await fetchPrivateMemosByUserId();
   const session = await auth();
   const isSignedIn = !!(session && session.user);
+
+  let memos;
+
+  if (isSignedIn) memos = await fetchPrivateMemosByUserId();
+  else memos = await fetchPublicMemosByUserId();
 
   return (
     <div className="flex flex-col my-10 gap-1">

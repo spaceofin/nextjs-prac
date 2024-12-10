@@ -4,6 +4,10 @@ import { db } from "../db";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { auth } from "../auth";
+import { Memo, User } from "@prisma/client";
+
+export type MemoWithUser = Memo & { user?: User };
 
 const createMemoSchema = z.object({
   title: z
@@ -21,6 +25,7 @@ interface CreateMemoFormState {
     title?: string[];
     content?: string[];
     db?: string[];
+    session?: string[];
   };
 }
 
@@ -40,11 +45,19 @@ export async function createMemo(
     };
   }
 
+  const session = await auth();
+  if (!session || !session.user || !session.user.id) {
+    return {
+      errors: { session: ["Please log in to continue."] },
+    };
+  }
+
   try {
     await db.memo.create({
       data: {
         title: result.data.title,
         content: result.data.content || "",
+        userId: session.user.id,
       },
     });
   } catch (error: unknown) {
@@ -82,4 +95,21 @@ export async function editMemo(id: number, title: string, content: string) {
   revalidatePath(`/memos/${id}/edit`);
   revalidatePath("/");
   redirect("/");
+}
+
+export async function fetchPrivateMemosByUserId(): Promise<Memo[]> {
+  const session = await auth();
+  if (!session || !session.user || !session.user.id) {
+    throw new Error("Please log in to continue.");
+  }
+
+  return db.memo.findMany({
+    where: { userId: session.user.id },
+  });
+}
+
+export async function fetchPublicMemosByUserId(): Promise<MemoWithUser[]> {
+  return db.memo.findMany({
+    include: { user: true },
+  });
 }
