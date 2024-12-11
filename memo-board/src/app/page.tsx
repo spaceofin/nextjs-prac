@@ -1,6 +1,5 @@
 import MemoCard from "./components/memo-card";
 import Link from "next/link";
-import { db } from "./db";
 import AuthBar from "./components/auth-bar";
 import { auth } from "@/app/auth";
 import NewButton from "./components/new-button";
@@ -10,8 +9,6 @@ import {
 } from "./service/memosServies";
 
 export default async function Home() {
-  // const memos = await db.memo.findMany();
-  // const memos = await fetchPrivateMemosByUserId();
   const session = await auth();
   const isSignedIn = !!(session && session.user);
 
