@@ -18,12 +18,14 @@ const createMemoSchema = z.object({
     .string()
     .max(1000, { message: "Title must contain at most 1000 character(s)" })
     .optional(),
+  isPublic: z.boolean(),
 });
 
 interface CreateMemoFormState {
   errors?: {
     title?: string[];
     content?: string[];
+    isPublic?: string[];
     db?: string[];
     session?: string[];
   };
@@ -36,6 +38,7 @@ export async function createMemo(
   const result = createMemoSchema.safeParse({
     title: formData.get("title"),
     content: formData.get("content"),
+    isPublic: formData.get("isPublic") === "on",
   });
 
   if (!result.success) {
@@ -58,6 +61,7 @@ export async function createMemo(
         title: result.data.title,
         content: result.data.content || "",
         userId: session.user.id,
+        isPublic: result.data.isPublic,
       },
     });
   } catch (error: unknown) {
@@ -85,10 +89,15 @@ export async function deleteMemo(id: number) {
   redirect("/");
 }
 
-export async function editMemo(id: number, title: string, content: string) {
+export async function editMemo(
+  id: number,
+  title: string,
+  content: string,
+  isPublic: boolean
+) {
   await db.memo.update({
     where: { id },
-    data: { title, content },
+    data: { title, content, isPublic },
   });
 
   revalidatePath(`/memos/${id}`);

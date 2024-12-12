@@ -20,6 +20,15 @@ export default function MemoCreatePage() {
       </div>
       <form action={formAction}>
         <h3 className="text-2xl mt-1 mb-6">Add a New Memo</h3>
+        <div className="flex justify-end items-center">
+          <label htmlFor="isPublic">Show to Others</label>
+          <input
+            id="isPublic"
+            name="isPublic"
+            type="checkbox"
+            className="w-4 h-4 mx-2"
+          />
+        </div>
         <div className="flex flex-col gap-4">
           <div>
             <label className="w-12 text-lg" htmlFor="title">
@@ -45,6 +54,7 @@ export default function MemoCreatePage() {
             <div className="my-2 p-2 bg-red-200 border rounded border-red-400">
               <p>{state.errors.title}</p>
               <p>{state.errors.content}</p>
+              <p>{state.errors.isPublic}</p>
               <p>{state.errors.db}</p>
             </div>
           ) : null}
