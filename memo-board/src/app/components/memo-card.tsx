@@ -7,6 +7,17 @@ export default function MemoCard({ memo }: { memo: MemoWithUser }) {
   const router = useRouter();
   const isPublicMemo = !!memo.user;
 
+  const handleDelClick = async (e: React.MouseEvent, id: number) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    try {
+      await deleteMemo(id);
+    } catch (error) {
+      console.error("error deleting memo:", error);
+    }
+  };
+
   return (
     <div className="flex justify-between border-2 border-slate-400 px-4 py-2 rounded-md">
       <div>
@@ -19,12 +30,17 @@ export default function MemoCard({ memo }: { memo: MemoWithUser }) {
         <div className="flex flex-col gap-1">
           <button
             className="bg-blue-300 px-2 rounded-md"
-            onClick={() => router.push(`/memos/${memo.id}/edit`)}>
+            onClick={(e: React.MouseEvent) => {
+              e.preventDefault();
+              e.stopPropagation();
+              router.push(`/memos/${memo.id}/edit`);
+            }}>
             Edit
           </button>
+
           <button
             className="bg-red-300 px-2 rounded-md"
-            onClick={() => deleteMemo(memo.id)}>
+            onClick={(e: React.MouseEvent) => handleDelClick(e, memo.id)}>
             Del
           </button>
         </div>

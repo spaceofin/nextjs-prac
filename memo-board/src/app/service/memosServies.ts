@@ -81,9 +81,13 @@ export async function createMemo(
 }
 
 export async function deleteMemo(id: number) {
-  await db.memo.delete({
-    where: { id },
-  });
+  try {
+    await db.memo.delete({
+      where: { id },
+    });
+  } catch (err) {
+    console.log("error deleting memo:", err);
+  }
 
   revalidatePath("/");
   redirect("/");
