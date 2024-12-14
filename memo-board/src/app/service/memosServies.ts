@@ -110,7 +110,7 @@ export async function editMemo(
   redirect("/");
 }
 
-export async function fetchPrivateMemosByUserId(): Promise<Memo[]> {
+export async function fetchAllMemosByUserId(): Promise<Memo[]> {
   const session = await auth();
   if (!session || !session.user || !session.user.id) {
     throw new Error("Please log in to continue.");
@@ -121,8 +121,8 @@ export async function fetchPrivateMemosByUserId(): Promise<Memo[]> {
   });
 }
 
-export async function fetchPublicMemosByUserId(): Promise<MemoWithUser[]> {
+export async function fetchPublicMemos(): Promise<MemoWithUser[]> {
   return db.memo.findMany({
-    include: { user: true },
+    where: { isPublic: true },
   });
 }

@@ -4,8 +4,8 @@ import AuthBar from "./components/auth-bar";
 import { auth } from "@/app/auth";
 import NewButton from "./components/new-button";
 import {
-  fetchPrivateMemosByUserId,
-  fetchPublicMemosByUserId,
+  fetchAllMemosByUserId,
+  fetchPublicMemos,
 } from "./service/memosServies";
 
 export default async function Home() {
@@ -14,8 +14,8 @@ export default async function Home() {
 
   let memos;
 
-  if (isSignedIn) memos = await fetchPrivateMemosByUserId();
-  else memos = await fetchPublicMemosByUserId();
+  if (isSignedIn) memos = await fetchAllMemosByUserId();
+  else memos = await fetchPublicMemos();
 
   return (
     <div className="flex flex-col my-10 gap-1">
