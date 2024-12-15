@@ -1,11 +1,12 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { signIn } from "../api/auth/sign-in";
 import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function AuthBar() {
   const session = useSession();
+  const router = useRouter();
 
   let authContent: React.ReactNode;
 
@@ -41,11 +42,11 @@ export default function AuthBar() {
     authContent = (
       <>
         <div className="flex justify-end pr-4 gap-2 mb-0">
-          <form action={signIn}>
-            <button className="flex justify-center items-center w-20 h-10 border-2 border-lime-500 bg-lime-100 rounded-md">
-              Sign In
-            </button>
-          </form>
+          <button
+            className="flex justify-center items-center w-20 h-10 border-2 border-lime-500 bg-lime-100 rounded-md"
+            onClick={() => router.push("/sign-in")}>
+            Sign In
+          </button>
           <form>
             <button className="flex justify-center items-center w-20 h-10 bg-lime-400 rounded-md">
               Sign Up
