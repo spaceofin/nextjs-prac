@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { MemoWithUser, deleteMemo } from "../service/memosServies";
+import { MemoWithUser, deleteMemo } from "../service/memos-service";
 
 export default function MemoCard({ memo }: { memo: MemoWithUser }) {
   const router = useRouter();

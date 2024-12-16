@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { createMemo } from "@/app/service/memosServies";
+import { createMemo } from "@/app/service/memos-service";
 import Link from "next/link";
 
 const initialState = {

@@ -6,7 +6,7 @@ import NewButton from "./components/new-button";
 import {
   fetchAllMemosByUserId,
   fetchPublicMemos,
-} from "./service/memosServies";
+} from "./service/memos-service";
 
 export default async function Home() {
   const session = await auth();

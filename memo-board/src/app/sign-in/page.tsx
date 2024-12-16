@@ -2,12 +2,13 @@
 
 import { useForm } from "react-hook-form";
 import { signIn } from "../api/auth/sign-in";
-import BackButton from "../components/back-button";
 
-type EmailSignInFormType = {
-  email: string;
-  password: string;
-};
+import { zodResolver } from "@hookform/resolvers/zod";
+import BackButton from "../components/back-button";
+import {
+  EmailSignInFormSchema,
+  EmailSignInFormType,
+} from "../validation/email-sign-in-schema";
 
 export default function SignInPage() {
   const {
@@ -15,6 +16,7 @@ export default function SignInPage() {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<EmailSignInFormType>({
+    resolver: zodResolver(EmailSignInFormSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -42,13 +44,7 @@ export default function SignInPage() {
                 <input
                   id="email"
                   type="email"
-                  {...register("email", {
-                    required: "Email is required",
-                    pattern: {
-                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                      message: "Enter a valid email",
-                    },
-                  })}
+                  {...register("email")}
                   className="border p-1 rounded"
                 />
                 {errors.email && (
@@ -64,13 +60,7 @@ export default function SignInPage() {
                 <input
                   id="password"
                   type="password"
-                  {...register("password", {
-                    required: "Password is required",
-                    minLength: {
-                      value: 4,
-                      message: "Password must be at least 4 characters",
-                    },
-                  })}
+                  {...register("password")}
                   className="border p-1 rounded"
                 />
                 {errors.password && (

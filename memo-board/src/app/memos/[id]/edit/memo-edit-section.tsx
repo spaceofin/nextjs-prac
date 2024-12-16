@@ -1,6 +1,6 @@
 "use client";
 
-import { editMemo } from "@/app/service/memosServies";
+import { editMemo } from "@/app/service/memos-service";
 import { Memo } from "@prisma/client";
 import { useState } from "react";
 

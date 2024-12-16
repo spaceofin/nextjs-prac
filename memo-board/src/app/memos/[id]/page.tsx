@@ -1,5 +1,5 @@
 import { db } from "@/app/db";
-import { deleteMemo } from "@/app/service/memosServies";
+import { deleteMemo } from "@/app/service/memos-service";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { auth } from "@/app/auth";
