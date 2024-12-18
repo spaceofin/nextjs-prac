@@ -47,11 +47,11 @@ export default function AuthBar() {
             onClick={() => router.push("/sign-in")}>
             Sign In
           </button>
-          <form>
-            <button className="flex justify-center items-center w-20 h-10 bg-lime-400 rounded-md">
-              Sign Up
-            </button>
-          </form>
+          <button
+            className="flex justify-center items-center w-20 h-10 bg-lime-400 rounded-md"
+            onClick={() => router.push("/sign-up")}>
+            Sign Up
+          </button>
         </div>
       </>
     );

@@ -6,24 +6,26 @@ import { signIn } from "../api/auth/sign-in";
 import { zodResolver } from "@hookform/resolvers/zod";
 import BackButton from "../components/back-button";
 import {
-  EmailSignInFormSchema,
-  EmailSignInFormType,
+  EmailSignUpFormSchema,
+  EmailSignUpFormType,
 } from "../validation/auth-schema";
 
-export default function SignInPage() {
+export default function SignUpPage() {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<EmailSignInFormType>({
-    resolver: zodResolver(EmailSignInFormSchema),
+  } = useForm<EmailSignUpFormType>({
+    resolver: zodResolver(EmailSignUpFormSchema),
     defaultValues: {
       email: "",
+      userName: "",
       password: "",
+      passwordConfirm: "",
     },
   });
 
-  const onSubmit = async (data: EmailSignInFormType) => {
+  const onSubmit = async (data: EmailSignUpFormType) => {
     console.log(data);
   };
 
@@ -31,7 +33,7 @@ export default function SignInPage() {
     <div className="flex flex-col w-full h-full justify-center items-center">
       <div className="flex flex-col items-end gap-1">
         <BackButton />
-        <div className="flex flex-col w-96 h-[400px] bg-gray-100 border-2 border-gray-500 rounded-md px-10 justify-center gap-2 font-sans">
+        <div className="flex flex-col w-96 h-[500px] bg-gray-100 border-2 border-gray-500 rounded-md px-10 justify-center gap-2 font-sans">
           <form
             onSubmit={handleSubmit(onSubmit)}
             noValidate
@@ -54,6 +56,22 @@ export default function SignInPage() {
                 )}
               </div>
               <div className="flex flex-col">
+                <label htmlFor="userName" className="pl-1">
+                  UserName
+                </label>
+                <input
+                  id="userName"
+                  type="text"
+                  {...register("userName")}
+                  className="border p-1 rounded"
+                />
+                {errors.userName && (
+                  <span className="text-red-500 text-sm pl-1">
+                    {errors.userName.message}
+                  </span>
+                )}
+              </div>
+              <div className="flex flex-col">
                 <label htmlFor="password" className="pl-1">
                   Password
                 </label>
@@ -69,16 +87,32 @@ export default function SignInPage() {
                   </span>
                 )}
               </div>
+              <div className="flex flex-col">
+                <label htmlFor="passwordConfirm" className="pl-1">
+                  PasswordConfirm
+                </label>
+                <input
+                  id="passwordConfirm"
+                  type="passwordConfirm"
+                  {...register("passwordConfirm")}
+                  className="border p-1 rounded"
+                />
+                {errors.passwordConfirm && (
+                  <span className="text-red-500 text-sm pl-1">
+                    {errors.passwordConfirm.message}
+                  </span>
+                )}
+              </div>
             </fieldset>
             <button
               type="submit"
               className="bg-sky-500 text-white py-2 px-4 rounded hover:bg-sky-600 mt-6 text-lg">
-              Sign in
+              Sign up
             </button>
           </form>
-          <form action={signIn}>
+          <form>
             <button className="w-full bg-slate-700 text-white py-2 px-4 rounded hover:bg-slate-900 mt-2 text-lg">
-              Sign in with Github
+              Sign up with Github
             </button>
           </form>
         </div>
