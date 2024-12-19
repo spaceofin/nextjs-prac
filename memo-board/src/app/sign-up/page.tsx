@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { signIn } from "../api/auth/sign-in";
+import { signIn } from "../actions.ts/sign-in";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import BackButton from "../components/back-button";

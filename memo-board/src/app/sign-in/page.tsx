@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { signIn } from "../api/auth/sign-in";
+import { signInWithGithub, signInWithCredentials } from "../actions.ts/sign-in";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import BackButton from "../components/back-button";
@@ -9,11 +9,15 @@ import {
   EmailSignInFormSchema,
   EmailSignInFormType,
 } from "../validation/auth-schema";
+import { useRouter } from "next/navigation";
 
 export default function SignInPage() {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<EmailSignInFormType>({
     resolver: zodResolver(EmailSignInFormSchema),
@@ -24,7 +28,18 @@ export default function SignInPage() {
   });
 
   const onSubmit = async (data: EmailSignInFormType) => {
-    console.log(data);
+    const response = await signInWithCredentials({
+      email: data.email,
+      password: data.password,
+    });
+
+    if (response?.error) {
+      setError("root", {
+        message: response.message,
+      });
+    } else {
+      router.push("/");
+    }
   };
 
   return (
@@ -70,13 +85,18 @@ export default function SignInPage() {
                 )}
               </div>
             </fieldset>
+            {errors.root?.message && (
+              <span className="text-red-500 text-sm pl-1">
+                {errors.root.message}
+              </span>
+            )}
             <button
               type="submit"
               className="bg-sky-500 text-white py-2 px-4 rounded hover:bg-sky-600 mt-6 text-lg">
               Sign in
             </button>
           </form>
-          <form action={signIn}>
+          <form action={signInWithGithub}>
             <button className="w-full bg-slate-700 text-white py-2 px-4 rounded hover:bg-slate-900 mt-2 text-lg">
               Sign in with Github
             </button>
