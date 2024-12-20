@@ -29,7 +29,11 @@ export async function signInWithCredentials({
   }
 
   try {
-    await auth.signIn("credentials", { email, password, redirect: false });
+    await auth.signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
   } catch (e) {
     return {
       error: true,

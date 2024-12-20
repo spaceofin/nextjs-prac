@@ -31,9 +31,11 @@ export const { handlers, auth, signOut, signIn } = NextAuth({
             throw new Error("Invalid Password.");
           }
         }
+
         return {
           id: user.id,
           email: user.email,
+          name: user.name,
         };
       },
     }),

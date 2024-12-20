@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { signIn } from "../actions.ts/sign-in";
+import { signInWithGithub } from "../actions.ts/sign-in";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import BackButton from "../components/back-button";
@@ -9,11 +9,15 @@ import {
   EmailSignUpFormSchema,
   EmailSignUpFormType,
 } from "../validation/auth-schema";
+import { signUpWithCredentials } from "../actions.ts/sign-up";
+import { useRouter } from "next/navigation";
 
 export default function SignUpPage() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<EmailSignUpFormType>({
     resolver: zodResolver(EmailSignUpFormSchema),
@@ -26,7 +30,20 @@ export default function SignUpPage() {
   });
 
   const onSubmit = async (data: EmailSignUpFormType) => {
-    console.log(data);
+    const response = await signUpWithCredentials({
+      email: data.email,
+      userName: data.userName,
+      password: data.password,
+      passwordConfirm: data.passwordConfirm,
+    });
+
+    if (response?.error) {
+      setError("root", {
+        message: response.message,
+      });
+    } else {
+      router.push("/");
+    }
   };
 
   return (
@@ -93,7 +110,7 @@ export default function SignUpPage() {
                 </label>
                 <input
                   id="passwordConfirm"
-                  type="passwordConfirm"
+                  type="password"
                   {...register("passwordConfirm")}
                   className="border p-1 rounded"
                 />
@@ -110,7 +127,7 @@ export default function SignUpPage() {
               Sign up
             </button>
           </form>
-          <form>
+          <form action={signInWithGithub}>
             <button className="w-full bg-slate-700 text-white py-2 px-4 rounded hover:bg-slate-900 mt-2 text-lg">
               Sign up with Github
             </button>
