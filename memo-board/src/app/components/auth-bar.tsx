@@ -1,11 +1,19 @@
 "use client";
 
+import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-export default function AuthBar() {
+export default function AuthBar({ userId }: { userId: string | undefined }) {
   const session = useSession();
+
+  useEffect(() => {
+    session.update();
+  }, [userId]);
+
+  console.log("user:", userId);
+  console.log("session:", session);
   const router = useRouter();
 
   let authContent: React.ReactNode;
@@ -24,10 +32,12 @@ export default function AuthBar() {
       <>
         <div className="flex justify-end pr-4 gap-4 mb-0">
           <div className="flex justify-center items-center gap-1">
-            <img
-              className="rounded-full w-10 h-10"
-              src={session.data.user.image || ""}
-            />
+            {session.data.user.image && (
+              <img
+                className="rounded-full w-10 h-10"
+                src={session.data.user.image}
+              />
+            )}
             <p className="text-lg font-bold">{session.data.user.name}</p>
           </div>
           <button

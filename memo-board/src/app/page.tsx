@@ -19,7 +19,7 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col my-10 gap-1">
-      <AuthBar />
+      <AuthBar userId={session?.user?.id} />
       {isSignedIn ? <NewButton isSignedIn={isSignedIn} /> : <NewButton />}
       {memos.map((memo) => (
         <Link key={memo.id} href={`/memos/${memo.id}`}>

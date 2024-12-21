@@ -4,6 +4,8 @@ import GitHub from "next-auth/providers/github";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { db } from "@/app/db";
 import { compare } from "bcryptjs";
+import { AdapterUser } from "next-auth/adapters";
+import { User } from "@prisma/client";
 
 export const { handlers, auth, signOut, signIn } = NextAuth({
   adapter: PrismaAdapter(db),
@@ -40,4 +42,19 @@ export const { handlers, auth, signOut, signIn } = NextAuth({
       },
     }),
   ],
+  session: {
+    strategy: "jwt",
+  },
+  callbacks: {
+    session: async ({ session, token }) => {
+      session.user = token.user as AdapterUser & User;
+      return session;
+    },
+    jwt: async ({ token, user }) => {
+      if (user) {
+        token.user = user;
+      }
+      return token;
+    },
+  },
 });
