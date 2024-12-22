@@ -124,5 +124,8 @@ export async function fetchAllMemosByUserId(): Promise<Memo[]> {
 export async function fetchPublicMemos(): Promise<MemoWithUser[]> {
   return db.memo.findMany({
     where: { isPublic: true },
+    include: {
+      user: true,
+    },
   });
 }

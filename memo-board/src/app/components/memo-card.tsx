@@ -2,10 +2,12 @@
 
 import { useRouter } from "next/navigation";
 import { MemoWithUser, deleteMemo } from "../service/memos-service";
+import { useSession } from "next-auth/react";
 
 export default function MemoCard({ memo }: { memo: MemoWithUser }) {
   const router = useRouter();
-  const isPublicMemo = !!memo.user;
+  const isPublicMemo = !!memo.isPublic;
+  const session = useSession();
 
   const handleDelClick = async (e: React.MouseEvent, id: number) => {
     e.preventDefault();
@@ -24,7 +26,7 @@ export default function MemoCard({ memo }: { memo: MemoWithUser }) {
         <p className="font-bold">{memo.title}</p>
         <p>{memo.content}</p>
       </div>
-      {isPublicMemo ? (
+      {isPublicMemo && session.status === "unauthenticated" ? (
         <div className="flex items-center">by {memo.user?.name}</div>
       ) : (
         <div className="flex flex-col gap-1">
