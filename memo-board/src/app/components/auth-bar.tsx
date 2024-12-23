@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { FcSettings } from "react-icons/fc";
+import Link from "next/link";
 
 export default function AuthBar({ userId }: { userId: string | undefined }) {
   const session = useSession();
@@ -40,11 +42,16 @@ export default function AuthBar({ userId }: { userId: string | undefined }) {
             )}
             <p className="text-lg font-bold">{session.data.user.name}</p>
           </div>
-          <button
-            className="flex justify-center items-center w-24 h-10 border-2 border-lime-500 bg-lime-100 rounded-md"
-            onClick={() => signOut()}>
-            Sign Out
-          </button>
+          <div className="flex gap-3 items-center">
+            <button
+              className="flex justify-center items-center w-24 h-10 border-2 border-lime-500 bg-lime-100 rounded-md"
+              onClick={() => signOut()}>
+              Sign Out
+            </button>
+            <Link href="/account-settings">
+              <FcSettings size={32} />
+            </Link>
+          </div>
         </div>
       </>
     );
