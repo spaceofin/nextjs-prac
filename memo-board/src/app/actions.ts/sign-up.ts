@@ -1,10 +1,7 @@
 "use server";
 
 import * as auth from "@/app/auth";
-import {
-  EmailSignInFormSchema,
-  EmailSignUpFormSchema,
-} from "../validation/auth-schema";
+import { EmailSignUpFormSchema } from "../validation/auth-schema";
 import { hash } from "bcryptjs";
 import { db } from "../db";
 

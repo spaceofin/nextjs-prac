@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "./components/header";
 import { SessionProvider } from "next-auth/react";
+import { ToastContainer } from "react-toastify";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,6 +24,7 @@ export default function RootLayout({
           <SessionProvider>
             <Header />
             {children}
+            <ToastContainer />
           </SessionProvider>
         </div>
       </body>

@@ -11,6 +11,7 @@ import {
 } from "../validation/auth-schema";
 import { signUpWithCredentials } from "../actions.ts/sign-up";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -42,6 +43,12 @@ export default function SignUpPage() {
         message: response.message,
       });
     } else {
+      toast.success("Signed up successfully!", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        theme: "colored",
+      });
       router.push("/");
     }
   };
