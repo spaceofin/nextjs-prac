@@ -26,6 +26,12 @@ export const PasswordMatchSchema = z
     }
   });
 
+export const PasswordChangeSchema = z
+  .object({
+    currentPassword: z.string().min(1, "Password is required"),
+  })
+  .and(PasswordMatchSchema);
+
 export const EmailSignUpFormSchema = z
   .object({
     email: z.string().email("Enter a valid email").min(1, "Email is required"),
@@ -35,3 +41,4 @@ export const EmailSignUpFormSchema = z
 
 export type EmailSignInFormType = z.infer<typeof EmailSignInFormSchema>;
 export type EmailSignUpFormType = z.infer<typeof EmailSignUpFormSchema>;
+export type PasswordChangeSchemaType = z.infer<typeof PasswordChangeSchema>;

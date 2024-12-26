@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { auth } from "../auth";
 import BackButton from "../components/back-button";
 import DeleteAccount from "./delete-account";
@@ -11,11 +12,18 @@ export default async function AccountSettings() {
         <BackButton />
       </div>
       <div className="flex flex-col justify-between w-[500px] h-[350px] bg-gray-200 rounded-md p-10 text-xl font-mono">
-        <div>
+        <div className="p-4">
           <p>Email: {session?.user?.email}</p>
           <p>Name: {session?.user?.name}</p>
         </div>
-        <DeleteAccount id={session?.user?.id!} />
+        <div className="flex flex-col gap-2">
+          <Link
+            href="/account-settings/change-password"
+            className="flex justify-center p-2 bg-orange-400 bg-opacity-80 rounded-md">
+            Change Password
+          </Link>
+          <DeleteAccount id={session?.user?.id!} />
+        </div>
       </div>
     </div>
   );

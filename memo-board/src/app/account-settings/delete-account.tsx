@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import ConfirmModal from "../components/confirm-modal";
-import deleteUser from "../service/account-service";
+import { deleteUser } from "../service/account-service";
 import { signOut } from "next-auth/react";
 
 export default function DeleteAccount({ id }: { id: string }) {
