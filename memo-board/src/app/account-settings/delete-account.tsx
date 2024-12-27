@@ -5,13 +5,13 @@ import ConfirmModal from "../components/confirm-modal";
 import { deleteUser } from "../service/account-service";
 import { signOut } from "next-auth/react";
 
-export default function DeleteAccount({ id }: { id: string }) {
+export default function DeleteAccount() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onConfirm = async (confirmed: boolean) => {
     if (confirmed === true) {
       try {
-        await deleteUser(id);
+        await deleteUser();
         signOut({ redirectTo: "/" });
       } catch (error) {
         console.error("error deleting user:", error);

@@ -22,7 +22,7 @@ export default async function AccountSettings() {
             className="flex justify-center p-2 bg-orange-400 bg-opacity-80 rounded-md">
             Change Password
           </Link>
-          <DeleteAccount id={session?.user?.id!} />
+          <DeleteAccount />
         </div>
       </div>
     </div>

@@ -5,7 +5,9 @@ import { db } from "../db";
 import { PasswordChangeSchema } from "../validation/auth-schema";
 import { compare, hash } from "bcryptjs";
 
-export async function deleteUser(id: string) {
+export async function deleteUser() {
+  const session = await auth();
+  const id = session?.user?.id;
   try {
     await db.user.delete({
       where: { id },
@@ -16,17 +18,16 @@ export async function deleteUser(id: string) {
 }
 
 export async function changePassword({
-  id,
   currentPassword,
   password,
   passwordConfirm,
 }: {
-  id: string;
   currentPassword: string;
   password: string;
   passwordConfirm: string;
 }) {
   const session = await auth();
+  const id = session?.user?.id;
 
   if (!session?.user?.id) {
     return {

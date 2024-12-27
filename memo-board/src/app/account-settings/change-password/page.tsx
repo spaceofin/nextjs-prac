@@ -7,14 +7,12 @@ import {
   PasswordChangeSchemaType,
 } from "@/app/validation/auth-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 export default function ChangePasswordPage() {
-  const session = useSession();
   const router = useRouter();
 
   const {
@@ -33,7 +31,6 @@ export default function ChangePasswordPage() {
 
   const onSubmit = async (data: PasswordChangeSchemaType) => {
     const response = await changePassword({
-      id: session?.data?.user?.id as string,
       currentPassword: data.currentPassword,
       password: data.password,
       passwordConfirm: data.passwordConfirm,
@@ -44,8 +41,7 @@ export default function ChangePasswordPage() {
         message: response.message,
       });
     } else {
-      toast.success("Password Changed successfully!", {
-        type: "info",
+      toast.info("Password Changed successfully!", {
         position: "bottom-right",
         autoClose: 3000,
         hideProgressBar: true,
