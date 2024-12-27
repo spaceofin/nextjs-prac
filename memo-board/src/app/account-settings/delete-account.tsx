@@ -4,6 +4,7 @@ import { useState } from "react";
 import ConfirmModal from "../components/confirm-modal";
 import { deleteUser } from "../service/account-service";
 import { signOut } from "next-auth/react";
+import { toast } from "react-toastify";
 
 export default function DeleteAccount() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -12,7 +13,15 @@ export default function DeleteAccount() {
     if (confirmed === true) {
       try {
         await deleteUser();
-        signOut({ redirectTo: "/" });
+        toast.info("Account deletion completed.", {
+          position: "bottom-right",
+          autoClose: 1000,
+          hideProgressBar: true,
+          theme: "colored",
+        });
+        setTimeout(() => {
+          signOut({ redirectTo: "/" });
+        }, 1000);
       } catch (error) {
         console.error("error deleting user:", error);
       }
