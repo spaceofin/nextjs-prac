@@ -6,6 +6,7 @@ import { db } from "@/app/db";
 import { compare } from "bcryptjs";
 import { AdapterUser } from "next-auth/adapters";
 import { User } from "@prisma/client";
+import { NextResponse } from "next/server";
 
 export const { handlers, auth, signOut, signIn } = NextAuth({
   adapter: PrismaAdapter(db),
@@ -46,6 +47,13 @@ export const { handlers, auth, signOut, signIn } = NextAuth({
     strategy: "jwt",
   },
   callbacks: {
+    authorized: async ({ request, auth }) => {
+      if (!auth) {
+        return NextResponse.redirect(new URL("/", request.url));
+      }
+
+      return !!auth;
+    },
     session: async ({ session, token }) => {
       session.user = token.user as AdapterUser & User;
       return session;
