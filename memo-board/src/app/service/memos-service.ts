@@ -129,3 +129,10 @@ export async function fetchPublicMemos(): Promise<MemoWithUser[]> {
     },
   });
 }
+
+export async function isMemoPublic(id: number) {
+  const memo = await db.memo.findFirst({
+    where: { id },
+  });
+  return memo?.isPublic;
+}
