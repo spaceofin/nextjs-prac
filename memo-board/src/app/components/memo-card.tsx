@@ -26,7 +26,7 @@ export default function MemoCard({ memo }: { memo: MemoWithUser }) {
         <p className="font-bold">{memo.title}</p>
         <p>{memo.content}</p>
       </div>
-      {isPublicMemo && session.status === "unauthenticated" ? (
+      {isPublicMemo && session.status !== "authenticated" ? (
         <div className="flex items-center">by {memo.user?.name}</div>
       ) : (
         <div className="flex flex-col gap-1">
