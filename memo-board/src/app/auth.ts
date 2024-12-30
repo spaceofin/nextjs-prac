@@ -49,14 +49,14 @@ export const { handlers, auth, signOut, signIn } = NextAuth({
   callbacks: {
     authorized: async ({ request, auth }) => {
       if (!auth) {
-        const path = request.url;
-        const regex = /\/memos\/(\d+)/;
-        const memoId = regex.exec(path)?.[1];
+        const url = new URL(request.url);
+        const path = url.pathname;
+        const regex = /\/memos\/(\d+)$/;
 
-        if (memoId) {
+        if (regex.test(path)) {
           try {
             const response = await fetch(
-              `${process.env.NEXT_PUBLIC_API_URL}/memos?memoId=${memoId}`
+              `${process.env.NEXT_PUBLIC_API_URL}${path}`
             );
 
             if (!response.ok) {
@@ -69,7 +69,11 @@ export const { handlers, auth, signOut, signIn } = NextAuth({
               return data.isMemoPublic;
             }
           } catch (error) {
-            console.error("Failed to check memo is public:", error);
+            console.error(
+              "Failed to parse response while checking memo is public:",
+              error
+            );
+            return NextResponse.redirect(new URL("/", request.url));
           }
         }
         return NextResponse.redirect(new URL("/", request.url));
