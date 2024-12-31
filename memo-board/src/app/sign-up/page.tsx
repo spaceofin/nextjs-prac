@@ -12,6 +12,7 @@ import {
 import { signUpWithCredentials } from "../actions.ts/sign-up";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import Link from "next/link";
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -38,6 +39,8 @@ export default function SignUpPage() {
       passwordConfirm: data.passwordConfirm,
     });
 
+    console.log(response);
+
     if (response?.error) {
       setError("root", {
         message: response.message,
@@ -57,7 +60,7 @@ export default function SignUpPage() {
     <div className="flex flex-col w-full h-full justify-center items-center">
       <div className="flex flex-col items-end gap-1">
         <BackButton />
-        <div className="flex flex-col w-96 h-[500px] bg-gray-100 border-2 border-gray-500 rounded-md px-10 justify-center gap-2 font-sans">
+        <div className="flex flex-col w-96 h-[550px] bg-gray-100 border-2 border-gray-500 rounded-md px-10 justify-center gap-2 font-sans">
           <form
             onSubmit={handleSubmit(onSubmit)}
             noValidate
@@ -139,6 +142,12 @@ export default function SignUpPage() {
               Sign up with Github
             </button>
           </form>
+          <div className="flex justify-center my-1 text-gray-700">
+            Already have an account?
+            <Link href="/sign-in" className="ml-2 underline">
+              Sign In
+            </Link>
+          </div>
         </div>
       </div>
     </div>

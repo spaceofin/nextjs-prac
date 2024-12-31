@@ -6,7 +6,7 @@ import { hash } from "bcryptjs";
 import { db } from "../db";
 
 export async function signUpWithGithub() {
-  return auth.signIn("github");
+  return auth.signIn("github", { redirectTo: "/" });
 }
 
 export async function signUpWithCredentials({

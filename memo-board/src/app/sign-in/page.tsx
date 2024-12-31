@@ -10,6 +10,7 @@ import {
   EmailSignInFormType,
 } from "../validation/auth-schema";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function SignInPage() {
   const router = useRouter();
@@ -101,6 +102,12 @@ export default function SignInPage() {
               Sign in with Github
             </button>
           </form>
+          <div className="flex justify-center my-1 text-gray-700">
+            Don't have an account?
+            <Link href="/sign-up" className="ml-2 underline">
+              Sign Up
+            </Link>
+          </div>
         </div>
       </div>
     </div>

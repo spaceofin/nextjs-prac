@@ -4,7 +4,7 @@ import * as auth from "@/app/auth";
 import { EmailSignInFormSchema } from "../validation/auth-schema";
 
 export async function signInWithGithub() {
-  return auth.signIn("github");
+  return auth.signIn("github", { redirectTo: "/" });
 }
 
 export async function signInWithCredentials({
