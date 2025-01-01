@@ -14,8 +14,8 @@ export default function AuthBar({ userId }: { userId: string | undefined }) {
     session.update();
   }, [userId]);
 
-  console.log("user:", userId);
-  console.log("session:", session);
+  // console.log("user:", userId);
+  // console.log("session:", session);
   const router = useRouter();
 
   let authContent: React.ReactNode;

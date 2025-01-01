@@ -2,9 +2,12 @@ import Link from "next/link";
 import { auth } from "../auth";
 import BackButton from "../components/back-button";
 import DeleteAccount from "./delete-account";
+import { User } from "@prisma/client";
 
 export default async function AccountSettings() {
   const session = await auth();
+  const user = session?.user as User;
+  const isOAuthUser = !user.password;
 
   return (
     <div className="relaltive flex flex-col justify-center items-center w-full h-full">
@@ -17,11 +20,13 @@ export default async function AccountSettings() {
           <p>Name: {session?.user?.name}</p>
         </div>
         <div className="flex flex-col gap-2">
-          <Link
-            href="/account-settings/change-password"
-            className="flex justify-center p-2 bg-orange-400 bg-opacity-80 rounded-md">
-            Change Password
-          </Link>
+          {!isOAuthUser && (
+            <Link
+              href="/account-settings/change-password"
+              className="flex justify-center p-2 bg-orange-400 bg-opacity-80 rounded-md">
+              Change Password
+            </Link>
+          )}
           <DeleteAccount />
         </div>
       </div>

@@ -77,6 +77,18 @@ export const { handlers, auth, signOut, signIn } = NextAuth({
           }
         }
         return NextResponse.redirect(new URL("/", request.url));
+      } else {
+        const user = auth.user as User;
+        const url = new URL(request.url);
+        // console.log("url:", url.toString());
+        if (
+          url.pathname == "/account-settings/change-password" &&
+          user.password === null
+        ) {
+          return NextResponse.redirect(
+            new URL("/account-settings", request.url)
+          );
+        }
       }
 
       return !!auth;
