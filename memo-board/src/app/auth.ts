@@ -94,12 +94,17 @@ export const { handlers, auth, signOut, signIn } = NextAuth({
       return !!auth;
     },
     session: async ({ session, token }) => {
-      session.user = token.user as AdapterUser & User;
+      session.user = token.user as AdapterUser;
+
       return session;
     },
     jwt: async ({ token, user }) => {
       if (user) {
-        token.user = user;
+        let isOAuthUser = false;
+        if ("password" in user && user.password === null) {
+          isOAuthUser = true;
+        }
+        token.user = { ...user, isOAuthUser: isOAuthUser };
       }
       return token;
     },
