@@ -1,12 +1,10 @@
-import MemoCard from "./components/memo-card";
-import Link from "next/link";
 import AuthBar from "./components/auth-bar";
 import { auth } from "@/app/auth";
-import NewButton from "./components/new-button";
 import {
   fetchAllMemosByUserId,
   fetchPublicMemos,
 } from "./service/memos-service";
+import { MemoCards } from "./components/memo-cards";
 
 export default async function Home() {
   const session = await auth();
@@ -20,12 +18,7 @@ export default async function Home() {
   return (
     <div className="flex flex-col my-10 gap-1">
       <AuthBar userId={session?.user?.id} />
-      {isSignedIn ? <NewButton isSignedIn={isSignedIn} /> : <NewButton />}
-      {memos.map((memo) => (
-        <Link key={memo.id} href={`/memos/${memo.id}`}>
-          <MemoCard key={memo.id} memo={memo} />
-        </Link>
-      ))}
+      <MemoCards memos={memos} isSignedIn={isSignedIn} />
     </div>
   );
 }
