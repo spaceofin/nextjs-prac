@@ -20,6 +20,8 @@ model User {
   accounts      Account[]
   sessions      Session[]
   memos         Memo[]
+  groups        UserGroup[]
+
   // Optional for WebAuthn support
   Authenticator Authenticator[]
  
@@ -85,12 +87,40 @@ model Authenticator {
 }
 
 model Memo {
-  id    Int    @id @default(autoincrement())
-  title String
-  content  String
-  userId  String
-  isPublic  Boolean    @default(false)
+  id         Int         @id @default(autoincrement())
+  title      String
+  content    String
+  userId     String
+  isPublic   Boolean     @default(false)
+  groupMemos GroupMemo[]
   
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model Group {
+  id         Int         @id @default(autoincrement())
+  name       String
+  members    UserGroup[]
+  memos      GroupMemo[]
+  createdAt  DateTime    @default(now())
+}
+
+model UserGroup {
+  id      Int   @id @default(autoincrement())
+  userId  String
+  groupId Int
+  user    User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  group   Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, groupId])
+}
+
+model GroupMemo {
+  id      Int   @id @default(autoincrement())
+  groupId Int
+  memoId  Int
+  group   Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  memo    Memo  @relation(fields: [memoId], references: [id], onDelete: Cascade)
+
+  @@unique([groupId, memoId])
+}
