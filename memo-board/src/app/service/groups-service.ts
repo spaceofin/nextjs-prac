@@ -5,6 +5,7 @@ import { db } from "../db";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { auth } from "../auth";
+import { Group } from "@prisma/client";
 
 const createGroupSchema = z.object({
   name: z
@@ -65,4 +66,19 @@ export async function createGroup(
 
   revalidatePath("/");
   redirect("/");
+}
+
+export async function fetchAllGroups(): Promise<Group[]> {
+  // const session = await auth();
+  // if (!session || !session.user || !session.user.id) {
+  //   throw new Error("Please log in to continue.");
+  // }
+
+  try {
+    const groups = await db.group.findMany();
+    return groups;
+  } catch (error) {
+    console.error("Error fetching groups:", error);
+    throw new Error("Could not fetch groups");
+  }
 }

@@ -6,6 +6,7 @@ import {
 } from "./service/memos-service";
 import { MemoCards } from "./components/memo-cards";
 import GroupsSection from "./components/groups-section";
+import { fetchAllGroups } from "./service/groups-service";
 
 export default async function Home() {
   const session = await auth();
@@ -16,11 +17,13 @@ export default async function Home() {
   if (isSignedIn) memos = await fetchAllMemosByUserId();
   else memos = await fetchPublicMemos();
 
+  const groups = await fetchAllGroups();
+
   return (
     <div className="flex flex-col my-10 gap-1">
       <AuthBar userId={session?.user?.id} />
       <MemoCards memos={memos} isSignedIn={isSignedIn} />
-      <GroupsSection />
+      <GroupsSection groups={groups} />
     </div>
   );
 }

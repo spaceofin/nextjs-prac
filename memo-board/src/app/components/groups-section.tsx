@@ -3,12 +3,13 @@
 import { useActionState, useState } from "react";
 import InputGroup from "./input-group";
 import { createGroup } from "../service/groups-service";
+import { Group } from "@prisma/client";
 
 const initialState = {
   errors: {},
 };
 
-export default function GroupsSection() {
+export default function GroupsSection({ groups }: { groups: Group[] }) {
   const [isCreateGroupVisible, setIsCreateGroupVisible] = useState(false);
   const [state, formAction] = useActionState(createGroup, initialState);
 
@@ -41,8 +42,14 @@ export default function GroupsSection() {
         </div>
       ) : null}
       <div className="bg-gray-200 w-full p-2">Search Bar</div>
-      <div className="flex flex-col h-full flex-grow w-full overflow-y-auto bg-white rounded-md break-words p-2">
-        Groups List
+      <div className="h-full flex-grow w-full overflow-y-auto bg-white rounded-md break-words p-2">
+        {groups.map((group) => (
+          <div
+            key={group.id}
+            className="inline-block py-1 px-2 mx-1 bg-gray-300 rounded-md">
+            {group.name}
+          </div>
+        ))}
       </div>
     </div>
   );
