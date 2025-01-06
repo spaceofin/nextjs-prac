@@ -5,17 +5,19 @@ import InputGroup from "./input-group";
 import { createGroup } from "../service/groups-service";
 import { Group } from "@prisma/client";
 import { GiCancel } from "react-icons/gi";
+import GroupSearchBar from "./group-search-bar";
 
 const initialState = {
   errors: {},
 };
 
-export default function GroupsSection({ groups }: { groups: Group[] }) {
+export default function GroupsSection({ allGroups }: { allGroups: Group[] }) {
+  const [groups, setGroups] = useState<Group[]>(allGroups);
   const [isCreateGroupVisible, setIsCreateGroupVisible] = useState(false);
   const [state, formAction] = useActionState(createGroup, initialState);
 
   return (
-    <div className="flex flex-col gap-4 pt-7 pb-10 bg-gray-100 rounded-md h-80 w-full px-10">
+    <div className="flex flex-col gap-3 pt-7 pb-10 bg-gray-100 rounded-md h-80 w-full px-10">
       <div className="flex justify-between items-center h-20">
         {isCreateGroupVisible ? (
           <>
@@ -47,7 +49,7 @@ export default function GroupsSection({ groups }: { groups: Group[] }) {
           <p>{state.errors.db}</p>
         </div>
       ) : null}
-      <div className="bg-gray-200 w-full p-2">Search Bar</div>
+      <GroupSearchBar setGroups={setGroups} />
       <div className="h-full flex-grow w-full overflow-y-auto bg-white rounded-md break-words p-2">
         {groups.map((group) => (
           <div

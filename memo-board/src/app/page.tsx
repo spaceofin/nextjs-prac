@@ -17,13 +17,13 @@ export default async function Home() {
   if (isSignedIn) memos = await fetchAllMemosByUserId();
   else memos = await fetchPublicMemos();
 
-  const groups = await fetchAllGroups();
+  const allGroups = await fetchAllGroups();
 
   return (
     <div className="flex flex-col my-10 gap-1">
       <AuthBar userId={session?.user?.id} />
       <MemoCards memos={memos} isSignedIn={isSignedIn} />
-      <GroupsSection groups={groups} />
+      <GroupsSection allGroups={allGroups} />
     </div>
   );
 }

@@ -69,16 +69,36 @@ export async function createGroup(
 }
 
 export async function fetchAllGroups(): Promise<Group[]> {
-  // const session = await auth();
-  // if (!session || !session.user || !session.user.id) {
-  //   throw new Error("Please log in to continue.");
-  // }
-
   try {
     const groups = await db.group.findMany();
     return groups;
   } catch (error) {
     console.error("Error fetching groups:", error);
     throw new Error("Could not fetch groups");
+  }
+}
+
+export async function fetchMatchingGroups(query: string): Promise<Group[]> {
+  try {
+    const session = await auth();
+    if (!session || !session.user || !session.user.id) {
+      throw new Error("Please log in to continue.");
+    }
+    const matchedGroups = await db.group.findMany({
+      where: {
+        name: { contains: query },
+      },
+    });
+    return matchedGroups;
+  } catch (error) {
+    if (
+      error instanceof Error &&
+      error.message === "Please log in to continue."
+    ) {
+      throw new Error(error.message);
+    } else {
+      console.error("Error fetching groups:", error);
+    }
+    return [];
   }
 }
