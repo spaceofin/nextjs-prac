@@ -4,6 +4,7 @@ import { useActionState, useState } from "react";
 import InputGroup from "./input-group";
 import { createGroup } from "../service/groups-service";
 import { Group } from "@prisma/client";
+import { GiCancel } from "react-icons/gi";
 
 const initialState = {
   errors: {},
@@ -17,12 +18,17 @@ export default function GroupsSection({ groups }: { groups: Group[] }) {
     <div className="flex flex-col gap-4 pt-7 pb-10 bg-gray-100 rounded-md h-80 w-full px-10">
       <div className="flex justify-between items-center h-20">
         {isCreateGroupVisible ? (
-          <InputGroup
-            formAction={formAction}
-            inputName="name"
-            label="Enter New Group Name:"
-            className="h-8"
-          />
+          <>
+            <InputGroup
+              formAction={formAction}
+              inputName="name"
+              label="Enter New Group Name:"
+              className="h-8"
+            />
+            <button onClick={() => setIsCreateGroupVisible(false)}>
+              <GiCancel className="text-gray-700 text-3xl ml-2" />
+            </button>
+          </>
         ) : (
           <>
             <h2 className="text-xl font-bold">Groups</h2>
