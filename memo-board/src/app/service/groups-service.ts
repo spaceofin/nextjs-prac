@@ -26,6 +26,13 @@ export async function createGroup(
   state: CreateGroupFormState,
   formData: FormData
 ): Promise<CreateGroupFormState> {
+  const session = await auth();
+  if (!session || !session.user || !session.user.id) {
+    return {
+      errors: { session: ["Please log in to continue."] },
+    };
+  }
+
   const result = createGroupSchema.safeParse({
     name: formData.get("name"),
   });
@@ -37,17 +44,11 @@ export async function createGroup(
     };
   }
 
-  const session = await auth();
-  if (!session || !session.user || !session.user.id) {
-    return {
-      errors: { session: ["Please log in to continue."] },
-    };
-  }
-
   try {
     await db.group.create({
       data: {
         name: result.data.name,
+        ownerId: session.user.id,
       },
     });
   } catch (error: unknown) {
