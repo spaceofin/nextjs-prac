@@ -6,6 +6,7 @@ import { createGroup } from "../service/groups-service";
 import { Group } from "@prisma/client";
 import { GiCancel } from "react-icons/gi";
 import GroupSearchBar from "./group-search-bar";
+import GroupJoinModal from "./group-join-modal";
 
 const initialState = {
   errors: {},
@@ -15,6 +16,22 @@ export default function GroupsSection({ allGroups }: { allGroups: Group[] }) {
   const [groups, setGroups] = useState<Group[]>(allGroups);
   const [isCreateGroupVisible, setIsCreateGroupVisible] = useState(false);
   const [state, formAction] = useActionState(createGroup, initialState);
+  const [isGroupJoinModalOpen, setIsGroupJoinModalOpen] = useState(false);
+  const [selectedGroup, setSelectedGroup] = useState("");
+
+  const onConfirm = async (confirmed: boolean) => {
+    if (confirmed === true) {
+      console.log("join button clicked");
+    } else {
+      console.log("cancel button clicked");
+    }
+    setIsGroupJoinModalOpen(false);
+  };
+
+  const handleGroupClick = (group: string) => {
+    setSelectedGroup(group);
+    setIsGroupJoinModalOpen(true);
+  };
 
   return (
     <div className="flex flex-col gap-3 pt-7 pb-10 bg-gray-100 rounded-md h-80 w-full px-10">
@@ -54,10 +71,14 @@ export default function GroupsSection({ allGroups }: { allGroups: Group[] }) {
         {groups.map((group) => (
           <div
             key={group.id}
-            className="inline-block py-1 px-2 mx-1 bg-gray-300 rounded-md">
+            className="inline-block py-1 px-2 mx-1 bg-gray-300 rounded-md hover:cursor-pointer"
+            onClick={() => handleGroupClick(group.name)}>
             {group.name}
           </div>
         ))}
+        {isGroupJoinModalOpen && (
+          <GroupJoinModal groupName={selectedGroup} onConfirm={onConfirm} />
+        )}
       </div>
     </div>
   );
