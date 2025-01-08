@@ -17,7 +17,7 @@ export default function GroupsSection({ allGroups }: { allGroups: Group[] }) {
   const [isCreateGroupVisible, setIsCreateGroupVisible] = useState(false);
   const [state, formAction] = useActionState(createGroup, initialState);
   const [isGroupJoinModalOpen, setIsGroupJoinModalOpen] = useState(false);
-  const [selectedGroup, setSelectedGroup] = useState("");
+  const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
 
   const onConfirm = async (confirmed: boolean) => {
     if (confirmed === true) {
@@ -28,8 +28,8 @@ export default function GroupsSection({ allGroups }: { allGroups: Group[] }) {
     setIsGroupJoinModalOpen(false);
   };
 
-  const handleGroupClick = (group: string) => {
-    setSelectedGroup(group);
+  const handleGroupClick = (groupId: number) => {
+    setSelectedGroupId(groupId);
     setIsGroupJoinModalOpen(true);
   };
 
@@ -72,12 +72,12 @@ export default function GroupsSection({ allGroups }: { allGroups: Group[] }) {
           <div
             key={group.id}
             className="inline-block py-1 px-2 mx-1 bg-gray-300 rounded-md hover:cursor-pointer"
-            onClick={() => handleGroupClick(group.name)}>
+            onClick={() => handleGroupClick(group.id)}>
             {group.name}
           </div>
         ))}
-        {isGroupJoinModalOpen && (
-          <GroupJoinModal groupName={selectedGroup} onConfirm={onConfirm} />
+        {isGroupJoinModalOpen && selectedGroupId && (
+          <GroupJoinModal groupId={selectedGroupId} onConfirm={onConfirm} />
         )}
       </div>
     </div>

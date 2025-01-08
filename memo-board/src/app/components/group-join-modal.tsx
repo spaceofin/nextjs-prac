@@ -1,20 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { GroupWithOwnerId, fetchGroupById } from "../service/groups-service";
 
 export default function GroupJoinModal({
-  groupName,
+  groupId,
   onConfirm,
 }: {
-  groupName: string;
+  groupId: number;
   onConfirm: (confirmed: boolean) => void;
 }) {
+  const [group, setGroup] = useState<GroupWithOwnerId | null>(null);
+
+  useEffect(() => {
+    const fetchGroup = async () => {
+      const group = await fetchGroupById(groupId);
+      setGroup(group);
+    };
+    fetchGroup();
+  }, []);
+
   return (
-    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-64 p-5 text-lg rounded-md bg-teal-100 border-4 border-teal-400 z-50 font-semibold">
+    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] h-64 p-5 text-lg rounded-md bg-teal-100 border-4 border-teal-400 z-50 font-semibold">
       <div className="flex flex-col"></div>
-      <p className="text-center text-2xl font-bold">{groupName}</p>
+      <p className="text-center text-2xl font-bold">{group?.name}</p>
       <div className="px-2 my-2 flex gap-2">
-        <p>owner: owner</p>
+        <p>owner: {group?.owner.name}</p>
         <p>/</p>
-        <p>member count: 00</p>
+        <p>member count: {group?.members.length}</p>
       </div>
       <p className="bg-teal-50 rounded-md h-24">description</p>
       <div className="flex justify-center gap-5 mt-4">

@@ -5,7 +5,7 @@ import { db } from "../db";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { auth } from "../auth";
-import { Group } from "@prisma/client";
+import { Group, UserGroup } from "@prisma/client";
 
 const createGroupSchema = z.object({
   name: z
@@ -75,7 +75,39 @@ export async function fetchAllGroups(): Promise<Group[]> {
     return groups;
   } catch (error) {
     console.error("Error fetching groups:", error);
-    throw new Error("Could not fetch groups");
+    return [];
+  }
+}
+
+export type GroupWithOwnerId = Group & {
+  owner: { name: string | null };
+  members: { userId: string | null }[];
+};
+
+export async function fetchGroupById(
+  id: number
+): Promise<GroupWithOwnerId | null> {
+  try {
+    const group = await db.group.findUnique({
+      where: { id },
+      include: {
+        owner: {
+          select: {
+            name: true,
+          },
+        },
+        members: {
+          select: {
+            userId: true,
+          },
+        },
+      },
+    });
+    if (group === null) throw new Error("Could not find group");
+    return group;
+  } catch (error) {
+    console.error("Error fetching group:", error);
+    return null;
   }
 }
 
