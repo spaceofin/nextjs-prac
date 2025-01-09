@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { fetchMatchingGroups } from "../service/groups-service";
+import { fetchAllGroups, fetchMatchingGroups } from "../service/groups-service";
 import { Group } from "@prisma/client";
 
 export default function GroupSearchBar({
@@ -27,6 +27,11 @@ export default function GroupSearchBar({
     }
   };
 
+  const handleAllClick = async () => {
+    const allGroups = await fetchAllGroups();
+    setGroups(allGroups);
+  };
+
   return (
     <div className="flex h-10 w-full">
       <input
@@ -43,6 +48,12 @@ export default function GroupSearchBar({
         disabled={!isUserLoggedIn}
         className="flex justify-center items-center h-full ml-2 p-2 border-2 border-green-700 text-green-700 bg-white font-bold rounded-md hover:bg-gray-200 hover:text-green-800">
         Search
+      </button>
+      <button
+        onClick={handleAllClick}
+        disabled={!isUserLoggedIn}
+        className="flex justify-center items-center h-full ml-1 p-3 text-white bg-green-600 font-bold rounded-md hover:bg-green-700 hover:text-gray-100 whitespace-nowrap">
+        All
       </button>
     </div>
   );
