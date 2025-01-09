@@ -1,11 +1,14 @@
+"use client";
+
 import { useState } from "react";
 import { fetchMatchingGroups } from "../service/groups-service";
 import { Group } from "@prisma/client";
-import { toast } from "react-toastify";
 
 export default function GroupSearchBar({
+  isUserLoggedIn,
   setGroups,
 }: {
+  isUserLoggedIn: boolean;
   setGroups: React.Dispatch<React.SetStateAction<Group[]>>;
 }) {
   const [value, setValue] = useState("");
@@ -19,12 +22,7 @@ export default function GroupSearchBar({
       const matchedGroups = await fetchMatchingGroups(value);
       setGroups(matchedGroups);
     } catch (error) {
-      toast.error("Please log in to continue.", {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: true,
-        theme: "colored",
-      });
+      console.error("Error occurred fetching matching groups");
       setValue("");
     }
   };
@@ -42,6 +40,7 @@ export default function GroupSearchBar({
       />
       <button
         onClick={handleSearchClick}
+        disabled={!isUserLoggedIn}
         className="flex justify-center items-center h-full ml-2 p-2 border-2 border-green-700 text-green-700 bg-white font-bold rounded-md hover:bg-gray-200 hover:text-green-800">
         Search
       </button>

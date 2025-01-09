@@ -27,7 +27,7 @@ export default function GroupJoinModal({
         <p>/</p>
         <p>member count: {group?.members.length}</p>
       </div>
-      <p className="bg-teal-50 rounded-md h-24">description</p>
+      <p className="bg-teal-50 rounded-md h-24 px-2">description</p>
       <div className="flex justify-center gap-5 mt-4">
         <button
           className="bg-teal-600 w-28 rounded-md text-white"

@@ -7,6 +7,8 @@ import { Group } from "@prisma/client";
 import { GiCancel } from "react-icons/gi";
 import GroupSearchBar from "./group-search-bar";
 import GroupJoinModal from "./group-join-modal";
+import { useSession } from "next-auth/react";
+import { toast } from "react-toastify";
 
 const initialState = {
   errors: {},
@@ -18,6 +20,7 @@ export default function GroupsSection({ allGroups }: { allGroups: Group[] }) {
   const [state, formAction] = useActionState(createGroup, initialState);
   const [isGroupJoinModalOpen, setIsGroupJoinModalOpen] = useState(false);
   const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
+  const session = useSession();
 
   const onConfirm = async (confirmed: boolean) => {
     if (confirmed === true) {
@@ -29,8 +32,30 @@ export default function GroupsSection({ allGroups }: { allGroups: Group[] }) {
   };
 
   const handleGroupClick = (groupId: number) => {
+    if (session.status !== "authenticated") {
+      toast.error("Please log in to continue.", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: true,
+        theme: "colored",
+      });
+      return;
+    }
     setSelectedGroupId(groupId);
     setIsGroupJoinModalOpen(true);
+  };
+
+  const handleCreateGroupClick = () => {
+    if (session.status !== "authenticated") {
+      toast.error("Please log in to continue.", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: true,
+        theme: "colored",
+      });
+      return;
+    }
+    setIsCreateGroupVisible(true);
   };
 
   return (
@@ -53,20 +78,22 @@ export default function GroupsSection({ allGroups }: { allGroups: Group[] }) {
             <h2 className="text-xl font-bold">Groups</h2>
             <button
               className=" bg-green-300 text-slate-700 text-lg py-1 px-4 rounded-md"
-              onClick={() => setIsCreateGroupVisible(true)}>
+              onClick={handleCreateGroupClick}>
               Create Group
             </button>
           </>
         )}
       </div>
-      {state.errors && Object.keys(state.errors).length !== 0 ? (
+      {state.errors?.name || state.errors?.db ? (
         <div className="text-red-500">
           <p>{state.errors.name}</p>
-          <p>{state.errors.session}</p>
           <p>{state.errors.db}</p>
         </div>
       ) : null}
-      <GroupSearchBar setGroups={setGroups} />
+      <GroupSearchBar
+        setGroups={setGroups}
+        isUserLoggedIn={session.status === "authenticated"}
+      />
       <div className="h-full flex-grow w-full overflow-y-auto bg-white rounded-md break-words p-2">
         {groups.map((group) => (
           <div
