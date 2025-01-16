@@ -21,7 +21,7 @@ const createMemoSchema = z.object({
   isPublic: z.boolean(),
 });
 
-interface CreateMemoFormState {
+export interface CreateMemoFormState {
   errors?: {
     title?: string[];
     content?: string[];
