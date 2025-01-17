@@ -4,8 +4,8 @@ import {
   createSlice,
 } from "@reduxjs/toolkit";
 import { RootState } from "@/redux/store";
-import { Memo } from "@prisma/client";
 import {
+  MemoWithUserName,
   fetchAllMemosByUserId,
   fetchPublicMemos as fetchPublicMemosService,
 } from "@/app/service/memos-service";
@@ -24,7 +24,7 @@ export const fetchPublicMemos = createAsyncThunk(
 );
 
 interface MemoState {
-  data: Memo[];
+  data: MemoWithUserName[];
   isLoading: boolean;
   error: SerializedError | null;
 }
@@ -45,16 +45,16 @@ const memosSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(fetchPublicMemos.fulfilled, (state, action) => {
-        state.isLoading = true;
+        state.isLoading = false;
         state.data = action.payload;
       })
       .addCase(fetchPublicMemos.rejected, (state, action) => {
-        state.isLoading = true;
+        state.isLoading = false;
         state.error = action.error;
       });
   },
 });
 
-export const selectMemo = (state: RootState) => state.memos;
+export const selectMemos = (state: RootState) => state.memos;
 
 export const memosReducer = memosSlice.reducer;

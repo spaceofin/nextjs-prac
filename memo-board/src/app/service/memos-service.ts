@@ -7,7 +7,8 @@ import { z } from "zod";
 import { auth } from "../auth";
 import { Memo, User } from "@prisma/client";
 
-export type MemoWithUser = Memo & { user?: User };
+// export type MemoWithUser = Memo & { user?: User };
+export type MemoWithUserName = Memo & { user: { name: string | null } };
 
 const createMemoSchema = z.object({
   title: z
@@ -121,11 +122,11 @@ export async function fetchAllMemosByUserId(): Promise<Memo[]> {
   });
 }
 
-export async function fetchPublicMemos(): Promise<MemoWithUser[]> {
+export async function fetchPublicMemos(): Promise<MemoWithUserName[]> {
   return db.memo.findMany({
     where: { isPublic: true },
     include: {
-      user: true,
+      user: { select: { name: true } },
     },
   });
 }

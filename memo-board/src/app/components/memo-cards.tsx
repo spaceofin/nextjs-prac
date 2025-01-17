@@ -1,17 +1,33 @@
+"use client";
+
 import MemoCard from "./memo-card";
 import { Memo } from "@prisma/client";
 import Link from "next/link";
 import NewButton from "./new-button";
-import { fetchPublicMemos } from "../service/memos-service";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import {
+  fetchPublicMemos,
+  selectMemos,
+} from "@/redux/features/memos/memosSlice";
+import { useEffect } from "react";
 
-export async function MemoCards({
+export function MemoCards({
   memos,
   isSignedIn,
 }: {
   memos: Memo[];
   isSignedIn: boolean;
 }) {
-  const memoList = await fetchPublicMemos();
+  const dispatch = useAppDispatch();
+  const { data } = useAppSelector(selectMemos);
+
+  useEffect(() => {
+    if (!isSignedIn) {
+      dispatch(fetchPublicMemos());
+    }
+  }, [isSignedIn]);
+
+  const memoList = data || memos;
 
   return (
     <div className="flex flex-col gap-1 py-5">
