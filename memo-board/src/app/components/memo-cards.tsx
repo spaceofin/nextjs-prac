@@ -7,6 +7,7 @@ import NewButton from "./new-button";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
   fetchPublicMemos,
+  fetchUserMemos,
   selectMemos,
 } from "@/redux/features/memos/memosSlice";
 import { useEffect } from "react";
@@ -22,7 +23,9 @@ export function MemoCards({
   const { data } = useAppSelector(selectMemos);
 
   useEffect(() => {
-    if (!isSignedIn) {
+    if (isSignedIn) {
+      dispatch(fetchUserMemos());
+    } else {
       dispatch(fetchPublicMemos());
     }
   }, [isSignedIn]);

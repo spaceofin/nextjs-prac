@@ -40,18 +40,20 @@ const memosSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder
-      .addCase(fetchPublicMemos.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(fetchPublicMemos.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.data = action.payload;
-      })
-      .addCase(fetchPublicMemos.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.error;
-      });
+    for (const thunk of [fetchUserMemos, fetchPublicMemos]) {
+      builder
+        .addCase(thunk.pending, (state) => {
+          state.isLoading = true;
+        })
+        .addCase(thunk.fulfilled, (state, action) => {
+          state.isLoading = false;
+          state.data = action.payload;
+        })
+        .addCase(thunk.rejected, (state, action) => {
+          state.isLoading = false;
+          state.error = action.error;
+        });
+    }
   },
 });
 

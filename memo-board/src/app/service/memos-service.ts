@@ -8,7 +8,7 @@ import { auth } from "../auth";
 import { Memo, User } from "@prisma/client";
 
 // export type MemoWithUser = Memo & { user?: User };
-export type MemoWithUserName = Memo & { user: { name: string | null } };
+export type MemoWithUserName = Memo & { user?: { name: string | null } };
 
 const createMemoSchema = z.object({
   title: z
