@@ -1,15 +1,23 @@
 "use client";
 
-import { useActionState } from "react";
-import { createMemo } from "@/app/service/memos-service";
+import { FormEvent } from "react";
 import Link from "next/link";
-
-const initialState = {
-  errors: {},
-};
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { createMemo, selectMemos } from "@/redux/features/memos/memosSlice";
+import { useRouter } from "next/navigation";
 
 export default function MemoCreatePage() {
-  const [state, formAction] = useActionState(createMemo, initialState);
+  const router = useRouter();
+
+  const dispatch = useAppDispatch();
+  const { error } = useAppSelector(selectMemos);
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const result = await dispatch(createMemo(formData));
+    if (result.type === "memos/createMemo/fulfilled") router.push("/");
+  };
 
   return (
     <div className="mx-14 pt-10">
@@ -18,7 +26,7 @@ export default function MemoCreatePage() {
           Back
         </Link>
       </div>
-      <form action={formAction}>
+      <form onSubmit={handleSubmit}>
         <h3 className="text-2xl mt-1 mb-6">Add a New Memo</h3>
         <div className="flex justify-end items-center">
           <label htmlFor="isPublic">Show to Others</label>
@@ -50,14 +58,11 @@ export default function MemoCreatePage() {
               className="border rounded p-2 w-full"
             />
           </div>
-          {state.errors && Object.keys(state.errors).length !== 0 ? (
+          {typeof error === "string" && (
             <div className="my-2 p-2 bg-red-200 border rounded border-red-400">
-              <p>{state.errors.title}</p>
-              <p>{state.errors.content}</p>
-              <p>{state.errors.isPublic}</p>
-              <p>{state.errors.db}</p>
+              {error}
             </div>
-          ) : null}
+          )}
           <button type="submit" className="rounded p-2 text-xl bg-orange-200">
             Create
           </button>

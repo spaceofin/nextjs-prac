@@ -5,9 +5,8 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { auth } from "../auth";
-import { Memo, User } from "@prisma/client";
+import { Memo } from "@prisma/client";
 
-// export type MemoWithUser = Memo & { user?: User };
 export type MemoWithUserName = Memo & { user?: { name: string | null } };
 
 const createMemoSchema = z.object({
@@ -22,7 +21,8 @@ const createMemoSchema = z.object({
   isPublic: z.boolean(),
 });
 
-export interface CreateMemoFormState {
+export interface MemoCreationResponse {
+  memo?: Memo;
   errors?: {
     title?: string[];
     content?: string[];
@@ -33,9 +33,8 @@ export interface CreateMemoFormState {
 }
 
 export async function createMemo(
-  state: CreateMemoFormState,
   formData: FormData
-): Promise<CreateMemoFormState> {
+): Promise<MemoCreationResponse> {
   const result = createMemoSchema.safeParse({
     title: formData.get("title"),
     content: formData.get("content"),
@@ -57,7 +56,7 @@ export async function createMemo(
   }
 
   try {
-    await db.memo.create({
+    const createdMemo = await db.memo.create({
       data: {
         title: result.data.title,
         content: result.data.content || "",
@@ -65,6 +64,7 @@ export async function createMemo(
         isPublic: result.data.isPublic,
       },
     });
+    return { memo: createdMemo };
   } catch (error: unknown) {
     if (error instanceof Error) {
       return {
@@ -76,9 +76,6 @@ export async function createMemo(
       };
     }
   }
-
-  revalidatePath("/");
-  redirect("/");
 }
 
 export async function deleteMemo(id: number) {
