@@ -99,12 +99,13 @@ model Memo {
 }
 
 model Group {
-  id         Int         @id @default(autoincrement())
-  name       String      @unique
-  ownerId    String
-  members    UserGroup[]
-  memos      GroupMemo[]
-  createdAt  DateTime    @default(now())
+  id          Int         @id @default(autoincrement())
+  name        String      @unique
+  ownerId     String
+  description String?
+  members     UserGroup[]
+  memos       GroupMemo[]
+  createdAt   DateTime    @default(now())
 
   owner      User  @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 }

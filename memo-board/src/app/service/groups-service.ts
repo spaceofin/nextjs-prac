@@ -1,22 +1,16 @@
 "use server";
 
-import { z } from "zod";
 import { db } from "../db";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { auth } from "../auth";
-import { Group, UserGroup } from "@prisma/client";
-
-const createGroupSchema = z.object({
-  name: z
-    .string()
-    .min(2, { message: "Group name must contain at least 2 characters" })
-    .max(50, { message: "Group name must contain at most 50 characters" }),
-});
+import { Group } from "@prisma/client";
+import { GroupCreateFormSchema } from "../validation/group-schema";
 
 interface CreateGroupFormState {
   errors?: {
     name?: string[];
+    description?: string[];
     db?: string[];
     session?: string[];
   };
@@ -33,12 +27,14 @@ export async function createGroup(
     };
   }
 
-  const result = createGroupSchema.safeParse({
+  const result = GroupCreateFormSchema.safeParse({
     name: formData.get("name"),
+    description: formData.get("description"),
   });
 
   if (!result.success) {
     console.log("error");
+    console.log(result.error.flatten().fieldErrors);
     return {
       errors: result.error.flatten().fieldErrors,
     };
@@ -49,10 +45,12 @@ export async function createGroup(
       data: {
         name: result.data.name,
         ownerId: session.user.id,
+        description: result.data.description,
       },
     });
   } catch (error: unknown) {
     if (error instanceof Error) {
+      console.error(error.message);
       return {
         errors: { db: [error.message] },
       };
