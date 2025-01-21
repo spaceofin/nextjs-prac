@@ -4,7 +4,7 @@ import { db } from "../db";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { auth } from "../auth";
-import { Group } from "@prisma/client";
+import { Group, UserGroup } from "@prisma/client";
 import { GroupCreateFormSchema } from "../validation/group-schema";
 
 interface CreateGroupFormState {
@@ -46,6 +46,7 @@ export async function createGroup(
         name: result.data.name,
         ownerId: session.user.id,
         description: result.data.description,
+        members: { create: { userId: session.user.id } },
       },
     });
   } catch (error: unknown) {
@@ -106,6 +107,35 @@ export async function fetchGroupById(
   } catch (error) {
     console.error("Error fetching group:", error);
     return null;
+  }
+}
+
+export type GroupWithMembers = Group & { members: UserGroup[] };
+
+export async function fetchGroupsByUserId(): Promise<GroupWithMembers[]> {
+  try {
+    const session = await auth();
+    if (!session || !session.user || !session.user.id) {
+      throw new Error("Please log in to continue.");
+    }
+
+    const userId = session.user.id;
+    const groups = await db.group.findMany({
+      where: {
+        members: {
+          some: {
+            userId: userId,
+          },
+        },
+      },
+      include: { members: true },
+    });
+
+    if (groups === null) return [];
+    return groups;
+  } catch (error) {
+    console.error("Error fetching group:", error);
+    return [];
   }
 }
 

@@ -7,10 +7,21 @@ import GroupJoinModal from "./group-join-modal";
 import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 import GroupCreateModal from "./group-create-modal";
+import MyGroupsModal from "./my-groups-modal";
+
+const showLoginRequiredToast = () => {
+  toast.error("Please log in to continue.", {
+    position: "top-center",
+    autoClose: 2000,
+    hideProgressBar: true,
+    theme: "colored",
+  });
+};
 
 export default function GroupsSection({ allGroups }: { allGroups: Group[] }) {
   const [groups, setGroups] = useState<Group[]>(allGroups);
   const [isCreateGroupVisible, setIsCreateGroupVisible] = useState(false);
+  const [isMyGroupVisible, setIsMyGroupVisible] = useState(false);
   const [isGroupJoinModalOpen, setIsGroupJoinModalOpen] = useState(false);
   const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
   const session = useSession();
@@ -26,12 +37,7 @@ export default function GroupsSection({ allGroups }: { allGroups: Group[] }) {
 
   const handleGroupClick = (groupId: number) => {
     if (session.status !== "authenticated") {
-      toast.error("Please log in to continue.", {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: true,
-        theme: "colored",
-      });
+      showLoginRequiredToast();
       return;
     }
     setSelectedGroupId(groupId);
@@ -40,15 +46,18 @@ export default function GroupsSection({ allGroups }: { allGroups: Group[] }) {
 
   const handleCreateGroupClick = () => {
     if (session.status !== "authenticated") {
-      toast.error("Please log in to continue.", {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: true,
-        theme: "colored",
-      });
+      showLoginRequiredToast();
       return;
     }
     setIsCreateGroupVisible(true);
+  };
+
+  const handleMyGroupClick = () => {
+    if (session.status !== "authenticated") {
+      showLoginRequiredToast();
+      return;
+    }
+    setIsMyGroupVisible(true);
   };
 
   return (
@@ -57,12 +66,22 @@ export default function GroupsSection({ allGroups }: { allGroups: Group[] }) {
         {isCreateGroupVisible && (
           <GroupCreateModal setIsCreateGroupVisible={setIsCreateGroupVisible} />
         )}
+        {isMyGroupVisible && (
+          <MyGroupsModal setIsMyGroupVisible={setIsMyGroupVisible} />
+        )}
         <h2 className="text-xl font-bold">Groups</h2>
-        <button
-          className=" bg-green-300 text-slate-700 text-lg py-1 px-4 rounded-md"
-          onClick={handleCreateGroupClick}>
-          Create Group
-        </button>
+        <div className="flex gap-2">
+          <button
+            className=" bg-green-300 text-slate-700 text-lg py-1 px-4 rounded-md"
+            onClick={handleCreateGroupClick}>
+            Create Group
+          </button>
+          <button
+            className=" bg-green-300 text-slate-700 text-lg py-1 px-4 rounded-md"
+            onClick={handleMyGroupClick}>
+            My Groups
+          </button>
+        </div>
       </div>
       <GroupSearchBar
         setGroups={setGroups}
