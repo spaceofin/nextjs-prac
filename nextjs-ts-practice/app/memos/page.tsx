@@ -1,6 +1,6 @@
 import { getMemos } from "@/lib/get-memos";
-import Link from "next/link";
 import { MDXMemo } from "@/types/mdx-types";
+import dynamic from "next/dynamic";
 
 type MonthMemoGroup = {
   [yearMonth: string]: {
@@ -20,6 +20,10 @@ function groupMemosByMonth(memos: MDXMemo[]) {
   return groupedMemos;
 }
 
+const MemoListCard = dynamic(() => import("./components/memo-list-card"), {
+  loading: () => <p>Loading...</p>,
+});
+
 export default async function MemosPage() {
   const memos = await getMemos();
 
@@ -28,17 +32,7 @@ export default async function MemosPage() {
   return (
     <div className="flex gap-10">
       {Object.entries(groupedMemos).map(([yearMonth, { memos }]) => (
-        <div className="flex flex-col font-mono border-2 bg-pink-500 bg-opacity-80 rounded-md py-5 pb-7 px-10 pr-12 text-xl">
-          <div className="mb-2 text-pink-700 font-bold ">{yearMonth}</div>
-          {memos.map((memo) => (
-            <Link
-              key={memo.frontmatter.title}
-              href={`/memos/${memo.frontmatter.title}`}
-              className="flex text-xl text-white no-underline">
-              {memo.frontmatter.title}
-            </Link>
-          ))}
-        </div>
+        <MemoListCard key={yearMonth} yearMonth={yearMonth} memos={memos} />
       ))}
     </div>
   );
