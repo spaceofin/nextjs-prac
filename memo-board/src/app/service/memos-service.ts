@@ -78,7 +78,7 @@ export async function createMemo(
   }
 }
 
-export async function deleteMemo(id: number) {
+export async function deleteMemoById(id: number) {
   try {
     await db.memo.delete({
       where: { id },
@@ -86,9 +86,6 @@ export async function deleteMemo(id: number) {
   } catch (err) {
     console.log("error deleting memo:", err);
   }
-
-  revalidatePath("/");
-  redirect("/");
 }
 
 export async function editMemo(

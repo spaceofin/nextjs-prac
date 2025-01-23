@@ -1,9 +1,9 @@
 import { db } from "@/app/db";
-import { deleteMemo } from "@/app/service/memos-service";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { auth } from "@/app/auth";
 import BackButton from "@/app/components/back-button";
+import DeleteMemoButton from "@/app/components/delete-memo-button";
 
 export async function generateStaticParams() {
   const memos = await db.memo.findMany();
@@ -28,8 +28,6 @@ export default async function MemoDetail({
 
   if (!memo) return notFound();
 
-  const deleteMemoAction = deleteMemo.bind(null, memo.id);
-
   return (
     <>
       <div className="flex flex-col h-full mt-10">
@@ -41,11 +39,10 @@ export default async function MemoDetail({
                 className="bg-blue-300 text-lg px-6 py-1 rounded-md">
                 Edit
               </Link>
-              <form action={deleteMemoAction}>
-                <button className="bg-red-300 text-lg px-6 py-1 rounded-md">
-                  Del
-                </button>
-              </form>
+              <DeleteMemoButton
+                memoId={memo.id}
+                className="text-lg px-6 py-1"
+              />
             </div>
           </div>
         ) : null}

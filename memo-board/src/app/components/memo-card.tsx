@@ -1,24 +1,14 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { MemoWithUser, deleteMemo } from "../service/memos-service";
+import { MemoWithUserName } from "../service/memos-service";
 import { useSession } from "next-auth/react";
+import DeleteMemoButton from "./delete-memo-button";
 
-export default function MemoCard({ memo }: { memo: MemoWithUser }) {
+export default function MemoCard({ memo }: { memo: MemoWithUserName }) {
   const router = useRouter();
   const isPublicMemo = !!memo.isPublic;
   const session = useSession();
-
-  const handleDelClick = async (e: React.MouseEvent, id: number) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    try {
-      await deleteMemo(id);
-    } catch (error) {
-      console.error("error deleting memo:", error);
-    }
-  };
 
   return (
     <div className="flex justify-between border-2 border-slate-400 px-4 py-2 rounded-md">
@@ -39,12 +29,7 @@ export default function MemoCard({ memo }: { memo: MemoWithUser }) {
             }}>
             Edit
           </button>
-
-          <button
-            className="bg-red-300 px-2 rounded-md"
-            onClick={(e: React.MouseEvent) => handleDelClick(e, memo.id)}>
-            Del
-          </button>
+          <DeleteMemoButton memoId={memo.id} className="px-2" />
         </div>
       )}
     </div>
