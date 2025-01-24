@@ -10,6 +10,7 @@ import {
   fetchPublicMemos as fetchPublicMemosService,
   createMemo as createMemoService,
   deleteMemoById,
+  editMemo as editMemoService,
 } from "@/app/service/memos-service";
 
 export const fetchUserMemos = createAsyncThunk("memos/fetchAll", async () => {
@@ -48,6 +49,24 @@ export const deleteMemo = createAsyncThunk(
   async (id: number) => {
     await deleteMemoById(id);
     return id;
+  }
+);
+
+export const editMemo = createAsyncThunk(
+  "memos/editMemo",
+  async ({
+    id,
+    title,
+    content,
+    isPublic,
+  }: {
+    id: number;
+    title: string;
+    content: string;
+    isPublic: boolean;
+  }) => {
+    await editMemoService(id, title, content, isPublic);
+    return { id, title, content, isPublic };
   }
 );
 
@@ -103,6 +122,19 @@ const memosSlice = createSlice({
         state.data = state.data.filter((memo) => memo.id !== action.payload);
       })
       .addCase(deleteMemo.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error;
+      })
+      .addCase(editMemo.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(editMemo.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.data = state.data.map((memo) =>
+          memo.id === action.payload.id ? { ...memo, ...action.payload } : memo
+        );
+      })
+      .addCase(editMemo.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error;
       });

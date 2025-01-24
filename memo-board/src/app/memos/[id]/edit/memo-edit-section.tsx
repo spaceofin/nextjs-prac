@@ -1,6 +1,7 @@
 "use client";
 
-import { editMemo } from "@/app/service/memos-service";
+import { editMemo } from "@/redux/features/memos/memosSlice";
+import { useAppDispatch } from "@/redux/hooks";
 import { Memo } from "@prisma/client";
 import { useState } from "react";
 
@@ -8,10 +9,11 @@ export default function MemoEditSection({ memo }: { memo: Memo }) {
   const [title, setTitle] = useState(memo.title);
   const [content, setContent] = useState(memo.content);
   const [isPublic, setIsPublic] = useState(memo.isPublic);
+  const dispatch = useAppDispatch();
 
   const handleEditDoneClick = async () => {
     try {
-      await editMemo(memo.id, title, content, isPublic);
+      dispatch(editMemo({ id: memo.id, title, content, isPublic }));
     } catch (error) {
       console.error("Error editing memo:", error);
     }
