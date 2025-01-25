@@ -1,13 +1,9 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-  useActionState,
-  useState,
-} from "react";
-import { createGroup } from "../service/groups-service";
-const initialState = {
-  errors: {},
-};
+"use client";
+
+import React, { Dispatch, FormEvent, SetStateAction, useState } from "react";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { createGroup, selectGroups } from "@/redux/features/groups/groupsSlice";
+import { useRouter } from "next/navigation";
 
 export default function GroupCreateModal({
   setIsCreateGroupVisible,
@@ -16,11 +12,20 @@ export default function GroupCreateModal({
 }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [state, formAction] = useActionState(createGroup, initialState);
+  const dispatch = useAppDispatch();
+  const { error } = useAppSelector(selectGroups);
+  const router = useRouter();
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const result = await dispatch(createGroup(formData));
+    if (result.type === "groups/createGroup/fulfilled") router.push("/");
+  };
 
   return (
     <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] h-64 p-5 text-lg rounded-md bg-teal-100 border-4 border-teal-400 z-50">
-      <form action={formAction} noValidate>
+      <form onSubmit={handleSubmit} noValidate>
         <div className="flex flex-col h-52 justify-between">
           <div className="flex flex-col gap-1">
             <div>
@@ -48,12 +53,9 @@ export default function GroupCreateModal({
               />
             </div>
           </div>
-          {state.errors?.name || state.errors?.description ? (
-            <div className="text-red-500 text-sm">
-              <p>{state.errors.name}</p>
-              <p>{state.errors.description}</p>
-            </div>
-          ) : null}
+          {typeof error === "string" && (
+            <div className="text-red-500 text-sm">{error}</div>
+          )}
           <div className="flex justify-center gap-5 mt-2">
             <button className="bg-teal-600 w-28 rounded-md text-white">
               Create

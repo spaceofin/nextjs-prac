@@ -7,7 +7,8 @@ import { auth } from "../auth";
 import { Group, UserGroup } from "@prisma/client";
 import { GroupCreateFormSchema } from "../validation/group-schema";
 
-interface CreateGroupFormState {
+export interface GroupCreationResponse {
+  group?: Group;
   errors?: {
     name?: string[];
     description?: string[];
@@ -17,9 +18,8 @@ interface CreateGroupFormState {
 }
 
 export async function createGroup(
-  state: CreateGroupFormState,
   formData: FormData
-): Promise<CreateGroupFormState> {
+): Promise<GroupCreationResponse> {
   const session = await auth();
   if (!session || !session.user || !session.user.id) {
     return {
@@ -34,14 +34,13 @@ export async function createGroup(
 
   if (!result.success) {
     console.log("error");
-    console.log(result.error.flatten().fieldErrors);
     return {
       errors: result.error.flatten().fieldErrors,
     };
   }
 
   try {
-    await db.group.create({
+    const createdGroup = await db.group.create({
       data: {
         name: result.data.name,
         ownerId: session.user.id,
@@ -49,6 +48,7 @@ export async function createGroup(
         members: { create: { userId: session.user.id } },
       },
     });
+    return { group: createdGroup };
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.error(error.message);
@@ -61,11 +61,6 @@ export async function createGroup(
       };
     }
   }
-
-  console.log("Group created!: ", result.data.name);
-
-  revalidatePath("/");
-  redirect("/");
 }
 
 export async function fetchAllGroups(): Promise<Group[]> {

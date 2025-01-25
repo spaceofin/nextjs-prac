@@ -8,6 +8,8 @@ import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 import GroupCreateModal from "./group-create-modal";
 import MyGroupsModal from "./my-groups-modal";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { selectGroups } from "@/redux/features/groups/groupsSlice";
 
 const showLoginRequiredToast = () => {
   toast.error("Please log in to continue.", {
@@ -19,12 +21,17 @@ const showLoginRequiredToast = () => {
 };
 
 export default function GroupsSection({ allGroups }: { allGroups: Group[] }) {
-  const [groups, setGroups] = useState<Group[]>(allGroups);
+  // const [groups, setGroups] = useState<Group[]>(allGroups);
   const [isCreateGroupVisible, setIsCreateGroupVisible] = useState(false);
   const [isMyGroupVisible, setIsMyGroupVisible] = useState(false);
   const [isGroupJoinModalOpen, setIsGroupJoinModalOpen] = useState(false);
   const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
   const session = useSession();
+
+  const dispatch = useAppDispatch();
+  const { data } = useAppSelector(selectGroups);
+
+  const GroupList = data || allGroups;
 
   const onConfirm = async (confirmed: boolean) => {
     if (confirmed === true) {
@@ -83,12 +90,12 @@ export default function GroupsSection({ allGroups }: { allGroups: Group[] }) {
           </button>
         </div>
       </div>
-      <GroupSearchBar
+      {/* <GroupSearchBar
         setGroups={setGroups}
         isUserLoggedIn={session.status === "authenticated"}
-      />
+      /> */}
       <div className="h-full flex-grow w-full overflow-y-auto bg-white rounded-md break-words p-2">
-        {groups.map((group) => (
+        {allGroups.map((group) => (
           <div
             key={group.id}
             className="inline-block py-1 px-2 mx-1 bg-gray-300 rounded-md hover:cursor-pointer"

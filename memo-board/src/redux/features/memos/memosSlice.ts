@@ -70,13 +70,13 @@ export const editMemo = createAsyncThunk(
   }
 );
 
-interface MemoState {
+interface MemosState {
   data: MemoWithUserName[];
   isLoading: boolean;
   error: SerializedError | null | string;
 }
 
-const initialState: MemoState = {
+const initialState: MemosState = {
   data: [],
   isLoading: false,
   error: null,
