@@ -1,17 +1,24 @@
 "use client";
 
 import { useState } from "react";
-import { fetchAllGroups, fetchMatchingGroups } from "../service/groups-service";
-import { Group } from "@prisma/client";
+import { fetchMatchingGroups } from "../service/groups-service";
+import { useAppSelector } from "@/redux/hooks";
+import {
+  GroupWithStringDate,
+  selectGroups,
+} from "@/redux/features/groups/groupsSlice";
 
 export default function GroupSearchBar({
   isUserLoggedIn,
-  setGroups,
+  setGroupsToDisplay,
 }: {
   isUserLoggedIn: boolean;
-  setGroups: React.Dispatch<React.SetStateAction<Group[]>>;
+  setGroupsToDisplay: React.Dispatch<
+    React.SetStateAction<GroupWithStringDate[]>
+  >;
 }) {
   const [value, setValue] = useState("");
+  const { data: allGroups } = useAppSelector(selectGroups);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
@@ -20,7 +27,11 @@ export default function GroupSearchBar({
   const handleSearchClick = async () => {
     try {
       const matchedGroups = await fetchMatchingGroups(value);
-      setGroups(matchedGroups);
+      const matchedGroupsWithStringDate = matchedGroups.map((group) => ({
+        ...group,
+        createdAt: group.createdAt.toISOString(),
+      }));
+      setGroupsToDisplay(matchedGroupsWithStringDate);
     } catch (error) {
       console.error("Error occurred fetching matching groups");
       setValue("");
@@ -28,8 +39,7 @@ export default function GroupSearchBar({
   };
 
   const handleAllClick = async () => {
-    const allGroups = await fetchAllGroups();
-    setGroups(allGroups);
+    setGroupsToDisplay(allGroups);
   };
 
   return (

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Group } from "@prisma/client";
 import GroupSearchBar from "./group-search-bar";
 import GroupJoinModal from "./group-join-modal";
@@ -8,8 +8,11 @@ import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 import GroupCreateModal from "./group-create-modal";
 import MyGroupsModal from "./my-groups-modal";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { selectGroups } from "@/redux/features/groups/groupsSlice";
+import { useAppDispatch } from "@/redux/hooks";
+import {
+  GroupWithStringDate,
+  fetchAllGroups,
+} from "@/redux/features/groups/groupsSlice";
 
 const showLoginRequiredToast = () => {
   toast.error("Please log in to continue.", {
@@ -21,7 +24,8 @@ const showLoginRequiredToast = () => {
 };
 
 export default function GroupsSection({ allGroups }: { allGroups: Group[] }) {
-  // const [groups, setGroups] = useState<Group[]>(allGroups);
+  const [groupsToDisplay, setGroupsToDisplay] =
+    useState<GroupWithStringDate[]>(allGroups);
   const [isCreateGroupVisible, setIsCreateGroupVisible] = useState(false);
   const [isMyGroupVisible, setIsMyGroupVisible] = useState(false);
   const [isGroupJoinModalOpen, setIsGroupJoinModalOpen] = useState(false);
@@ -29,9 +33,10 @@ export default function GroupsSection({ allGroups }: { allGroups: Group[] }) {
   const session = useSession();
 
   const dispatch = useAppDispatch();
-  const { data } = useAppSelector(selectGroups);
 
-  const GroupList = data || allGroups;
+  useEffect(() => {
+    dispatch(fetchAllGroups());
+  }, []);
 
   const onConfirm = async (confirmed: boolean) => {
     if (confirmed === true) {
@@ -90,12 +95,12 @@ export default function GroupsSection({ allGroups }: { allGroups: Group[] }) {
           </button>
         </div>
       </div>
-      {/* <GroupSearchBar
-        setGroups={setGroups}
+      <GroupSearchBar
+        setGroupsToDisplay={setGroupsToDisplay}
         isUserLoggedIn={session.status === "authenticated"}
-      /> */}
+      />
       <div className="h-full flex-grow w-full overflow-y-auto bg-white rounded-md break-words p-2">
-        {allGroups.map((group) => (
+        {groupsToDisplay.map((group) => (
           <div
             key={group.id}
             className="inline-block py-1 px-2 mx-1 bg-gray-300 rounded-md hover:cursor-pointer"
