@@ -76,10 +76,14 @@ export default function GroupsSection({ allGroups }: { allGroups: Group[] }) {
     <div className="flex flex-col gap-3 pt-7 pb-10 bg-gray-100 rounded-md h-80 w-full px-10">
       <div className="flex justify-between items-center h-20">
         {isCreateGroupVisible && (
-          <GroupCreateModal setIsCreateGroupVisible={setIsCreateGroupVisible} />
+          <GroupCreateModal
+            setIsCreateGroupVisible={() => setIsCreateGroupVisible(false)}
+          />
         )}
         {isMyGroupVisible && (
-          <MyGroupsModal setIsMyGroupVisible={setIsMyGroupVisible} />
+          <MyGroupsModal
+            setIsMyGroupVisible={() => setIsMyGroupVisible(false)}
+          />
         )}
         <h2 className="text-xl font-bold">Groups</h2>
         <div className="flex gap-2">

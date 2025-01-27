@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Dispatch, FormEvent, SetStateAction, useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { createGroup, selectGroups } from "@/redux/features/groups/groupsSlice";
 import { useRouter } from "next/navigation";
@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 export default function GroupCreateModal({
   setIsCreateGroupVisible,
 }: {
-  setIsCreateGroupVisible: Dispatch<SetStateAction<boolean>>;
+  setIsCreateGroupVisible: () => void;
 }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -63,7 +63,7 @@ export default function GroupCreateModal({
             <button
               type="button"
               className="bg-gray-200 w-28 rounded-md"
-              onClick={() => setIsCreateGroupVisible(false)}>
+              onClick={setIsCreateGroupVisible}>
               Cancel
             </button>
           </div>

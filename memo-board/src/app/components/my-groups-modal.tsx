@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   GroupWithMembers,
   fetchGroupsByUserId,
@@ -7,7 +7,7 @@ import {
 export default function MyGroupsModal({
   setIsMyGroupVisible,
 }: {
-  setIsMyGroupVisible: Dispatch<SetStateAction<boolean>>;
+  setIsMyGroupVisible: () => void;
 }) {
   const [myGroups, setMyGroups] = useState<GroupWithMembers[] | undefined>(
     undefined
@@ -42,7 +42,7 @@ export default function MyGroupsModal({
           <button
             type="button"
             className="bg-gray-200 w-28 rounded-md"
-            onClick={() => setIsMyGroupVisible(false)}>
+            onClick={setIsMyGroupVisible}>
             Cancel
           </button>
         </div>
