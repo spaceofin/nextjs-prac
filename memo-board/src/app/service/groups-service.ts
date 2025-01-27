@@ -1,11 +1,10 @@
 "use server";
 
 import { db } from "../db";
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { auth } from "../auth";
 import { Group, UserGroup } from "@prisma/client";
 import { GroupCreateFormSchema } from "../validation/group-schema";
+import { Prisma } from "@prisma/client";
 
 export interface GroupCreationResponse {
   group?: Group;
@@ -154,7 +153,33 @@ export async function fetchMatchingGroups(query: string): Promise<Group[]> {
       throw new Error(error.message);
     } else {
       console.error("Error fetching groups:", error);
+      return [];
     }
-    return [];
+  }
+}
+
+export async function joinGroup(groupId: number) {
+  try {
+    const session = await auth();
+    if (!session || !session.user || !session.user.id) {
+      throw new Error("Please log in to continue.");
+    }
+    await db.userGroup.create({
+      data: {
+        userId: session.user.id,
+        groupId,
+      },
+    });
+    return;
+  } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      return { error };
+    } else if (error instanceof Error) {
+      console.error("Error joining groups:", error.message);
+      throw new Error("Error joining groups");
+    }
   }
 }

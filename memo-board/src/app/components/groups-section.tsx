@@ -38,15 +38,6 @@ export default function GroupsSection({ allGroups }: { allGroups: Group[] }) {
     dispatch(fetchAllGroups());
   }, []);
 
-  const onConfirm = async (confirmed: boolean) => {
-    if (confirmed === true) {
-      console.log("join button clicked");
-    } else {
-      console.log("cancel button clicked");
-    }
-    setIsGroupJoinModalOpen(false);
-  };
-
   const handleGroupClick = (groupId: number) => {
     if (session.status !== "authenticated") {
       showLoginRequiredToast();
@@ -113,7 +104,10 @@ export default function GroupsSection({ allGroups }: { allGroups: Group[] }) {
           </div>
         ))}
         {isGroupJoinModalOpen && selectedGroupId && (
-          <GroupJoinModal groupId={selectedGroupId} onConfirm={onConfirm} />
+          <GroupJoinModal
+            groupId={selectedGroupId}
+            onModalCancel={() => setIsGroupJoinModalOpen(false)}
+          />
         )}
       </div>
     </div>
