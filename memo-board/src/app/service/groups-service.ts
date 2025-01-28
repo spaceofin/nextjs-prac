@@ -122,7 +122,9 @@ export async function fetchGroupsByUserId(): Promise<GroupWithMembers[]> {
           },
         },
       },
-      include: { members: true },
+      include: {
+        members: true,
+      },
     });
 
     if (groups === null) return [];
@@ -130,6 +132,70 @@ export async function fetchGroupsByUserId(): Promise<GroupWithMembers[]> {
   } catch (error) {
     console.error("Error fetching group:", error);
     return [];
+  }
+}
+
+export type GroupWithMemosVisible = Group & {
+  userGroupId: number;
+  isMemosVisible: boolean;
+};
+
+export async function fetchGroupsByUserIdWithMemosVisible(): Promise<
+  GroupWithMemosVisible[]
+> {
+  try {
+    const session = await auth();
+    if (!session || !session.user || !session.user.id) {
+      throw new Error("Please log in to continue.");
+    }
+
+    const userId = session.user.id;
+    const groups = await db.group.findMany({
+      where: {
+        members: {
+          some: {
+            userId: userId,
+          },
+        },
+      },
+      include: {
+        members: {
+          where: {
+            userId: userId,
+          },
+          select: {
+            id: true,
+            isMemosVisible: true,
+          },
+        },
+      },
+    });
+
+    const userGroups = groups.map(({ members, ...rest }) => ({
+      ...rest,
+      userGroupId: members[0]?.id,
+      isMemosVisible: members[0]?.isMemosVisible,
+    }));
+
+    if (userGroups === null) return [];
+    return userGroups;
+  } catch (error) {
+    console.error("Error fetching group:", error);
+    return [];
+  }
+}
+
+export async function toggelGroupMemosVisible(
+  userGroupId: number,
+  isMemosVisible: boolean
+) {
+  try {
+    await db.userGroup.update({
+      where: { id: userGroupId },
+      data: { isMemosVisible },
+    });
+  } catch (error) {
+    console.error("Error toggle group memos visible:", error);
   }
 }
 

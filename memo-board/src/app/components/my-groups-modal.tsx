@@ -1,25 +1,45 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import {
-  GroupWithMembers,
-  fetchGroupsByUserId,
+  GroupWithMemosVisible,
+  fetchGroupsByUserIdWithMemosVisible,
+  toggelGroupMemosVisible,
 } from "../service/groups-service";
+import { GrView } from "react-icons/gr";
+import { GrFormViewHide } from "react-icons/gr";
 
 export default function MyGroupsModal({
   setIsMyGroupVisible,
 }: {
   setIsMyGroupVisible: () => void;
 }) {
-  const [myGroups, setMyGroups] = useState<GroupWithMembers[] | undefined>(
+  const [myGroups, setMyGroups] = useState<GroupWithMemosVisible[] | undefined>(
     undefined
   );
 
   useEffect(() => {
     const fetchGroups = async () => {
-      const groups = await fetchGroupsByUserId();
+      const groups = await fetchGroupsByUserIdWithMemosVisible();
       setMyGroups(groups);
     };
     fetchGroups();
   }, []);
+
+  const handleGroupMemosVisibleToggle = async (
+    groupId: number,
+    userGroupId: number,
+    isMemosVisible: boolean
+  ) => {
+    await toggelGroupMemosVisible(userGroupId, !isMemosVisible);
+    setMyGroups((prev) =>
+      prev?.map((group) =>
+        group.id === groupId
+          ? { ...group, isMemosVisible: !isMemosVisible }
+          : group
+      )
+    );
+  };
 
   return (
     <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] h-72 p-5 text-lg rounded-md bg-teal-100 border-4 border-teal-400 z-50">
@@ -32,8 +52,23 @@ export default function MyGroupsModal({
             {myGroups?.map((group) => (
               <div
                 key={group.id}
-                className="bg-teal-50 border border-gray-400 rounded-md px-4">
+                className="flex justify-between items-center bg-teal-50 border border-gray-400 rounded-md pl-4 pr-3">
                 <p>{group.name}</p>
+                <p
+                  className="hover:cursor-pointer"
+                  onClick={() =>
+                    handleGroupMemosVisibleToggle(
+                      group.id,
+                      group.userGroupId,
+                      group.isMemosVisible
+                    )
+                  }>
+                  {group.isMemosVisible ? (
+                    <GrView size={16} />
+                  ) : (
+                    <GrFormViewHide size={18} />
+                  )}
+                </p>
               </div>
             ))}
           </div>

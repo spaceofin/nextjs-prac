@@ -111,11 +111,12 @@ model Group {
 }
 
 model UserGroup {
-  id      Int   @id @default(autoincrement())
+  id      Int    @id @default(autoincrement())
   userId  String
   groupId Int
-  user    User  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  group   Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  isMemosVisible Boolean @default(false)
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  group   Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
 
   @@unique([userId, groupId])
 }

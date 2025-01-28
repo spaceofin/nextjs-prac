@@ -25,7 +25,7 @@ export default function GroupMemosSection() {
       </div>
       <div className="flex h-full gap-5">
         {groups.map((group) => (
-          <GroupMemosCard />
+          <GroupMemosCard key={group} />
         ))}
       </div>
     </div>
