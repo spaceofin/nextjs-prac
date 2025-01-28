@@ -33,13 +33,15 @@ export function MemoCards({
   const memoList = data || memos;
 
   return (
-    <div className="flex flex-col gap-1 py-5">
+    <div className="flex flex-col gap-1 mt-5">
       {isSignedIn ? <NewButton isSignedIn={isSignedIn} /> : <NewButton />}
-      {memoList.map((memo) => (
-        <Link key={memo.id} href={`/memos/${memo.id}`}>
-          <MemoCard key={memo.id} memo={memo} />
-        </Link>
-      ))}
+      <div className="flex flex-col gap-1 h-72 overflow-y-auto">
+        {memoList.map((memo) => (
+          <Link key={memo.id} href={`/memos/${memo.id}`}>
+            <MemoCard key={memo.id} memo={memo} />
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }
