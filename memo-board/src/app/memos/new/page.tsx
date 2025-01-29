@@ -1,12 +1,16 @@
 "use client";
 
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { createMemo, selectMemos } from "@/redux/features/memos/memosSlice";
 import { useRouter } from "next/navigation";
+import GroupSelect from "@/app/components/group-select";
+
+export type SelectedGroup = { id: number; name: string };
 
 export default function MemoCreatePage() {
+  const [selectedGroups, setSelectedGroups] = useState<SelectedGroup[]>([]);
   const router = useRouter();
 
   const dispatch = useAppDispatch();
@@ -35,6 +39,12 @@ export default function MemoCreatePage() {
             name="isPublic"
             type="checkbox"
             className="w-4 h-4 mx-2"
+          />
+        </div>
+        <div className="flex w-full">
+          <GroupSelect
+            selectedGroups={selectedGroups}
+            setSelectedGroups={setSelectedGroups}
           />
         </div>
         <div className="flex flex-col gap-4">
