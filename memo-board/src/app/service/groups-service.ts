@@ -5,6 +5,7 @@ import { auth } from "../auth";
 import { Group, UserGroup } from "@prisma/client";
 import { GroupCreateFormSchema } from "../validation/group-schema";
 import { Prisma } from "@prisma/client";
+import { PinnedGroupWithMemos } from "@/redux/features/groups/pinnedGroupsSlice";
 
 export interface GroupCreationResponse {
   group?: Group;
@@ -248,4 +249,62 @@ export async function joinGroup(groupId: number) {
       throw new Error("Error joining groups");
     }
   }
+}
+
+export async function fetchNewPinnedGroupMemos(
+  groupId: number
+): Promise<PinnedGroupWithMemos> {
+  const groupMemos = await db.group.findUnique({
+    where: { id: groupId },
+    include: { memos: { include: { memo: true } } },
+  });
+
+  if (!groupMemos) {
+    throw new Error(`Group with id ${groupId} not found`);
+  }
+
+  const { id, name, memos } = groupMemos;
+  const memoList = memos.map((memo) => memo.memo);
+
+  return { id, name, memos: memoList };
+}
+
+export async function fetchPinnedGroupsMemos(): Promise<
+  PinnedGroupWithMemos[]
+> {
+  const session = await auth();
+  if (!session || !session.user || !session.user.id) {
+    throw new Error("Please log in to continue.");
+  }
+
+  const userId = session.user.id;
+  const memosVisibleGroupIds = await db.group.findMany({
+    where: {
+      members: {
+        some: {
+          userId: userId,
+          isMemosVisible: true,
+        },
+      },
+    },
+    select: { id: true },
+  });
+
+  const groupIds = memosVisibleGroupIds.map((group) => group.id);
+
+  const groupMemos = await db.group.findMany({
+    where: { id: { in: groupIds } },
+    include: { memos: { include: { memo: true } } },
+  });
+
+  if (!groupMemos) {
+    throw new Error(`Group with ids not found`);
+  }
+
+  const pinnedGroupsMemos = groupMemos.map(({ id, name, memos }) => ({
+    id,
+    name,
+    memos: memos.map((memo) => memo.memo),
+  }));
+  return pinnedGroupsMemos;
 }

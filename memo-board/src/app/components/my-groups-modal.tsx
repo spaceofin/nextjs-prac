@@ -8,6 +8,8 @@ import {
 } from "../service/groups-service";
 import { GrView } from "react-icons/gr";
 import { GrFormViewHide } from "react-icons/gr";
+import { useAppDispatch } from "@/redux/hooks";
+import { fetchNewPinnedGroupMemos } from "@/redux/features/groups/pinnedGroupsSlice";
 
 export default function MyGroupsModal({
   setIsMyGroupVisible,
@@ -17,6 +19,7 @@ export default function MyGroupsModal({
   const [myGroups, setMyGroups] = useState<GroupWithMemosVisible[] | undefined>(
     undefined
   );
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const fetchGroups = async () => {
@@ -39,6 +42,9 @@ export default function MyGroupsModal({
           : group
       )
     );
+    if (!isMemosVisible) {
+      dispatch(fetchNewPinnedGroupMemos(groupId));
+    }
   };
 
   return (

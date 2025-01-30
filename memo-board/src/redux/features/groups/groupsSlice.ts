@@ -16,7 +16,6 @@ export type GroupWithStringDate = Omit<Group, "createdAt"> & {
 
 export const fetchAllGroups = createAsyncThunk("groups/fetchAll", async () => {
   const groups = await fetchAllGroupsService();
-
   const groupsWithStringDate = groups.map(
     (group) =>
       ({
@@ -58,7 +57,7 @@ const initialState: GroupsState = {
 };
 
 const groupsSlice = createSlice({
-  name: "memos",
+  name: "groups",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
