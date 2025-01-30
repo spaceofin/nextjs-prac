@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { createMemo, selectMemos } from "@/redux/features/memos/memosSlice";
@@ -11,6 +11,7 @@ export type SelectedGroup = { id: number; name: string };
 
 export default function MemoCreatePage() {
   const [selectedGroups, setSelectedGroups] = useState<SelectedGroup[]>([]);
+  const [isPublicChecked, setIsPublicChecked] = useState(false);
   const router = useRouter();
 
   const dispatch = useAppDispatch();
@@ -22,6 +23,14 @@ export default function MemoCreatePage() {
     const result = await dispatch(createMemo(formData));
     if (result.type === "memos/createMemo/fulfilled") router.push("/");
   };
+
+  useEffect(() => {
+    if (selectedGroups.length > 0) {
+      setIsPublicChecked(true);
+    } else {
+      setIsPublicChecked(false);
+    }
+  }, [selectedGroups]);
 
   return (
     <div className="mx-14 pt-10">
@@ -38,6 +47,9 @@ export default function MemoCreatePage() {
             id="isPublic"
             name="isPublic"
             type="checkbox"
+            checked={isPublicChecked}
+            onChange={(e) => setIsPublicChecked(e.target.checked)}
+            disabled={selectedGroups.length > 0}
             className="w-4 h-4 mx-2"
           />
         </div>

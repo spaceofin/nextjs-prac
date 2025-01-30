@@ -20,6 +20,7 @@ export default function GroupSelect({
   const dispatch = useAppDispatch();
 
   const onSelectedGroupChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    if (e.target.value === "") return;
     const groupId = parseInt(
       e.target.selectedOptions[0].dataset.groupId as string
     );
@@ -73,7 +74,7 @@ export default function GroupSelect({
           name="groupSelect"
           onChange={onSelectedGroupChange}
           className="h-6 bg-green-300 px-3 rounded-md w-32">
-          <option />
+          <option value="" />
           {groups.map((group) => (
             <option key={group.id} value={group.name} data-group-id={group.id}>
               {group.name}
