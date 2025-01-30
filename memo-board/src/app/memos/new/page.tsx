@@ -20,7 +20,10 @@ export default function MemoCreatePage() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
-    const result = await dispatch(createMemo(formData));
+
+    const groupIdsForMemo = selectedGroups.map((group) => group.id);
+
+    const result = await dispatch(createMemo({ formData, groupIdsForMemo }));
     if (result.type === "memos/createMemo/fulfilled") router.push("/");
   };
 

@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { auth } from "../auth";
-import { Memo } from "@prisma/client";
+import { GroupMemo, Memo } from "@prisma/client";
 
 export type MemoWithUserName = Memo & { user?: { name: string | null } };
 
@@ -32,9 +32,13 @@ export interface MemoCreationResponse {
   };
 }
 
-export async function createMemo(
-  formData: FormData
-): Promise<MemoCreationResponse> {
+export async function createMemo({
+  formData,
+  groupIdsForMemo,
+}: {
+  formData: FormData;
+  groupIdsForMemo: number[];
+}): Promise<MemoCreationResponse> {
   const result = createMemoSchema.safeParse({
     title: formData.get("title"),
     content: formData.get("content"),
@@ -64,6 +68,11 @@ export async function createMemo(
         isPublic: result.data.isPublic,
       },
     });
+
+    groupIdsForMemo.forEach(async (groupId) => {
+      await db.groupMemo.create({ data: { memoId: createdMemo.id, groupId } });
+    });
+
     return { memo: createdMemo };
   } catch (error: unknown) {
     if (error instanceof Error) {

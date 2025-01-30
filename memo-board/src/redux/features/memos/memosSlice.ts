@@ -28,8 +28,20 @@ export const fetchPublicMemos = createAsyncThunk(
 
 export const createMemo = createAsyncThunk(
   "memos/createMemo",
-  async (formData: FormData, { rejectWithValue }) => {
-    const { memo, errors } = await createMemoService(formData);
+  async (
+    {
+      formData,
+      groupIdsForMemo,
+    }: {
+      formData: FormData;
+      groupIdsForMemo: number[];
+    },
+    { rejectWithValue }
+  ) => {
+    const { memo, errors } = await createMemoService({
+      formData,
+      groupIdsForMemo,
+    });
     if (errors) {
       const errorMessages = Object.keys(errors)
         .map((key) => {
