@@ -10,8 +10,6 @@ import {
   selectPinnedGroups,
 } from "@/redux/features/groups/pinnedGroupsSlice";
 
-const MAX_GROUPS = 3;
-
 export default function GroupMemosSection() {
   const [isMyGroupVisible, setIsMyGroupVisible] = useState(false);
 

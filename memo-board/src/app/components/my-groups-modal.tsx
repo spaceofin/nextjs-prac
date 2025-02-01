@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   GroupWithMemosVisible,
   fetchGroupsByUserIdWithMemosVisible,
@@ -9,7 +9,13 @@ import {
 import { GrView } from "react-icons/gr";
 import { GrFormViewHide } from "react-icons/gr";
 import { useAppDispatch } from "@/redux/hooks";
-import { fetchNewPinnedGroupMemos } from "@/redux/features/groups/pinnedGroupsSlice";
+import {
+  fetchNewPinnedGroupMemos,
+  removePinnedGroupMemo,
+} from "@/redux/features/groups/pinnedGroupsSlice";
+import { toast } from "react-toastify";
+
+const MAX_PINNED_GROUPS = 3;
 
 export default function MyGroupsModal({
   setIsMyGroupVisible,
@@ -19,12 +25,17 @@ export default function MyGroupsModal({
   const [myGroups, setMyGroups] = useState<GroupWithMemosVisible[] | undefined>(
     undefined
   );
+  const pinnedGroupsCount = useRef(0);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     const fetchGroups = async () => {
       const groups = await fetchGroupsByUserIdWithMemosVisible();
       setMyGroups(groups);
+      pinnedGroupsCount.current = groups.reduce((count, group) => {
+        return group.isMemosVisible === true ? count + 1 : count;
+      }, 0);
     };
     fetchGroups();
   }, []);
@@ -34,6 +45,21 @@ export default function MyGroupsModal({
     userGroupId: number,
     isMemosVisible: boolean
   ) => {
+    if (
+      pinnedGroupsCount.current >= MAX_PINNED_GROUPS &&
+      isMemosVisible === false
+    ) {
+      toast.warn(
+        "Maximum pinned group is 3. Please remove other pinned group first.",
+        {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          theme: "colored",
+        }
+      );
+      return;
+    }
     await toggelGroupMemosVisible(userGroupId, !isMemosVisible);
     setMyGroups((prev) =>
       prev?.map((group) =>
@@ -44,6 +70,10 @@ export default function MyGroupsModal({
     );
     if (!isMemosVisible) {
       dispatch(fetchNewPinnedGroupMemos(groupId));
+      pinnedGroupsCount.current += 1;
+    } else {
+      dispatch(removePinnedGroupMemo(groupId));
+      pinnedGroupsCount.current -= 1;
     }
   };
 

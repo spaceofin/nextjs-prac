@@ -47,7 +47,11 @@ const initialState: PinnedGroupsState = {
 const pinnedGroupsSlice = createSlice({
   name: "pinnedGroups",
   initialState,
-  reducers: {},
+  reducers: {
+    removePinnedGroupMemo: (state, action) => {
+      state.data = state.data.filter((group) => group.id !== action.payload);
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchPinnedGroupsMemos.pending, (state) => {
@@ -76,5 +80,6 @@ const pinnedGroupsSlice = createSlice({
 });
 
 export const selectPinnedGroups = (state: RootState) => state.pinnedGroups;
+export const { removePinnedGroupMemo } = pinnedGroupsSlice.actions;
 
 export const pinnedGroupsReducer = pinnedGroupsSlice.reducer;
