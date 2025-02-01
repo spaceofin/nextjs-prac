@@ -121,6 +121,7 @@ const memosSlice = createSlice({
       .addCase(createMemo.fulfilled, (state, action) => {
         state.isLoading = false;
         state.data.push(action.payload as MemoWithUserName);
+        state.error = null;
       })
       .addCase(createMemo.rejected, (state, action) => {
         state.isLoading = false;
