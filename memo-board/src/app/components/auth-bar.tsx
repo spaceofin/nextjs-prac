@@ -35,11 +35,14 @@ export default function AuthBar({ userId }: { userId: string | undefined }) {
         <div className="flex justify-end pr-4 gap-4 mb-0">
           <div className="flex justify-center items-center gap-1">
             {session.data.user.image && (
-              <Image
-                className="rounded-full w-10 h-10"
-                src={session.data.user.image}
-                alt="User profile image"
-              />
+              <div className="rounded-full w-10 h-10 overflow-hidden">
+                <Image
+                  width={40}
+                  height={40}
+                  src={session.data.user.image}
+                  alt="User profile image"
+                />
+              </div>
             )}
             <p className="text-lg font-bold">{session.data.user.name}</p>
           </div>
