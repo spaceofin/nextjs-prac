@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { auth } from "../auth";
-import { GroupMemo, Memo } from "@prisma/client";
+import { Memo } from "@prisma/client";
 
 export type MemoWithUserName = Memo & { user?: { name: string | null } };
 

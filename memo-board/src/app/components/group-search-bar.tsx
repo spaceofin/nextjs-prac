@@ -33,7 +33,7 @@ export default function GroupSearchBar({
       }));
       setGroupsToDisplay(matchedGroupsWithStringDate);
     } catch (error) {
-      console.error("Error occurred fetching matching groups");
+      console.error("Error occurred fetching matching groups:", error);
       setValue("");
     }
   };

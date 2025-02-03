@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { signInWithGithub, signInWithCredentials } from "../actions.ts/sign-in";
+import { signInWithGithub, signInWithCredentials } from "../actions/sign-in";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import BackButton from "../components/back-button";
@@ -103,7 +103,7 @@ export default function SignInPage() {
             </button>
           </form>
           <div className="flex justify-center my-1 text-gray-700">
-            Don't have an account?
+            Don&apos;t have an account?
             <Link href="/sign-up" className="ml-2 underline">
               Sign Up
             </Link>

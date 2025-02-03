@@ -28,6 +28,7 @@ export function MemoCards({
     } else {
       dispatch(fetchPublicMemos());
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSignedIn]);
 
   const memoList = data || memos;

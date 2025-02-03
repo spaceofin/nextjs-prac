@@ -34,7 +34,7 @@ export async function signInWithCredentials({
       password,
       redirect: false,
     });
-  } catch (e) {
+  } catch {
     return {
       error: true,
       message: "Login failed. Check your credentials.",

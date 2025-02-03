@@ -21,6 +21,7 @@ export default function GroupJoinModal({
       setGroup(group);
     };
     fetchGroup();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleJoinClick = async () => {

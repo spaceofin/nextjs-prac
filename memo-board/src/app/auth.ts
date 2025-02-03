@@ -9,6 +9,7 @@ import { User } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 export const { handlers, auth, signOut, signIn } = NextAuth({
+  trustHost: true,
   adapter: PrismaAdapter(db),
   providers: [
     GitHub,

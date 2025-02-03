@@ -40,6 +40,7 @@ export default function GroupsSection({ allGroups }: { allGroups: Group[] }) {
     if (groups.length === 0) {
       dispatch(fetchAllGroups());
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

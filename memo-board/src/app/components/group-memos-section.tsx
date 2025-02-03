@@ -18,6 +18,7 @@ export default function GroupMemosSection() {
 
   useEffect(() => {
     dispatch(fetchPinnedGroupsMemos());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

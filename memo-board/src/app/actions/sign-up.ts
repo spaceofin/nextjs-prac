@@ -42,7 +42,7 @@ export async function signUpWithCredentials({
     await db.user.create({
       data: { email: email, name: userName, password: hashedPassword },
     });
-  } catch (e) {
+  } catch {
     return {
       error: true,
       message: "Sign up failed.",

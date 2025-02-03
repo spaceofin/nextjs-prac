@@ -6,16 +6,16 @@ import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { FcSettings } from "react-icons/fc";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function AuthBar({ userId }: { userId: string | undefined }) {
   const session = useSession();
 
   useEffect(() => {
     session.update();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
-  // console.log("user:", userId);
-  // console.log("session:", session);
   const router = useRouter();
 
   let authContent: React.ReactNode;
@@ -35,9 +35,10 @@ export default function AuthBar({ userId }: { userId: string | undefined }) {
         <div className="flex justify-end pr-4 gap-4 mb-0">
           <div className="flex justify-center items-center gap-1">
             {session.data.user.image && (
-              <img
+              <Image
                 className="rounded-full w-10 h-10"
                 src={session.data.user.image}
+                alt="User profile image"
               />
             )}
             <p className="text-lg font-bold">{session.data.user.name}</p>

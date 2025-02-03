@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { signInWithGithub } from "../actions.ts/sign-in";
+import { signInWithGithub } from "../actions/sign-in";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import BackButton from "../components/back-button";
@@ -9,7 +9,7 @@ import {
   EmailSignUpFormSchema,
   EmailSignUpFormType,
 } from "../validation/auth-schema";
-import { signUpWithCredentials } from "../actions.ts/sign-up";
+import { signUpWithCredentials } from "../actions/sign-up";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import Link from "next/link";

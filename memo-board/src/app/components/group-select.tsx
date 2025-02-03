@@ -41,6 +41,7 @@ export default function GroupSelect({
 
   useEffect(() => {
     if (groups.length === 0) dispatch(fetchAllGroups());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleDeSelectGroup = (group: SelectedGroup) => {
