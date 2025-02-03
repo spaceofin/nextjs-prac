@@ -8,10 +8,11 @@ import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 import GroupCreateModal from "./group-create-modal";
 import MyGroupsModal from "./my-groups-modal";
-import { useAppDispatch } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
   GroupWithStringDate,
   fetchAllGroups,
+  selectGroups,
 } from "@/redux/features/groups/groupsSlice";
 
 const showLoginRequiredToast = () => {
@@ -33,10 +34,17 @@ export default function GroupsSection({ allGroups }: { allGroups: Group[] }) {
   const session = useSession();
 
   const dispatch = useAppDispatch();
+  const { data: groups } = useAppSelector(selectGroups);
 
   useEffect(() => {
-    dispatch(fetchAllGroups());
+    if (groups.length === 0) {
+      dispatch(fetchAllGroups());
+    }
   }, []);
+
+  useEffect(() => {
+    setGroupsToDisplay(groups);
+  }, [groups]);
 
   const handleGroupClick = (groupId: number) => {
     if (session.status !== "authenticated") {

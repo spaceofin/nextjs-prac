@@ -3,7 +3,6 @@
 import React, { FormEvent, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { createGroup, selectGroups } from "@/redux/features/groups/groupsSlice";
-import { useRouter } from "next/navigation";
 
 export default function GroupCreateModal({
   setIsCreateGroupVisible,
@@ -14,13 +13,14 @@ export default function GroupCreateModal({
   const [description, setDescription] = useState("");
   const dispatch = useAppDispatch();
   const { error } = useAppSelector(selectGroups);
-  const router = useRouter();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const result = await dispatch(createGroup(formData));
-    if (result.type === "groups/createGroup/fulfilled") router.push("/");
+    if (result.type === "groups/createGroup/fulfilled") {
+      setIsCreateGroupVisible();
+    }
   };
 
   return (
