@@ -4,6 +4,7 @@ import * as auth from "@/app/auth";
 import { EmailSignUpFormSchema } from "../validation/auth-schema";
 import { hash } from "bcryptjs";
 import { db } from "../db";
+import { Prisma } from "@prisma/client";
 
 export async function signUpWithGithub() {
   return auth.signIn("github", { redirectTo: "/" });
@@ -42,7 +43,18 @@ export async function signUpWithCredentials({
     await db.user.create({
       data: { email: email, name: userName, password: hashedPassword },
     });
-  } catch {
+  } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      return {
+        error: true,
+        message:
+          "This email address is already in use. Please use a different one.",
+      };
+    }
+
     return {
       error: true,
       message: "Sign up failed.",

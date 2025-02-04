@@ -39,8 +39,6 @@ export default function SignUpPage() {
       passwordConfirm: data.passwordConfirm,
     });
 
-    console.log(response);
-
     if (response?.error) {
       setError("root", {
         message: response.message,
@@ -130,6 +128,11 @@ export default function SignUpPage() {
                   </span>
                 )}
               </div>
+              {errors.root?.message && (
+                <span className="text-red-500 text-sm pl-1">
+                  {errors.root.message}
+                </span>
+              )}
             </fieldset>
             <button
               type="submit"

@@ -9,17 +9,19 @@ import {
   fetchPinnedGroupsMemos,
   selectPinnedGroups,
 } from "@/redux/features/groups/pinnedGroupsSlice";
+import { useSession } from "next-auth/react";
 
 export default function GroupMemosSection() {
   const [isMyGroupVisible, setIsMyGroupVisible] = useState(false);
+  const session = useSession();
 
   const dispatch = useAppDispatch();
   const { data: pinnedGroups } = useAppSelector(selectPinnedGroups);
 
   useEffect(() => {
-    dispatch(fetchPinnedGroupsMemos());
+    if (session.status === "authenticated") dispatch(fetchPinnedGroupsMemos());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [session.status]);
 
   return (
     <div className="flex flex-col pt-7 pb-10 bg-green-100 rounded-md h-96 w-full px-10">
