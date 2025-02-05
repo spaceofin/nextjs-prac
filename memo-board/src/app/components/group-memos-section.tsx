@@ -29,11 +29,12 @@ export default function GroupMemosSection() {
         <MyGroupsModal setIsMyGroupVisible={() => setIsMyGroupVisible(false)} />
       )}
       <div className="flex justify-end">
-        <span
-          className="hover:cursor-pointer"
-          onClick={() => setIsMyGroupVisible(true)}>
+        <button
+          className="hover:cursor-pointer disabled:cursor-default"
+          onClick={() => setIsMyGroupVisible(true)}
+          disabled={session.status !== "authenticated"}>
           <MdOutlineAddBox size={28} />
-        </span>
+        </button>
       </div>
       <div className="flex h-full gap-5">
         {pinnedGroups.map((group) => (
