@@ -56,9 +56,8 @@ export const { handlers, auth, signOut, signIn } = NextAuth({
 
         if (regex.test(path)) {
           try {
-            const response = await fetch(
-              `${process.env.NEXT_PUBLIC_API_URL}${path}`
-            );
+            const apiUrl = new URL(`/api${path}`, request.url);
+            const response = await fetch(apiUrl);
 
             if (!response.ok) {
               console.error("Failed to check memo is public:", response.status);
