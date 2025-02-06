@@ -2,18 +2,26 @@
 
 import { editMemo } from "@/redux/features/memos/memosSlice";
 import { useAppDispatch } from "@/redux/hooks";
-import { Memo } from "@prisma/client";
+import { Memo, Visibility } from "@prisma/client";
 import { useState } from "react";
 
 export default function MemoEditSection({ memo }: { memo: Memo }) {
   const [title, setTitle] = useState(memo.title);
   const [content, setContent] = useState(memo.content);
-  const [isPublic, setIsPublic] = useState(memo.isPublic);
+  const [isPublic, setIsPublic] = useState(
+    memo.visibility === Visibility.PUBLIC
+  );
   const dispatch = useAppDispatch();
 
   const handleEditDoneClick = async () => {
     try {
-      dispatch(editMemo({ id: memo.id, title, content, isPublic }));
+      const visibility =
+        memo.visibility === Visibility.GROUP
+          ? Visibility.GROUP
+          : isPublic
+          ? Visibility.PUBLIC
+          : Visibility.PRIVATE;
+      dispatch(editMemo({ id: memo.id, title, content, visibility }));
     } catch (error) {
       console.error("Error editing memo:", error);
     }
@@ -41,6 +49,7 @@ export default function MemoEditSection({ memo }: { memo: Memo }) {
             name="isPublic"
             type="checkbox"
             checked={isPublic}
+            disabled={memo.visibility === Visibility.GROUP}
             onChange={(e) => setIsPublic(e.target.checked)}
             className="w-4 h-4 mx-2"
           />

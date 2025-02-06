@@ -4,10 +4,11 @@ import { useRouter } from "next/navigation";
 import { MemoWithUserName } from "../service/memos-service";
 import { useSession } from "next-auth/react";
 import DeleteMemoButton from "./delete-memo-button";
+import { Visibility } from "@prisma/client";
 
 export default function MemoCard({ memo }: { memo: MemoWithUserName }) {
   const router = useRouter();
-  const isPublicMemo = !!memo.isPublic;
+  const isPublicMemo = memo.visibility === Visibility.PUBLIC;
   const session = useSession();
 
   return (

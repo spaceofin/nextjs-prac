@@ -87,12 +87,18 @@ model Authenticator {
   @@id([userId, credentialID])
 }
 
+enum Visibility {
+  PUBLIC
+  PRIVATE
+  GROUP
+}
+
 model Memo {
-  id         Int         @id @default(autoincrement())
+  id         Int        @id @default(autoincrement())
   title      String
   content    String
   userId     String
-  isPublic   Boolean     @default(false)
+  visibility Visibility @default(PRIVATE)
   groupMemos GroupMemo[]
   
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)

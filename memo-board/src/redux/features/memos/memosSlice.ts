@@ -12,6 +12,7 @@ import {
   deleteMemoById,
   editMemo as editMemoService,
 } from "@/app/service/memos-service";
+import { Visibility } from "@prisma/client";
 
 export const fetchUserMemos = createAsyncThunk("memos/fetchAll", async () => {
   const memos = await fetchAllMemosByUserId();
@@ -70,15 +71,15 @@ export const editMemo = createAsyncThunk(
     id,
     title,
     content,
-    isPublic,
+    visibility,
   }: {
     id: number;
     title: string;
     content: string;
-    isPublic: boolean;
+    visibility: Visibility;
   }) => {
-    await editMemoService(id, title, content, isPublic);
-    return { id, title, content, isPublic };
+    await editMemoService(id, title, content, visibility);
+    return { id, title, content, visibility };
   }
 );
 

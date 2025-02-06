@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { auth } from "../auth";
-import { Memo } from "@prisma/client";
+import { Memo, Visibility } from "@prisma/client";
 
 export type MemoWithUserName = Memo & { user?: { name: string | null } };
 
@@ -18,7 +18,7 @@ const createMemoSchema = z.object({
     .string()
     .max(1000, { message: "Title must contain at most 1000 character(s)" })
     .optional(),
-  isPublic: z.boolean(),
+  visibility: z.enum(["PUBLIC", "PRIVATE", "GROUP"]),
 });
 
 export interface MemoCreationResponse {
@@ -26,7 +26,7 @@ export interface MemoCreationResponse {
   errors?: {
     title?: string[];
     content?: string[];
-    isPublic?: string[];
+    visibility?: string[];
     db?: string[];
     session?: string[];
   };
@@ -42,7 +42,7 @@ export async function createMemo({
   const result = createMemoSchema.safeParse({
     title: formData.get("title"),
     content: formData.get("content"),
-    isPublic: formData.get("isPublic") === "on",
+    visibility: formData.get("visibility"),
   });
 
   if (!result.success) {
@@ -65,7 +65,7 @@ export async function createMemo({
         title: result.data.title,
         content: result.data.content || "",
         userId: session.user.id,
-        isPublic: result.data.isPublic,
+        visibility: result.data.visibility,
       },
     });
 
@@ -101,11 +101,11 @@ export async function editMemo(
   id: number,
   title: string,
   content: string,
-  isPublic: boolean
+  visibility: Visibility
 ) {
   await db.memo.update({
     where: { id },
-    data: { title, content, isPublic },
+    data: { title, content, visibility },
   });
 
   revalidatePath(`/memos/${id}`);
@@ -127,7 +127,7 @@ export async function fetchAllMemosByUserId(): Promise<Memo[]> {
 
 export async function fetchPublicMemos(): Promise<MemoWithUserName[]> {
   return db.memo.findMany({
-    where: { isPublic: true },
+    where: { visibility: "PUBLIC" },
     include: {
       user: { select: { name: true } },
     },
@@ -138,5 +138,5 @@ export async function isMemoPublic(id: number) {
   const memo = await db.memo.findFirst({
     where: { id },
   });
-  return memo?.isPublic;
+  return memo?.visibility === "PUBLIC";
 }
