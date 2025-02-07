@@ -8,10 +8,10 @@ import { useRouter } from "next/navigation";
 import GroupSelect from "@/app/components/group-select";
 import { Visibility } from "@prisma/client";
 
-export type SelectedGroup = { id: number; name: string };
+export type GroupSummary = { id: number; name: string };
 
 export default function MemoCreatePage() {
-  const [selectedGroups, setSelectedGroups] = useState<SelectedGroup[]>([]);
+  const [selectedGroups, setSelectedGroups] = useState<GroupSummary[]>([]);
   const router = useRouter();
 
   const dispatch = useAppDispatch();

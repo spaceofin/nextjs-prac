@@ -1,23 +1,18 @@
 "use client";
 
-import {
-  fetchAllGroups,
-  selectGroups,
-} from "@/redux/features/groups/groupsSlice";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { Dispatch, SetStateAction, useEffect } from "react";
-import { SelectedGroup } from "../memos/new/page";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { GroupSummary } from "../memos/new/page";
 import { MdCancel } from "react-icons/md";
+import { fetchGroupsByUserId } from "../service/groups-service";
 
 export default function GroupSelect({
   selectedGroups,
   setSelectedGroups,
 }: {
-  selectedGroups: SelectedGroup[];
-  setSelectedGroups: Dispatch<SetStateAction<SelectedGroup[]>>;
+  selectedGroups: GroupSummary[];
+  setSelectedGroups: Dispatch<SetStateAction<GroupSummary[]>>;
 }) {
-  const { data: groups } = useAppSelector(selectGroups);
-  const dispatch = useAppDispatch();
+  const [groups, setGroups] = useState<GroupSummary[]>([]);
 
   const onSelectedGroupChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value === "") return;
@@ -40,11 +35,16 @@ export default function GroupSelect({
   };
 
   useEffect(() => {
-    if (groups.length === 0) dispatch(fetchAllGroups());
+    const fetchData = async () => {
+      const data = await fetchGroupsByUserId();
+      const resultGroups = data.map(({ id, name }) => ({ id, name }));
+      setGroups(resultGroups);
+    };
+    fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleDeSelectGroup = (group: SelectedGroup) => {
+  const handleDeSelectGroup = (group: GroupSummary) => {
     setSelectedGroups((prev) =>
       prev.filter((selectedGroup) => selectedGroup.id !== group.id)
     );
