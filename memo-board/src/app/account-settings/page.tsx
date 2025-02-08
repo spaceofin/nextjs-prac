@@ -19,6 +19,11 @@ export default async function AccountSettings() {
           <p>Name: {user?.name}</p>
         </div>
         <div className="flex flex-col gap-2">
+          <Link
+            href="/account-settings/manage-groups"
+            className="flex justify-center p-2 bg-green-400 bg-opacity-80 rounded-md">
+            Manage Groups
+          </Link>
           {!user.isOAuthUser && (
             <Link
               href="/account-settings/change-password"
