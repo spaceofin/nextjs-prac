@@ -1,11 +1,12 @@
 "use client";
 
-import { selectGroups } from "@/redux/features/groups/groupsSlice";
-import { useAppSelector } from "@/redux/hooks";
+import { GroupWithMembers } from "@/app/service/groups-service";
 
-export default function MyGroupsList() {
-  const { data: myGroups } = useAppSelector(selectGroups);
-
+export default function MyGroupsList({
+  myGroups,
+}: {
+  myGroups: GroupWithMembers[];
+}) {
   return (
     <div className="flex flex-col h-full w-full gap-2 overflow-y-auto py-2 px-6 font-sans">
       {myGroups.map((group) => (
