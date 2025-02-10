@@ -308,3 +308,27 @@ export async function fetchPinnedGroupsMemos(): Promise<
   }));
   return pinnedGroupsMemos;
 }
+
+export async function leaveGroup(groupId: number) {
+  try {
+    const session = await auth();
+    if (!session || !session.user || !session.user.id) {
+      throw new Error("Please log in to continue.");
+    }
+
+    await db.userGroup.delete({
+      where: {
+        userId_groupId: {
+          userId: session.user.id,
+          groupId,
+        },
+      },
+    });
+    return;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error("Error leaving group:", error.message);
+      throw new Error("Error leaving group");
+    }
+  }
+}

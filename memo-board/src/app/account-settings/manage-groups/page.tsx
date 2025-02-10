@@ -16,7 +16,7 @@ export default async function GroupsManagement() {
       </div>
       <div className="flex flex-col gap-12 w-[700px] h-[500px] bg-gray-200 rounded-md px-10 py-8 text-lg font-mono">
         <h1 className="flex justify-center text-2xl font-bold">My Groups</h1>
-        <MyGroupsList myGroups={myGroups} />
+        <MyGroupsList groups={myGroups} />
       </div>
     </div>
   );
