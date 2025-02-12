@@ -4,6 +4,7 @@ import ConfirmModal from "@/app/components/confirm-modal";
 import {
   GroupWithMembers,
   changeOwnerAndLeaveGroup,
+  deleteGroup,
   fetchGroupsByUserId,
   leaveGroup,
 } from "@/app/service/groups-service";
@@ -18,9 +19,10 @@ export default function MyGroupsList({
   groups: GroupWithMembers[];
 }) {
   const [myGroups, setMyGroups] = useState<GroupWithMembers[]>(groups);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isOwnerChangeModalOpen, setIsOwnerChangeModalOpen] = useState(false);
-  const [groupToDelete, setGroupToDelete] = useState<GroupWithMembers>();
+  const [targetGroup, setTargetGroup] = useState<GroupWithMembers>();
   const [errorMsg, setErrorMsg] = useState<string | undefined>("");
   const session = useSession();
   const currentUserId = session.data?.user.id;
@@ -37,9 +39,9 @@ export default function MyGroupsList({
     confirmed: boolean;
     newOwnerName?: string;
   }) => {
-    if (confirmed === true && groupToDelete && newOwnerName) {
+    if (confirmed === true && targetGroup && newOwnerName) {
       const result = await changeOwnerAndLeaveGroup({
-        groupId: groupToDelete?.id,
+        groupId: targetGroup?.id,
         newOwnerName,
       });
       if (result) {
@@ -60,14 +62,14 @@ export default function MyGroupsList({
     }
   };
 
-  const onConfirm = async (confirmed: boolean) => {
+  const onLeaveConfirm = async (confirmed: boolean) => {
     if (confirmed === true) {
-      if (groupToDelete?.ownerId === currentUserId) {
+      if (targetGroup?.ownerId === currentUserId) {
         setIsOwnerChangeModalOpen(true);
       } else {
         try {
-          if (groupToDelete) {
-            await leaveGroup(groupToDelete?.id);
+          if (targetGroup) {
+            await leaveGroup(targetGroup?.id);
             await fetchMyGroups();
             toast.info("You have successfully left the group.", {
               position: "bottom-right",
@@ -82,7 +84,28 @@ export default function MyGroupsList({
       }
     }
 
-    setIsModalOpen(false);
+    setIsLeaveModalOpen(false);
+  };
+
+  const onDeleteConfirm = async (confirmed: boolean) => {
+    if (confirmed === true) {
+      try {
+        if (targetGroup) {
+          await deleteGroup(targetGroup?.id);
+          await fetchMyGroups();
+          toast.info("You have successfully deleted the group.", {
+            position: "bottom-right",
+            autoClose: 1000,
+            hideProgressBar: true,
+            theme: "colored",
+          });
+        }
+      } catch (error) {
+        console.error("error deleting group:", error);
+      }
+    }
+
+    setIsDeleteModalOpen(false);
   };
 
   return (
@@ -95,11 +118,21 @@ export default function MyGroupsList({
             <p>{group.name}</p>
             {group.ownerId === currentUserId && <p>⭐</p>}
           </div>
-          <div>
+          <div className="flex gap-1">
+            {group.ownerId === currentUserId && (
+              <button
+                onClick={() => {
+                  setIsDeleteModalOpen(true);
+                  setTargetGroup(group);
+                }}
+                className="bg-red-400 px-2 rounded-md font-bold text-base">
+                delete
+              </button>
+            )}
             <button
               onClick={() => {
-                setIsModalOpen(true);
-                setGroupToDelete(group);
+                setIsLeaveModalOpen(true);
+                setTargetGroup(group);
               }}
               className="bg-blue-500 px-2 rounded-md font-bold text-base">
               leave
@@ -107,10 +140,17 @@ export default function MyGroupsList({
           </div>
         </div>
       ))}
-      {isModalOpen && (
+      {isLeaveModalOpen && (
         <ConfirmModal
-          message={`Do you really want to leave the ${groupToDelete?.name} group?`}
-          onConfirm={onConfirm}
+          message={`Do you really want to leave the ${targetGroup?.name} group?`}
+          onConfirm={onLeaveConfirm}
+        />
+      )}
+      {isDeleteModalOpen && (
+        <ConfirmModal
+          message={`Do you really want to delete the ${targetGroup?.name} group? All memos in the group will be permanently deleted.`}
+          onConfirm={onDeleteConfirm}
+          className="h-64"
         />
       )}
       {isOwnerChangeModalOpen && (

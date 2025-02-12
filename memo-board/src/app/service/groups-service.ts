@@ -383,3 +383,23 @@ export async function changeOwnerAndLeaveGroup({
     }
   }
 }
+
+export async function deleteGroup(groupId: number) {
+  try {
+    const session = await auth();
+    if (!session || !session.user || !session.user.id) {
+      throw new Error("Please log in to continue.");
+    }
+
+    await db.group.delete({
+      where: {
+        id: groupId,
+      },
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error("Error deleting group:", error.message);
+      throw new Error("Error deleting group");
+    }
+  }
+}
