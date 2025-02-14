@@ -1,5 +1,6 @@
 import { RootState } from "@/redux/store";
 import {
+  PayloadAction,
   SerializedError,
   createAsyncThunk,
   createSlice,
@@ -59,7 +60,11 @@ const initialState: GroupsState = {
 const groupsSlice = createSlice({
   name: "groups",
   initialState,
-  reducers: {},
+  reducers: {
+    removeGroup: (state, action: PayloadAction<number>) => {
+      state.data = state.data.filter((group) => group.id !== action.payload);
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchAllGroups.pending, (state) => {
@@ -88,5 +93,6 @@ const groupsSlice = createSlice({
 });
 
 export const selectGroups = (state: RootState) => state.groups;
+export const { removeGroup } = groupsSlice.actions;
 
 export const groupsReducer = groupsSlice.reducer;

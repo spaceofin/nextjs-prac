@@ -12,6 +12,8 @@ import { useSession } from "next-auth/react";
 import { useCallback, useState } from "react";
 import { toast } from "react-toastify";
 import ChangeOwnerModal from "./owner-change-modal";
+import { useDispatch } from "react-redux";
+import { removeGroup } from "@/redux/features/groups/groupsSlice";
 
 export default function MyGroupsList({
   groups,
@@ -28,6 +30,8 @@ export default function MyGroupsList({
   const [errorMsg, setErrorMsg] = useState<string | undefined>("");
   const session = useSession();
   const currentUserId = session.data?.user.id;
+
+  const dispatch = useDispatch();
 
   const fetchMyGroups = useCallback(async () => {
     const fetchedGroups = await fetchGroupsByUserId();
@@ -77,6 +81,7 @@ export default function MyGroupsList({
         newOwnerName,
       });
       await leaveGroup(targetGroup?.id);
+      dispatch(removeGroup(targetGroup?.id));
       if (result) {
         setErrorMsg(result?.message);
       } else {
@@ -103,6 +108,7 @@ export default function MyGroupsList({
         try {
           if (targetGroup) {
             await leaveGroup(targetGroup?.id);
+            dispatch(removeGroup(targetGroup?.id));
             await fetchMyGroups();
             toast.info("You have successfully left the group.", {
               position: "bottom-right",
@@ -126,6 +132,7 @@ export default function MyGroupsList({
         if (targetGroup) {
           await deleteGroup(targetGroup?.id);
           await fetchMyGroups();
+          dispatch(removeGroup(targetGroup?.id));
           toast.info("You have successfully deleted the group.", {
             position: "bottom-right",
             autoClose: 1000,
