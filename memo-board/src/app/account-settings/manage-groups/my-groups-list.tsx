@@ -4,7 +4,6 @@ import ConfirmModal from "@/app/components/confirm-modal";
 import {
   GroupWithMembers,
   changeGroupOwner,
-  changeOwnerAndLeaveGroup,
   deleteGroup,
   fetchGroupsByUserId,
   leaveGroup,
@@ -73,10 +72,11 @@ export default function MyGroupsList({
     newOwnerName?: string;
   }) => {
     if (confirmed === true && targetGroup && newOwnerName) {
-      const result = await changeOwnerAndLeaveGroup({
+      const result = await changeGroupOwner({
         groupId: targetGroup?.id,
         newOwnerName,
       });
+      await leaveGroup(targetGroup?.id);
       if (result) {
         setErrorMsg(result?.message);
       } else {
@@ -208,7 +208,7 @@ export default function MyGroupsList({
           onConfirm={onOnwerChangeConfirm}
           message="Enter the name of the member to whom you want to transfer the owner role."
           errorMsg={errorMsg}
-          className="h-[340px]"
+          className="h-[345px]"
         />
       )}
     </div>

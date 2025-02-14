@@ -333,57 +333,6 @@ export async function leaveGroup(groupId: number) {
   }
 }
 
-export async function changeOwnerAndLeaveGroup({
-  groupId,
-  newOwnerName,
-}: {
-  groupId: number;
-  newOwnerName: string;
-}): Promise<{ message: string } | undefined> {
-  try {
-    const session = await auth();
-    if (!session || !session.user || !session.user.id) {
-      throw new Error("Please log in to continue.");
-    }
-
-    const newOwner = await db.user.findFirst({
-      where: { name: newOwnerName },
-      include: {
-        memberOfGroups: { where: { groupId } },
-      },
-    });
-
-    if (newOwner === null) {
-      return { message: "No matching user found." };
-    } else if (newOwner?.memberOfGroups.length === 0) {
-      return { message: "The user is not a member of this group." };
-    } else if (newOwner?.id === session?.user.id) {
-      return { message: "You cannot transfer owner role to yourself." };
-    }
-
-    await db.group.update({
-      where: { id: groupId },
-      data: { ownerId: newOwner?.id },
-    });
-
-    await db.userGroup.delete({
-      where: {
-        userId_groupId: {
-          userId: session.user.id,
-          groupId,
-        },
-      },
-    });
-
-    return;
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error("Error leaving group:", error.message);
-      throw new Error("Error leaving group");
-    }
-  }
-}
-
 export async function changeGroupOwner({
   groupId,
   newOwnerName,
