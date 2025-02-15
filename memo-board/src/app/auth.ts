@@ -49,28 +49,31 @@ export const { handlers, auth, signOut, signIn } = NextAuth({
   },
   callbacks: {
     authorized: async ({ request, auth }) => {
-      if (!auth) {
-        const url = new URL(request.url);
-        const path = url.pathname;
-        const regex = /\/memos\/(\d+)$/;
+      const url = new URL(request.url);
+      const regex = /\/memos\/(\d+)$/;
+      const path = url.pathname;
 
+      if (!auth) {
         if (regex.test(path)) {
           try {
             const apiUrl = new URL(`/api${path}`, request.url);
             const response = await fetch(apiUrl);
 
             if (!response.ok) {
-              console.error("Failed to check memo is public:", response.status);
+              console.error(
+                "Failed to check visibility of memo:",
+                response.status
+              );
               return NextResponse.redirect(new URL("/", request.url));
             }
             const data = await response.json();
 
-            if (data.isMemoPublic) {
-              return data.isMemoPublic;
+            if (data.visibility === "PUBLIC") {
+              return true;
             }
           } catch (error) {
             console.error(
-              "Failed to parse response while checking memo is public:",
+              "Error occurred while checking memo access permissions for non-logged-in user:",
               error
             );
             return NextResponse.redirect(new URL("/", request.url));
@@ -79,15 +82,39 @@ export const { handlers, auth, signOut, signIn } = NextAuth({
         return NextResponse.redirect(new URL("/", request.url));
       } else {
         const user = auth.user as User;
-        const url = new URL(request.url);
-        // console.log("url:", url.toString());
+
         if (
-          url.pathname == "/account-settings/change-password" &&
+          path === "/account-settings/change-password" &&
           user.password === null
         ) {
           return NextResponse.redirect(
             new URL("/account-settings", request.url)
           );
+        } else if (regex.test(path)) {
+          try {
+            const apiUrl = new URL(`/api${path}`, request.url);
+            const response = await fetch(apiUrl);
+
+            if (!response.ok) {
+              console.error(
+                "Failed to check visibility of memo:",
+                response.status
+              );
+              return NextResponse.redirect(new URL("/", request.url));
+            }
+            const data = await response.json();
+
+            if (data.visibility === "PRIVATE" && data.userId === user.id) {
+              return true;
+            }
+            return NextResponse.redirect(new URL("/", request.url));
+          } catch (error) {
+            console.error(
+              "Error occurred while checking memo access permissions for logged-in user:",
+              error
+            );
+            return NextResponse.redirect(new URL("/", request.url));
+          }
         }
       }
 

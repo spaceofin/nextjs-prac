@@ -133,10 +133,3 @@ export async function fetchPublicMemos(): Promise<MemoWithUserName[]> {
     },
   });
 }
-
-export async function isMemoPublic(id: number) {
-  const memo = await db.memo.findFirst({
-    where: { id },
-  });
-  return memo?.visibility === "PUBLIC";
-}

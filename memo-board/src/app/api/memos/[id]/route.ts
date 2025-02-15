@@ -1,4 +1,4 @@
-import { isMemoPublic } from "@/app/service/memos-service";
+import { db } from "@/app/db";
 import { NextResponse, NextRequest } from "next/server";
 
 export async function GET(
@@ -7,6 +7,12 @@ export async function GET(
 ) {
   const memoId = (await params).id;
 
-  const isPublic = await isMemoPublic(parseInt(memoId));
-  return NextResponse.json({ isMemoPublic: isPublic });
+  const memo = await db.memo.findFirst({
+    where: { id: parseInt(memoId) },
+  });
+
+  return NextResponse.json({
+    userId: memo?.userId,
+    visibility: memo?.visibility,
+  });
 }
