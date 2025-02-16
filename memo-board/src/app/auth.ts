@@ -93,7 +93,10 @@ export const { handlers, auth, signOut, signIn } = NextAuth({
         } else if (regex.test(path)) {
           try {
             const apiUrl = new URL(`/api${path}`, request.url);
-            const response = await fetch(apiUrl);
+            const response = await fetch(apiUrl, {
+              method: "GET",
+              headers: { "x-user-id": `${user.id}` },
+            });
 
             if (!response.ok) {
               console.error(
@@ -106,6 +109,8 @@ export const { handlers, auth, signOut, signIn } = NextAuth({
 
             if (data.visibility === "PRIVATE" && data.userId === user.id) {
               return true;
+            } else if (data.visibility === "GROUP") {
+              if (data.isUserInMemoGroups) return true;
             }
             return NextResponse.redirect(new URL("/", request.url));
           } catch (error) {
