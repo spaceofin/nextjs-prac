@@ -1,5 +1,12 @@
 import { db } from "@/app/db";
+import { $Enums } from "@prisma/client";
 import { NextResponse, NextRequest } from "next/server";
+
+interface MemoGetResponseData {
+  userId: string | undefined;
+  visibility: $Enums.Visibility | undefined;
+  isUserInMemoGroups?: boolean;
+}
 
 export async function GET(
   request: NextRequest,
@@ -14,22 +21,27 @@ export async function GET(
     },
   });
 
-  const groupIds = memo?.groupMemos.map((groupMemo) => groupMemo.groupId);
-  const clientUserId = request.headers.get("x-user-id");
-
-  const userGroups = await db.userGroup.findMany({
-    where: {
-      userId: clientUserId as string,
-      groupId: { in: groupIds },
-    },
-  });
-
-  let isUserInMemoGroups = false;
-  if (userGroups.length !== 0) isUserInMemoGroups = true;
-
-  return NextResponse.json({
+  const responseData: MemoGetResponseData = {
     userId: memo?.userId,
     visibility: memo?.visibility,
-    isUserInMemoGroups,
-  });
+  };
+
+  const clientUserId = request.headers.get("x-user-id");
+
+  if (clientUserId) {
+    const groupIds = memo?.groupMemos.map((groupMemo) => groupMemo.groupId);
+    const userGroups = await db.userGroup.findMany({
+      where: {
+        userId: clientUserId as string,
+        groupId: { in: groupIds },
+      },
+    });
+
+    let isUserInMemoGroups = false;
+    if (userGroups.length !== 0) isUserInMemoGroups = true;
+
+    responseData.isUserInMemoGroups = isUserInMemoGroups;
+  }
+
+  return NextResponse.json(responseData);
 }
