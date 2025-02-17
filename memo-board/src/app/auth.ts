@@ -107,7 +107,12 @@ export const { handlers, auth, signOut, signIn } = NextAuth({
             }
             const data = await response.json();
 
-            if (data.visibility === "PRIVATE" && data.userId === user.id) {
+            if (data.visibility === "PUBLIC") {
+              return true;
+            } else if (
+              data.visibility === "PRIVATE" &&
+              data.userId === user.id
+            ) {
               return true;
             } else if (data.visibility === "GROUP") {
               if (data.isUserInMemoGroups) return true;
