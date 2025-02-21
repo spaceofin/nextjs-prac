@@ -394,3 +394,28 @@ export async function deleteGroup(groupId: number) {
     }
   }
 }
+
+export async function isUserGroupOfGroup() {
+  try {
+    const session = await auth();
+    if (!session || !session.user || !session.user.id) {
+      throw new Error("Please log in to continue.");
+    }
+
+    const groupNames = await db.group.findMany({
+      where: {
+        ownerId: session.user.id,
+      },
+      select: {
+        name: true,
+      },
+    });
+
+    return groupNames.map((group) => group.name);
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error("Error finding owned groups:", error.message);
+      throw new Error("Error finding owned groups");
+    }
+  }
+}
