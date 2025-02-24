@@ -8,6 +8,7 @@ import { MemoCards } from "./components/memo-cards";
 import GroupsSection from "./components/groups-section";
 import { fetchAllGroups } from "./service/groups-service";
 import GroupMemosSection from "./components/group-memos-section";
+import Link from "next/link";
 
 export default async function Home() {
   const session = await auth();
@@ -22,6 +23,11 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col my-10 gap-2">
+      <Link
+        href="/read-me"
+        className="absolute flex items-center justify-center top-[53px] right-[41px] h-8 bg-gray-500 text-white px-5 rounded-md">
+        Read Me
+      </Link>
       <AuthBar userId={session?.user?.id} />
       <MemoCards memos={memos} isSignedIn={isSignedIn} />
       <GroupMemosSection />
