@@ -1,5 +1,6 @@
 import { db } from "@/app/db";
 import { $Enums } from "@prisma/client";
+import { redirect } from "next/navigation";
 import { NextResponse, NextRequest } from "next/server";
 
 interface MemoGetResponseData {
@@ -12,6 +13,12 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const isRequestFromNextJsMiddleware =
+    request.headers.get("user-agent") === "Next.js Middleware";
+  if (!isRequestFromNextJsMiddleware) {
+    redirect("/");
+  }
+
   const memoId = (await params).id;
 
   const memo = await db.memo.findFirst({
