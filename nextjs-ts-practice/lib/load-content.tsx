@@ -6,7 +6,10 @@ import Paragraph from "@/components/paragraph";
 
 export function loadContent(slug: string) {
   const filename = slug.endsWith(".mdx") ? slug : `${slug}.mdx`;
-  return fs.readFileSync(path.join(process.cwd(), "content", filename));
+  return fs.readFileSync(
+    path.join(process.cwd(), "content", filename),
+    "utf-8"
+  );
 }
 
 export async function getContent<T>(
