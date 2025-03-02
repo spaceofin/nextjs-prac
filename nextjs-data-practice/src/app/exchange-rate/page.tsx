@@ -6,7 +6,6 @@ export default async function ExchangeRate() {
 
   return (
     <div>
-      <div>DATE: {data?.date}</div>
       <div>BASE: {data?.base}</div>
       <div>
         {rates &&
