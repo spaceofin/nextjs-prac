@@ -6,7 +6,10 @@ export interface ExchangeRatesResponse {
   rates: Record<string, number>;
 }
 
-type ExchangeRatesData = Omit<ExchangeRatesResponse, "disclaimer" | "license">;
+export type ExchangeRatesData = Omit<
+  ExchangeRatesResponse,
+  "disclaimer" | "license"
+>;
 
 export async function fetchExchangeRates(): Promise<ExchangeRatesData | null> {
   try {
