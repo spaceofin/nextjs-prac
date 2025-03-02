@@ -1,6 +1,6 @@
 import ExchangeRatesView from "./components/ExchangeRatesView";
 
-export default async function ExchangeRate() {
+export default function ExchangeRates() {
   return (
     <div>
       <ExchangeRatesView />
