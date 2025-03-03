@@ -1,9 +1,9 @@
-import ExchangeRatesView from "./components/ExchangeRatesView";
+import ExchangeRatesViewServer from "./components/ExchangeRatesViewServer";
 
-export default function ExchangeRates() {
+export default function ExchangeRatesPage() {
   return (
     <div>
-      <ExchangeRatesView />
+      <ExchangeRatesViewServer />
     </div>
   );
 }

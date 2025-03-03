@@ -14,13 +14,13 @@ export type ExchangeRatesData = Omit<
 export async function fetchExchangeRates(): Promise<ExchangeRatesData | null> {
   try {
     const response = await fetch(
-      `https://openexchangerates.org/api/latest.json?app_id=${process.env.EXCHANGE_RATE_APP_ID}`
+      `https://openexchangerates.org/api/latest.json?app_id=${process.env.NEXT_PUBLIC_EXCHANGE_RATE_APP_ID}`
     );
 
     if (!response.ok) {
       throw new Error("Failed to fetch exchange rates");
     }
-
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { disclaimer, license, ...data } = await response.json();
     return data;
   } catch (error) {

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { ExchangeRatesData } from "../exchange-rates-services";
 
-export default function ExchangeRatesView() {
+export default function ExchangeRatesViewClient() {
   const [data, setData] = useState<ExchangeRatesData | null>(null);
 
   useEffect(() => {
@@ -15,6 +15,7 @@ export default function ExchangeRatesView() {
         if (!response.ok) {
           throw new Error("Failed to fetch exchange rates");
         }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { disclaimer, license, ...data } = await response.json();
         setData(data);
       } catch (error) {
