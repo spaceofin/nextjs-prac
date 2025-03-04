@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Navigation from "../../Navigation";
 
 export const metadata: Metadata = {
   title: "Nextjs Data Practice",
@@ -14,7 +15,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <header>
+          <Navigation />
+        </header>
+        <main>{children}</main>
+      </body>
     </html>
   );
 }

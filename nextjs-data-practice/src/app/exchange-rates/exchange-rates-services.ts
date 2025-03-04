@@ -14,7 +14,8 @@ export type ExchangeRatesData = Omit<
 export async function fetchExchangeRates(): Promise<ExchangeRatesData | null> {
   try {
     const response = await fetch(
-      `https://openexchangerates.org/api/latest.json?app_id=${process.env.NEXT_PUBLIC_EXCHANGE_RATE_APP_ID}`
+      `https://openexchangerates.org/api/latest.json?app_id=${process.env.NEXT_PUBLIC_EXCHANGE_RATE_APP_ID}`,
+      { cache: "no-store" }
     );
 
     if (!response.ok) {
