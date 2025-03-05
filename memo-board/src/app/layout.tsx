@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} w-screen h-screen`}>
+      <body className={`${inter.className} w-screen`}>
         <div className="mx-auto p-10 w-full h-full">
           <StoreProvider>
             <SessionProvider>

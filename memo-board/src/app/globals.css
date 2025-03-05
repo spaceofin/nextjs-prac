@@ -1,3 +1,38 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.prose {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
+.prose code::before,
+.prose code::after {
+  content: "";
+}
+
+.prose pre code {
+  display: inline-block;
+  color: white;
+  background-color: transparent;
+  font-size: 16px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.prose code {
+  color: rgb(68, 138, 50);
+  font-size: 18px;
+  background-color: rgba(181, 219, 100, 0.4);
+  padding-left: 6px;
+  padding-right: 6px;
+  border-radius: 5px;
+}
+
+.prose ul ::marker {
+  color: rgb(150, 150, 150);
+}
+
+.prose li ::marker {
+  color: rgb(190, 190, 190);
+}

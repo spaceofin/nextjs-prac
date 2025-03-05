@@ -25,7 +25,7 @@ export default async function Home() {
     <div className="flex flex-col my-10 gap-2">
       <Link
         href="/read-me"
-        className="absolute flex items-center justify-center top-[53px] right-[41px] h-8 bg-gray-500 text-white px-5 rounded-md">
+        className="absolute flex items-center justify-center top-[53px] right-[41px] h-8 bg-slate-500 text-white px-5 rounded-md">
         Read Me
       </Link>
       <AuthBar userId={session?.user?.id} />
