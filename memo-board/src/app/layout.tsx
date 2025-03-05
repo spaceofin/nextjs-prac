@@ -5,6 +5,7 @@ import Header from "./components/header";
 import { SessionProvider } from "next-auth/react";
 import { ToastContainer } from "react-toastify";
 import { StoreProvider } from "@/redux/StoreProvider";
+import Main from "./components/main";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,16 +21,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} w-screen`}>
-        <div className="mx-auto p-10 w-full h-full">
-          <StoreProvider>
-            <SessionProvider>
-              <Header />
+      <body className={`${inter.className} h-auto w-screen p-10`}>
+        <StoreProvider>
+          <SessionProvider>
+            <Header />
+            <Main>
               {children}
               <ToastContainer />
-            </SessionProvider>
-          </StoreProvider>
-        </div>
+            </Main>
+          </SessionProvider>
+        </StoreProvider>
       </body>
     </html>
   );
