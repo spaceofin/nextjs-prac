@@ -1,4 +1,6 @@
 import { fetchExchangeRates } from "../exchange-rates-services";
+import CurrencyCard from "./CurrencyCard";
+import { Suspense } from "react";
 
 export default async function ExchangeRatesViewServer() {
   const data = await fetchExchangeRates();
@@ -12,13 +14,14 @@ export default async function ExchangeRatesViewServer() {
           </h1>
           <div className="mt-2 italic font-bold px-2">BASE: {data?.base}</div>
           <div className="text-sm px-2">
-            {Object.entries(data.rates)?.map(([currency, rate]) => (
-              <div key={currency} className="flex gap-2 my-0.5">
-                <span className="inline-block text-center rounded-sm w-10 bg-red-300">
-                  {currency}
-                </span>
-                <span>{rate}</span>
-              </div>
+            {Object.entries(data.rates)?.map(([currency, rate], index) => (
+              <Suspense key={currency} fallback={<div>...</div>}>
+                <CurrencyCard
+                  currency={currency}
+                  rate={rate}
+                  delayMs={index * 1000}
+                />
+              </Suspense>
             ))}
           </div>
         </div>
