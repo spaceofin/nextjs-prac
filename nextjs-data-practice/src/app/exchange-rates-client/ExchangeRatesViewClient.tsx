@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { ExchangeRatesData } from "../exchange-rates-services";
+import { ExchangeRatesData } from "../exchange-rates-server/exchange-rates-services";
 
 export default function ExchangeRatesViewClient() {
   const [data, setData] = useState<ExchangeRatesData | null>(null);

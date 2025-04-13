@@ -8,9 +8,14 @@ export default function Navigation() {
         HOME
       </Link>
       <Link
-        href="/exchange-rates"
+        href="/exchange-rates-client"
         className="bg-gray-400 bg-opacity-70 rounded-md px-5">
-        EXCHANGE RATES
+        EXCHANGE RATES - CLIENT COMPONENT
+      </Link>
+      <Link
+        href="/exchange-rates-server"
+        className="bg-gray-400 bg-opacity-70 rounded-md px-5">
+        EXCHANGE RATES - SERVER COMPONENT
       </Link>
     </div>
   );

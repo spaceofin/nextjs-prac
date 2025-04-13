@@ -1,5 +1,5 @@
-import { fetchExchangeRates } from "../exchange-rates-services";
-import CurrencyCard from "./CurrencyCard";
+import { fetchExchangeRates } from "./exchange-rates-services";
+import CurrencyCard from "../components/CurrencyCard";
 import { Suspense } from "react";
 
 export default async function ExchangeRatesViewServer() {

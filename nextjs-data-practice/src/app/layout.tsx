@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Navigation from "../../Navigation";
+import Navigation from "./components/Navigation";
 
 export const metadata: Metadata = {
   title: "Nextjs Data Practice",
