@@ -7,9 +7,9 @@ export default async function CurrencyCard({
 }: {
   currency: string;
   rate: number;
-  delayMs: number;
+  delayMs?: number;
 }) {
-  await delay(delayMs);
+  if (delayMs) await delay(delayMs);
 
   return (
     <div key={currency} className="flex gap-2 my-0.5">

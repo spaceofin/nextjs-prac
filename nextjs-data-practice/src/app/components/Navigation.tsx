@@ -17,6 +17,11 @@ export default function Navigation() {
         className="bg-gray-400 bg-opacity-70 rounded-md px-5">
         EXCHANGE RATES - SERVER COMPONENT
       </Link>
+      <Link
+        href="/exchange-rates-isr"
+        className="bg-gray-400 bg-opacity-70 rounded-md px-5">
+        EXCHANGE RATES - ISR
+      </Link>
     </div>
   );
 }
